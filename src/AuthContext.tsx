@@ -18,7 +18,7 @@ interface AuthContextData {
     name: string,
     email: string,
     password: string
-  ) => Promise<void>;
+  ) => Promise<string>;
   logout: () => Promise<void>;
   getUser: () => User | null;
   forgotPassword: (email: string) => Promise<void>;
@@ -40,13 +40,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   async function registerUser(name: string, email: string, password: string) {
-    return await createUserWithEmailAndPassword(auth, email, password).then(
-      (userCredential) => {
-        void updateProfile(userCredential.user, {
+    const userCredential =  await createUserWithEmailAndPassword(auth, email, password);
+
+    await updateProfile(userCredential.user, {
           displayName: name,
         });
-      }
-    );
+
+      return userCredential.user.uid;
   }
 
   async function logout(): Promise<void> {
