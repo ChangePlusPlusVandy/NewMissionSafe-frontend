@@ -51,7 +51,9 @@ const Login: React.FC = () => {
   };
 
   return (
+    <div id='login-c'>
     <div>
+      {/* <img src='../../assets/mission-safe-l ogo.png' alt="Mission Safe Logo"/> */}
       <h1>Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -79,6 +81,7 @@ const Login: React.FC = () => {
       <p>
         Forgot your password? <Link to="/forgot-password">Reset</Link>
       </p>
+    </div>
     </div>
   );
 };
