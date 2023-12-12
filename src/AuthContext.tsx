@@ -23,6 +23,8 @@ interface AuthContextData {
   getUser: () => User | null;
   forgotPassword: (email: string) => Promise<void>;
   confirmReset: (code: string, password: string) => Promise<void>;
+  isStaff: Boolean | null;
+  setIsStaff: (isStaff: boolean) => void;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
@@ -34,9 +36,32 @@ export function useAuth(): AuthContextData {
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isStaff, setIsStaff] = useState<Boolean | null>(null);
 
   async function login(email: string, password: string) {
-    return await signInWithEmailAndPassword(auth, email, password);
+    try{
+      return await signInWithEmailAndPassword(auth, email, password);
+    
+    //CURRENTLY GETTING FIREBASE ERRORS AND MONGODB NOT IMPLEMENTED SO THE BELOW IS COMMMENTED OUT!
+      /**
+     
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      const userExistsInMongoDB = await verifyUserInMongoDB(userCredential.user);
+      // Check if user exists in MongoDB
+      if (userExistsInMongoDB) {
+        return userCredential;
+      } else {
+        // If user does not exist in MongoDB, log them out of Firebase
+        await logout();
+        throw new Error("User not found in MongoDB");
+      }
+    **/
+  } catch (error) {
+    // Handle Firebase authentication errors or MongoDB verification errors
+    throw error;
+  }
+  
   }
 
   async function registerUser(name: string, email: string, password: string) {
@@ -81,6 +106,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     getUser,
     forgotPassword,
     confirmReset,
+    isStaff,
+    setIsStaff,
   };
 
   return (

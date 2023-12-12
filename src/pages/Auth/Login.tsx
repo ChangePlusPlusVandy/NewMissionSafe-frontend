@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
+import "./Login.css";
 
 interface FormValues {
   email: string;
@@ -19,7 +20,7 @@ const schema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
-  const { login, currentUser } = useAuth();
+  const { login, currentUser, isStaff, setIsStaff} = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -38,21 +39,25 @@ const Login: React.FC = () => {
     }
   }, [currentUser, navigate]);
 
-  const onSubmit = async (values: FormValues) => {
+  const onSubmit = async (values: FormValues, event?: React.BaseSyntheticEvent) => {
     try {
       setError("");
+      const isStaffMember = event?.target.isStaff.checked;
+      setIsStaff(isStaffMember);
       const alal = await login(values.email, values.password);
       console.log(alal);
       navigate("/"); // Redirect to home page
     } catch (err: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
+      console.error("Login error:", err);
       setError(err.message);
     }
   };
 
   return (
-    <div>
+    <div className="login-container">
       <h1>Login</h1>
+      <p>Please sign in to continue</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
@@ -69,16 +74,24 @@ const Login: React.FC = () => {
           )}
           {errors && <FormError>{error}</FormError>}
         </div>
-        <button disabled={isSubmitting} type="submit">
+        <div>
+        <div>
+          <label htmlFor="isStaff">Are you a staff member?</label>
+          <input type="checkbox" id="isStaff" name="isStaff" />
+        </div>
+        </div>
+        <button className="login-button" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Submitting" : "Login"}
         </button>
       </form>
-      <p>
-        Don&apos;t have an account? <Link to="/register">Register</Link>
-      </p>
-      <p>
-        Forgot your password? <Link to="/forgot-password">Reset</Link>
-      </p>
+      <div className="bottom-text">
+        <p>
+          Don&apos;t have an account? <Link to="/register">Register</Link>
+        </p>
+        <p>
+          Forgot your password? <Link to="/forgot-password">Reset</Link>
+        </p>
+      </div>
     </div>
   );
 };
