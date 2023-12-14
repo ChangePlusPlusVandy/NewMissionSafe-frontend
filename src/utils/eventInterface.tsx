@@ -14,7 +14,11 @@ export interface eventType {
 
 // GET all events
 export const getAllEvents = async (token: string) => {
-  const response = await fetch(`${import.meta.env.VITE_BACKEND_ROUTE}/events`);
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_ROUTE}/events`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
   return await handleJsonResponse(response);
 };
 
