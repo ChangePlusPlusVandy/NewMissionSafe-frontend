@@ -13,50 +13,72 @@ export interface eventType {
 }
 
 // GET all events
-export const getAllEvents = async () => {
-  const response = await fetch(import.meta.env.VITE_BACKEND_ROUTE);
+export const getAllEvents = async (token: string) => {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_ROUTE}/events`);
   return await handleJsonResponse(response);
 };
 
 // GET event with @eventCode
-export const getEvent = async (eventCode: string) => {
+export const getEvent = async (eventCode: string, token: string) => {
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_ROUTE}/${eventCode}`
+    `${import.meta.env.VITE_BACKEND_ROUTE}/events/${eventCode}`,
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
   );
   return await handleJsonResponse(response);
 };
 
 // POST new event
-export const createEvent = async (event: eventType) => {
-  const response = await fetch(import.meta.env.VITE_BACKEND_ROUTE, {
+export const createEvent = async (event: eventType, token: string) => {
+  const response = await fetch(`${import.meta.env.VITE_BACKEND_ROUTE}/events`, {
     method: "POST",
     body: JSON.stringify(event),
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
   });
   return await handleJsonResponse(response);
 };
 
 // PUT add a staff member
-export const addEventStaff = async (eventCode: string, firebaseUID: string) => {
+export const addEventStaff = async (
+  eventCode: string,
+  firebaseUID: string,
+  token: string
+) => {
   const response = await fetch(
-    `${import.meta.env.VITE_BACKEND_ROUTE}/addStaff/${eventCode}`,
+    `${import.meta.env.VITE_BACKEND_ROUTE}/events/addStaff/${eventCode}`,
     {
       method: "PUT",
       body: JSON.stringify({ firebaseUID }),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
   return await handleJsonResponse(response);
 };
 
 // PUT mark attendance
-export const attendEvent = async (eventCode: string, firebaseUID: string) => {
+export const attendEvent = async (
+  eventCode: string,
+  firebaseUID: string,
+  token: string
+) => {
   let response = await fetch(
-    `${import.meta.env.VITE_BACKEND_ROUTE}/attend/${eventCode}`,
+    `${import.meta.env.VITE_BACKEND_ROUTE}/events/attend/${eventCode}`,
     {
       method: "PUT",
       body: JSON.stringify({ firebaseUID }),
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     }
   );
   return await handleMiscResponse(response);
