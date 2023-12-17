@@ -1,7 +1,7 @@
 import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
 
+//review: is this the right place to put this?
 export interface eventType {
-  //review: is this the right place to put this
   name: string;
   description: string;
   code: string;

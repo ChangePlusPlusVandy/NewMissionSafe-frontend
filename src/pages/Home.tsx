@@ -2,13 +2,9 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 
-import { getAllEvents, getEvent, createEvent, addEventStaff, attendEvent } from "../utils/eventInterface";
-
 const Home: React.FC = () => {
   const [fact, setFact] = useState<string>("");
   const { currentUser } = useAuth();
-
-	getAllEvents().then(events => console.log(events));
 
   useEffect(() => {
     const fetchFact = async () => {
