@@ -1,0 +1,42 @@
+.event-container {
+    padding: 35px;
+    width: 100vw; /* Full viewport width */
+    height: 100px; /* Adjust as needed */
+    box-sizing: border-box; 
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between; 
+    align-items: center; 
+
+    background: #FFF;
+    
+    position: relative; 
+    overflow: hidden;
+
+    border-bottom: 1px solid #C0C0C0;
+    margin: 5px 25px;
+}
+
+.event-text {
+    display: flex;
+    flex-direction: column;
+}
+
+.event-text h2 {
+    font-family: Arial;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    letter-spacing: 0.16px;
+}
+.event-text p {
+    color: #AFAFAF;
+    font-family: Arial;
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.1px;
+}
