@@ -4,7 +4,7 @@ body {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     min-height: 100vh; /* Full viewport height */
-    margin: 0; /* Remove default margin */
+    margin: 0; 
     background: #FFF;
 
 }
@@ -12,9 +12,9 @@ body {
 /* This styles the login-container */
 .login-container {
     padding: 35px;
-    width: 100vw; /* Full viewport width */
-    height: 100vh; /* Full viewport height */
+    width: 100%;
     box-sizing: border-box; /* Include padding in the width calculation */
+    height: 100vh; /* Full viewport height */
 
     display: flex;
     flex-direction: column;
@@ -64,7 +64,7 @@ body {
     font-weight: 400;
     line-height: normal;
     letter-spacing: 2px;
-
+    padding-top: 40px;
 
     margin-bottom: 10px;
 }
@@ -122,17 +122,6 @@ body {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-}
-.login-container::before {
-    content: '';
-    position: absolute;
-    background: #CF2329; /* Red color for the corner */
-    width: 120%; /* Full width of the container */
-    height: 130%; /* Full height of the container */
-    top: 0;
-    right: 0;
-    transform: translateX(30%) translateY(-65%) rotate(20deg); /* Adjust the diagonal */
-    transform-origin: top right; /* Pivot from the top right corner */
 }
 /* Link style */
 .bottom-text a {

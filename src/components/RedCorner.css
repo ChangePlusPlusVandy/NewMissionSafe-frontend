@@ -1,0 +1,10 @@
+.red-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%; /* Adjust this value based on your design preferences */
+    height: 15%; /* Adjust this value based on your design preferences */
+    max-height: 200px; /* Optional: Set a maximum height to avoid excessive scaling on larger screens */
+    background-color: #C12B34;
+    clip-path: polygon(100% 0,0 0, 0 20%, 100% 100%);
+  }
