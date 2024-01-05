@@ -4,12 +4,11 @@ import './Event.css';
 
 interface EventProps {
   eventName: string;
-  eventDate: string; // Assuming the date is provided as a string in '1/2/2024' format
-  eventDescription: string; // Description is not pictured in reference images
+  eventDate: string; 
 }
 
 const Event: React.FC<EventProps> = ({ eventName, eventDate}) => {
-  // Format the date for display
+
   const formattedDate = new Date(eventDate).toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'long',
