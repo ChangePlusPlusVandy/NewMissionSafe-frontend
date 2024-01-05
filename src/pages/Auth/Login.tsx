@@ -7,7 +7,6 @@ import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
 import './Login.css';
 import RedCorner from "../../components/RedCorner";
-import Event from "../../components/Event";
 
 interface FormValues {
   email: string;
