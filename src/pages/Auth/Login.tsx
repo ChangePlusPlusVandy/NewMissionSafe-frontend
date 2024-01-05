@@ -5,7 +5,9 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
-import "./Login.css";
+import './Login.css';
+import RedCorner from "../../components/RedCorner";
+import Event from "../../components/Event";
 
 interface FormValues {
   email: string;
@@ -20,7 +22,7 @@ const schema = Yup.object().shape({
 });
 
 const Login: React.FC = () => {
-  const { login, currentUser, isStaff, setIsStaff} = useAuth();
+  const { login, currentUser } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -39,23 +41,21 @@ const Login: React.FC = () => {
     }
   }, [currentUser, navigate]);
 
-  const onSubmit = async (values: FormValues, event?: React.BaseSyntheticEvent) => {
+  const onSubmit = async (values: FormValues) => {
     try {
       setError("");
-      const isStaffMember = event?.target.isStaff.checked;
-      setIsStaff(isStaffMember);
       const alal = await login(values.email, values.password);
       console.log(alal);
       navigate("/"); // Redirect to home page
     } catch (err: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-      console.error("Login error:", err);
       setError(err.message);
     }
   };
 
   return (
     <div className="login-container">
+      <RedCorner/>
       <h1>Login</h1>
       <p>Please sign in to continue</p>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -74,12 +74,6 @@ const Login: React.FC = () => {
           )}
           {errors && <FormError>{error}</FormError>}
         </div>
-        <div>
-        <div>
-          <label htmlFor="isStaff">Are you a staff member?</label>
-          <input type="checkbox" id="isStaff" name="isStaff" />
-        </div>
-        </div>
         <button className="login-button" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Submitting" : "Login"}
         </button>
@@ -97,3 +91,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
