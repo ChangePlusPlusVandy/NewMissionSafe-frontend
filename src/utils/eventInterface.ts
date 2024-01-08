@@ -1,16 +1,5 @@
 import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
-
-//review: is this the right place to put this?
-export interface eventType {
-  name: string;
-  description: string;
-  code: string;
-  date: Date;
-  programs: string[];
-  staff: string[];
-  attended_youth?: string[];
-  attached_forms?: string[];
-}
+import { eventType } from "./models/eventModel";
 
 // GET all events
 export const getAllEvents = async (token: string) => {
@@ -74,7 +63,7 @@ export const attendEvent = async (
   firebaseUID: string,
   token: string
 ) => {
-  let response = await fetch(
+  const response = await fetch(
     `${import.meta.env.VITE_BACKEND_ROUTE}/events/attend/${eventCode}`,
     {
       method: "PUT",
