@@ -1,25 +1,8 @@
 //Server-client interface for /api/users/youth
 import { youthType } from "./models/youthModel";
-// import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
+import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
 
-//TODO: Replace handler functions with Jack's imports once merged.
-
-async function handleJsonResponse(response: Response) {
-    if(!response.ok) {
-        throw new Error(response.statusText);
-    }
-    const parsedResponse = await response.json();
-    return parsedResponse;
-}
-
-async function handleMiscResponse(response : Response) {
-    if(!response.ok) {
-        throw new Error(response.statusText);
-    }
-    return true;
-}
-
-const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/users/youth`;
+const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/youth`;
 
 //#region GET Requests
 
