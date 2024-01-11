@@ -43,8 +43,12 @@ const ForgotPassword: React.FC = () => {
       await forgotPassword(values.email);
       setMessage("Check your email for further instructions");
     } catch (err: unknown) {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
-      setError(err.message);
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        // Handle unexpected error type
+        setError("An unknown error occurred");
+      }
     }
   };
 
