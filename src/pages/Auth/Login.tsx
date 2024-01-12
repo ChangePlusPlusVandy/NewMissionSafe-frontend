@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
+import './Login.css';
+import RedCorner from "../../components/RedCorner";
 
 interface FormValues {
   email: string;
@@ -55,8 +57,10 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="login-container">
+      <RedCorner/>
       <h1>Login</h1>
+      <p>Please sign in to continue</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
@@ -73,18 +77,21 @@ const Login: React.FC = () => {
           )}
           {errors && <FormError>{error}</FormError>}
         </div>
-        <button disabled={isSubmitting} type="submit">
+        <button className="login-button" disabled={isSubmitting} type="submit">
           {isSubmitting ? "Submitting" : "Login"}
         </button>
       </form>
-      <p>
-        Don&apos;t have an account? <Link to="/register">Register</Link>
-      </p>
-      <p>
-        Forgot your password? <Link to="/forgot-password">Reset</Link>
-      </p>
+      <div className="bottom-text">
+        <p>
+          Don&apos;t have an account? <Link to="/register">Register</Link>
+        </p>
+        <p>
+          Forgot your password? <Link to="/forgot-password">Reset</Link>
+        </p>
+      </div>
     </div>
   );
 };
 
 export default Login;
+
