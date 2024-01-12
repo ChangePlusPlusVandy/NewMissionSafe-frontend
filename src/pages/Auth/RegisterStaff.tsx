@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { emailValidation, passwordValidation } from './ValidationRules'; 
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
 
@@ -20,20 +21,21 @@ interface FormValues {
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
-  email: Yup.string().email("Invalid email address").required("Email is required"),
-  password: Yup.string().min(5, "Password must be at least 5 characters").required("Password is required"),
-  confirmPassword: Yup.string().oneOf([Yup.ref("password")], "Passwords do not match").required("Confirm password is required"),
+  email: emailValidation,
+  password: passwordValidation,
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref("password")], "Passwords do not match")
+    .required("Confirm password is required"),
   programs: Yup.string().required("Program selection is required"),
   counselor: Yup.boolean(),
   admin: Yup.boolean()
 });
 
-// add object for firebase uid here
 
 const RegisterStaff: React.FC = () => {
   const { registerUser, currentUser } = useAuth();
-  const [role, setRole] = useState("");
-  const [uid, setUid] = useState(""); // State variable for storing UID
+  const [role, setRole] = useState<string>("");
+  const [uid, setUid] = useState<string>("");
 
   const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);

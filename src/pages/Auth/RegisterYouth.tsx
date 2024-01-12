@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
+import { emailValidation, passwordValidation } from './ValidationRules'; 
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
 
@@ -20,19 +21,24 @@ interface FormValues {
   attended_events?: string[];
 }
 
+interface Youth {
+  firstName: string;
+  lastName: string;
+  birthDate: Date;
+  email: string;
+  program: string;
+}
+
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("First Name is required"),
-  email: Yup.string()
-    .email("Invalid email address")
-    .required("Email is required"),
-  password: Yup.string()
-    .min(5, "Password must be at least 5 characters")
-    .required("Password is required"),
+  email: emailValidation,
+  password: passwordValidation,
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
   ssn: Yup.string()
+    .matches(/^\d{10}$/, "SSN must be exactly 10 digits and only contain numbers")
     .required("SSN is required"),
   birthDate: Yup.date()
     .max(new Date(), "Birth date cannot be in the future")
@@ -40,10 +46,12 @@ const schema = Yup.object().shape({
 });
 
 
+
+
 const RegisterYouth: React.FC = () => {
   const { registerUser, currentUser } = useAuth();
   const navigate = useNavigate();
-  const [uid, setUid] = useState(""); 
+  const [uid, setUid] = useState<string>("");
 
 
   useEffect(() => {
@@ -62,6 +70,8 @@ const RegisterYouth: React.FC = () => {
 
   const [error, setError] = useState<string>("");
 
+  
+
   const onSubmit = async (values: FormValues) => {
     try {
       setError("");
@@ -73,12 +83,30 @@ const RegisterYouth: React.FC = () => {
       console.log("User id is: ", firebaseUID);
 
       console.log("User id is: ", uid);
+      navigate('/youth-details'); // Redirect to youth details page
+
       navigate("/"); // Redirect to home page
     } catch (err: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-argument
       setError(err.message);
     }
   };
+  
+
+  function getUserData(values: FormValues): Youth | null {
+    if (currentUser) {
+      const youthData: Youth = {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        email: values.email,
+        birthDate: values.birthDate, // You need to adjust this based on how you store birth dates
+        program: values.program, // Adjust based on your data
+      };
+      
+      return youthData;
+    }
+    return null;
+  }
 
   return (
     <div>
@@ -145,5 +173,7 @@ const RegisterYouth: React.FC = () => {
     </div>
   );
 };
+
+
 
 export default RegisterYouth;

@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import YouthInfo from '../components/DisplayYouth';
+
+
 
 const Home: React.FC = () => {
   const [fact, setFact] = useState<string>("");
   const { currentUser } = useAuth();
+  console.log("TESTING", currentUser?.displayName);
 
   useEffect(() => {
     const fetchFact = async () => {
@@ -40,7 +44,10 @@ const Home: React.FC = () => {
       route on the server.
       <p>{fact}</p>
       <br />
+      
       <Link to="/profile">Profile</Link>
+      <p></p>
+      <Link to="/DisplayYouth">Display Youth User</Link>
     </div>
   );
 };
