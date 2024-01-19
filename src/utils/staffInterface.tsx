@@ -1,24 +1,8 @@
 // Server-client interface for /api/users/staff
+import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
 import { staffType } from "./models/staffModel";
 
 const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/users/staff`;
-
-// JSON response checker - TODO: change to use jack's responseHelpers.tsx once merged   
-async function checkJSONResponseStatus(response: Response) {
-    if(!response.ok) {
-        throw new Error(response.statusText);
-    }
-    let parsedResponse = await response.json();
-    return parsedResponse;
-}
-
-// Miscellaneous response checker - TODO: change to use jack's responseHelpers.tsx once merged 
-async function checkMiscResponseStatus(response : Response) {
-    if(!response.ok) {
-        throw new Error(response.statusText);
-    }
-    return true;
-}
 
 // GET all staff
 export const getAllStaff = async (token: string) => {
@@ -27,7 +11,7 @@ export const getAllStaff = async (token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 // POST a new staff
@@ -40,7 +24,7 @@ export const createStaff = async (staff: staffType, token: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkJSONResponseStatus(response);
+      return await handleJsonResponse(response);
 }
 
 // GET staff by @email
@@ -50,7 +34,7 @@ export const getStaffByEmail = async(email: string, token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 // GET staff by @fireID
@@ -61,7 +45,7 @@ export const getStaffByID = async(fireID: string, token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 // GET all staff w/ @program
@@ -72,7 +56,7 @@ export const getStaffByProgram = async(program: string, token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 // GET all active staff
@@ -82,7 +66,7 @@ export const getActiveStaff = async(token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 
@@ -93,7 +77,7 @@ export const getInactiveStaff = async(token: string) => {
             Authorization: `Bearer ${token}`,
         },
         });
-    return await checkJSONResponseStatus(response);
+    return await handleJsonResponse(response);
 }
 
 // PUT @active to true for staff w/ @fireID
@@ -106,7 +90,7 @@ export const activateStaff = async (fireID: string, token: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkMiscResponseStatus(response);
+      return await handleMiscResponse(response);
 }
 
 // PUT @active to false for staff w/ @fireID
@@ -119,7 +103,7 @@ export const deactivateStaff = async (fireID: string, token: string) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkMiscResponseStatus(response);
+      return await handleMiscResponse(response);
 }
 
 // PUT new @firstName for staff w/ @fireID
@@ -133,7 +117,7 @@ export const updateFirstName = async (firstName: string, fireID: string, token: 
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkMiscResponseStatus(response);
+      return await handleMiscResponse(response);
 }
 
 // PUT new @lastName for staff w/ @fireID
@@ -147,7 +131,7 @@ export const updateLastName = async (lastName: string, fireID: string, token: st
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkMiscResponseStatus(response);
+      return await handleMiscResponse(response);
 }
 
 // PUT new @email for staff w/ @fireID
@@ -161,5 +145,5 @@ export const updateEmail = async (email: string, fireID: string, token: string) 
           Authorization: `Bearer ${token}`,
         },
       });
-      return await checkMiscResponseStatus(response);
+      return await handleMiscResponse(response);
 }
