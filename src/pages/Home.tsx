@@ -1,46 +1,52 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
+import { getEventsByDate } from "../utils/eventInterface";
+import { returnedEventType } from "../utils/models/eventModel";
+import Event from "../components/Event";
+
+//todo: data fetching
+//	uid prop on User type is used to identify users
+//todo: loading state
+//todo: html
+//todo: styling
+//todo: extra focus on breakpoints
+
 
 const Home: React.FC = () => {
-  const [fact, setFact] = useState<string>("");
   const { currentUser } = useAuth();
+	const [events, setEvents] = useState<returnedEventType[]>([]);
+	const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchFact = async () => {
-      console.log("called");
+    const getTodayEvents = async () => {
       try {
         const token = await currentUser?.getIdToken();
-
-        const payloadHeader = {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        console.log("Token: ", token);
-
-        // below, the /api is replaced with the server url defined in vite.config.ts
-        // so, if the server is defined as "localhost:3001" in that file,
-        // the fetch url will be "localhost:3001/example"
-        const res = await fetch("/example", payloadHeader);
-        setFact(await res.text());
+				if(token == null){
+					//review: is this a good way to handle this?
+					//probably use this to determine loading state
+					console.log("No token available");
+					//navigate("/login");
+				} else {
+					const currentDate = new Date();
+					currentDate.setHours(0, 0, 0, 0);
+					const todayEvents = await getEventsByDate(token, currentDate);
+					setEvents(todayEvents);
+				}
       } catch (err) {
+				//todo: error handling
         console.log(err);
       }
     };
 
-    void fetchFact();
+    void getTodayEvents();
   }, [currentUser]);
-  console.log("this is the fact: " + fact);
   return (
     <div>
-      This is a React Firebase Auth template. Below is a fact from a protected
-      route on the server.
-      <p>{fact}</p>
-      <br />
-      <Link to="/profile">Profile</Link>
+			{events.length == 0 
+			//todo: styling and incorperate loading state
+			? <div>no events</div>
+      : events.map(i => <Event eventName={i.name} eventDate={i.date} key={i.code}></Event>)}
     </div>
   );
 };

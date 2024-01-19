@@ -11,20 +11,20 @@ export const getAllEvents = async (token: string) => {
   return await handleJsonResponse(response);
 };
 
-//Filter events to a date range (second value is inclusive, assuming that startDate is provided as 00:00)
+//Filter events to a date range (second value is exclusive)
 export const getEventsByDate = async (
   token: string,
   startDate: Date,
   end?: Date
 ) => {
   if (end == null) {
-	//If only startDate is provided, add a day to end to check the entire day of startDate
-    end = new Date(startDate.getTime() + 24*60*60*1000);
+    //If only startDate is provided, check next 24 hrs
+    end = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
   }
   const endDate = end;
   const allEvents: returnedEventType[] = await getAllEvents(token);
   const filteredEvents = allEvents.filter((event) => {
-	const eventDate = new Date(event.date);
+    const eventDate = new Date(event.date);
     return eventDate >= startDate && eventDate <= endDate;
   });
   return filteredEvents;
