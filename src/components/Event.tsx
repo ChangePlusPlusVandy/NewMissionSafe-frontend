@@ -4,7 +4,7 @@ import './Event.css';
 
 interface EventProps {
   eventName: string;
-  eventDate: string; 
+  eventDate: Date; 
 }
 
 const Event: React.FC<EventProps> = ({ eventName, eventDate}) => {
