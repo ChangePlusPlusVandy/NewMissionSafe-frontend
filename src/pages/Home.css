@@ -3,7 +3,6 @@
    License: none (public domain)
 */
 
-
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -49,62 +48,34 @@ table {
 }
 /* End reset styles */
 
-
-
 /* now we use our normal styles */
-
-.event-container {
-    padding-top: 20px;
-	padding-bottom: 12px;
-    width: 250px;
-	height: 100%;
-    box-sizing: border-box; 
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start; 
-    align-items: flex-start;
-
-    background: #FFF;
-    
-    position: relative; 
-    overflow: hidden;
-
-    border-bottom: 1px solid #C0C0C0;
-    margin: 5px 25px;
+body {
+	display: block !important;
 }
 
-.event-text {
-    display: flex;
-    flex-direction: column;
-    margin: 0 auto;
+h1, h2 {
+	color: black;
+	margin-top: 40px;
+	margin-bottom: 40px;
+}
+
+h2 {
+	color: black;
+}
+
+section {
 	width: 100%;
+	max-width: 1000px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
 }
 
-.event-text {
-	hyphens: auto;
-}
-
-.event-text h2 {
-    font-family: Arial;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: normal;
-    letter-spacing: 0.16px;
-    color: #000;
-	/* margin-top: 10px; */
-	margin-bottom: 10px;
-}
-.event-text p {
-    color: #AFAFAF;
-    font-family: Arial;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: normal;
-    letter-spacing: 0.1px;
-}
-.calImg {
-	margin-right: 8px;
+ul {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: center;
+	flex-wrap: wrap;
 }

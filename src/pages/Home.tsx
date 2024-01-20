@@ -6,18 +6,21 @@ import { getActiveYouth } from "../utils/youthInterface";
 import { returnedEventType } from "../utils/models/eventModel";
 import Event from "../components/Event";
 import { youthType } from "../utils/models/youthModel";
+import "./Home.css";
 
 //todo: data fetching
 //	uid prop on User type is used to identify users
-//todo: loading state
 //todo: html
 //todo: styling
 //todo: extra focus on breakpoints
+//todo: copy sobenna's text stylings
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
   const [events, setEvents] = useState<returnedEventType[]>([]);
   const [youth, setYouth] = useState<youthType[]>([]);
+  const [eventsError, setEventsError] = useState<string>("");
+  const [youthError, setYouthError] = useState<string>("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,6 +44,7 @@ const Home: React.FC = () => {
         setEvents(todayEvents);
       } catch (err) {
         //todo: error handling
+        setEventsError("Failed to retrieve today's events");
         console.log(err);
       }
     };
@@ -48,26 +52,39 @@ const Home: React.FC = () => {
       try {
         //todo: right now this is getting all active youth, pretty sure it's supposed to be getting a subset but not sure what
         const youth = await getActiveYouth(token);
-				console.log("gotten youth: ", youth);
+        console.log("gotten youth: ", youth);
         setYouth(youth);
       } catch (err) {
         //todo: error handling
+        setYouthError("Failed to retrieve youth");
         console.log(err);
       }
     };
   }, [currentUser]);
 
   return (
-    <div>
-      {events.length == 0 ? (
-        //todo: styling and incorperate loading state
-        <div>no events</div>
-      ) : (
-        events.map((i) => (
-          <Event eventName={i.name} eventDate={i.date} key={i.code}></Event>
-        ))
-      )}
-    </div>
+    <>
+      <section>
+        <h1>Today's Events</h1>
+        {events.length == 0 ? (
+          //todo: styling
+          <h2>No events today</h2>
+        ) : (
+          <ul>
+            {events.map((i) => (
+              <li>
+                <Event
+                  eventName={i.name}
+                  eventDate={i.date}
+                  key={i.code}
+                ></Event>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      <section></section>
+    </>
   );
 };
 
