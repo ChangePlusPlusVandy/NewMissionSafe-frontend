@@ -24,9 +24,10 @@ export const getEvent = async (eventCode: string, token: string) => {
   return await handleJsonResponse(response);
 };
 
-export const createCode = async (token: string) => {
+export const createCode = async () => {
+  // For when token re-generation is handled, include "token: string" as a function parameter
   let result = "";
-  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
   const charactersLength = characters.length;
   for (let i = 0; i < 7; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));

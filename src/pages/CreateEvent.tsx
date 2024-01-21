@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../AuthContext";
 import FormError from "./Auth/FormError";
 import { createCode, createEvent } from "../utils/eventInterface";
-import "./Auth/CreateEvent.css";
+import "./CreateEvent.css";
 import RedCorner from "../components/RedCorner";
 import { eventType } from "../utils/models/eventModel";
 
@@ -48,10 +48,11 @@ const CreateEvent: React.FC = () => {
       // Generate a unique event code
       const token = await currentUser?.getIdToken();
       if (!token) {
-        // If user is not logged in, redirect them to login page
-        navigate("/login");
+        throw new Error(
+          "Authentication token is not available. Please log in."
+        );
       } else {
-        const eventCode = await createCode(token); // pass the token as needed
+        const eventCode = await createCode(); // pass the token as needed, once token re-generation is handled
 
         // Construct the event object
         const event: eventType = {
