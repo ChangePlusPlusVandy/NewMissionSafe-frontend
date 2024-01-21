@@ -47,7 +47,9 @@ const Home: React.FC = () => {
       
       <Link to="/profile">Profile</Link>
       <p></p>
-      <Link to="/DisplayYouth">Display Youth User</Link>
+
+      <Link to="/user-profile">Display Logged-In User</Link> {}
+
     </div>
   );
 };

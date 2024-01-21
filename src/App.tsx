@@ -6,10 +6,12 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
 import Register from "./pages/Auth/Register";
-import RegisterYouth from "./pages/Auth/RegisterYouth"; // Import the new component
-import RegisterStaff from "./pages/Auth/RegisterStaff"; // Import the new component
+import RegisterYouth from "./pages/Auth/RegisterYouth"; 
+import RegisterStaff from "./pages/Auth/RegisterStaff"; 
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import DisplayYouthTest from "./pages/DisplayYouthTest"; 
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -18,9 +20,11 @@ const router = createBrowserRouter(
       <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/register-youth" element={<RegisterYouth />} /> {/* New Route */}
-      <Route path="/register-staff" element={<RegisterStaff />} /> {/* New Route */}
+      <Route path="/register-youth" element={<RegisterYouth />} /> 
+      <Route path="/register-staff" element={<RegisterStaff />} /> 
       <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/user-profile" element={<PrivateRoute element={<DisplayYouthTest />} />} />
+
     </>
   )
 );
