@@ -22,7 +22,7 @@ const router = createBrowserRouter(
       <Route path="/" element={<PrivateRoute element={<Home />} />} />
       <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
       <Route
-        path="/profile"
+        path="/create-event"
         element={<PrivateRoute element={<CreateEvent />} />}
       />
       <Route path="/login" element={<Login />} />
