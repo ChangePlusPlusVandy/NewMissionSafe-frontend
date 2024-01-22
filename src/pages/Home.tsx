@@ -49,6 +49,7 @@ const Home: React.FC = () => {
       <p></p>
 
       <Link to="/user-profile">Display Logged-In User</Link> {}
+      <Link to="/register-staff">register staff</Link>
 
     </div>
   );

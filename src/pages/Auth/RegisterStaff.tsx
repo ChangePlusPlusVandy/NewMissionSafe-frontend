@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { emailValidation, passwordValidation } from './ValidationRules'; 
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
+import RedCorner from "../../components/RedCorner";
+import './RegisterUser.css';
+
 
 interface FormValues {
   firstName: string;
@@ -14,21 +16,23 @@ interface FormValues {
   password: string;
   confirmPassword: string;
   programs: string;
-  counselor: boolean;
-  admin: boolean;
+  role: string;
 }
 
 const schema = Yup.object().shape({
   firstName: Yup.string().required("First Name is required"),
   lastName: Yup.string().required("Last Name is required"),
-  email: emailValidation,
-  password: passwordValidation,
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  password: Yup.string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
   programs: Yup.string().required("Program selection is required"),
-  counselor: Yup.boolean(),
-  admin: Yup.boolean()
+  role: Yup.string()
 });
 
 
@@ -37,9 +41,12 @@ const RegisterStaff: React.FC = () => {
   const [role, setRole] = useState<string>("");
   const [uid, setUid] = useState<string>("");
 
-  const handleRoleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleRoleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     setRole(event.target.value);
+    console.log("Role change now!");
+    console.log("\nthe role is: ", role);
   };
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -60,8 +67,7 @@ const RegisterStaff: React.FC = () => {
 
   const onSubmit = async (values: FormValues) => {
     try {
-      values.counselor = role === "counselor";
-      values.admin = role === "admin";
+
       setError("");
       console.log("User values: ", values);
 
@@ -71,14 +77,19 @@ const RegisterStaff: React.FC = () => {
 
       console.log("User id is: ", firebaseUID);
       navigate("/"); // Redirect to home page
-    } catch (err: any) {
-      setError(err.message);
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        // Handle unexpected error type
+        setError("An unknown error occurred");
+      }
     }
   };
 
   return (
-    <div>
-      <h1>Staff Registration Page</h1>
+    <div className="registration-container">
+      <RedCorner />
       <h2>Register</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -99,32 +110,34 @@ const RegisterStaff: React.FC = () => {
         <div>
           <label htmlFor="programs">Program</label>
           <select id="programs" {...register("programs")}>
-            <option value="Program A">Program A</option>
-            <option value="Program B">Program B</option>
-            <option value="Program C">Program C</option>
-            <option value="Program D">Program D</option>
+            <option value="YLSC"> YLSC</option>
+            <option value="SCD">SCD</option>
+            <option value="InVest">InVest</option>
+            <option value="Power Boxing & Fitness">Power Boxing & Fitness</option>
           </select>
           {errors.programs && <FormError>{errors.programs.message}</FormError>}
         </div>
         <div>
           <div>Select one of the following:</div>
-          <div>
-            <label>
-              <input type="radio" value="staff" checked={role === "staff"} onChange={handleRoleChange} />
-              Staff
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" value="counselor" checked={role === "counselor"} onChange={handleRoleChange} />
-              Counselor
-            </label>
-          </div>
-          <div>
-            <label>
-              <input type="radio" value="admin" checked={role === "admin"} onChange={handleRoleChange} />
-              Admin
-            </label>
+          <div className="role-selection">
+            <div>
+              <label>
+                <input type="radio" value="staff" checked={role === "staff"} onChange={handleRoleChange} />
+                Staff
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" value="counselor" checked={role === "counselor"} onChange={handleRoleChange} />
+                Counselor
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="radio" value="admin" checked={role === "admin"} onChange={handleRoleChange} />
+                Admin
+              </label>
+            </div>
           </div>
         </div>
         <div>
