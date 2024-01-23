@@ -22,7 +22,6 @@ body {
     align-items: center; 
 
     background: #FFF;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
     
     position: relative; /* Needed for positioning the pseudo-element */
     border-radius: 10px; /* Adjust if needed */
