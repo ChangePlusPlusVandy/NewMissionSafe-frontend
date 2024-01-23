@@ -7,7 +7,6 @@ import { useAuth } from "../AuthContext";
 import FormError from "./Auth/FormError";
 import { createCode, createEvent } from "../utils/eventInterface";
 import "./CreateEvent.css";
-import RedCorner from "../components/RedCorner";
 import { eventType } from "../utils/models/eventModel";
 
 interface FormValues {
@@ -84,7 +83,6 @@ const CreateEvent: React.FC = () => {
 
   return (
     <div className="create-event-container">
-      <RedCorner />
       <h1>Create Event</h1>
       <p>Enter the following information to create a new event.</p>
       <form onSubmit={handleSubmit(onSubmit)}>
