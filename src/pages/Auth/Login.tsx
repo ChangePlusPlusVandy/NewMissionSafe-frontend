@@ -7,7 +7,6 @@ import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
 import './Login.css';
 import RedCorner from "../../components/RedCorner";
-
 interface FormValues {
   email: string;
   password: string;
@@ -59,6 +58,7 @@ const Login: React.FC = () => {
   return (
     <div className="login-container">
       <RedCorner/>
+      
       <h1>Login</h1>
       <p>Please sign in to continue</p>
       <form onSubmit={handleSubmit(onSubmit)}>
