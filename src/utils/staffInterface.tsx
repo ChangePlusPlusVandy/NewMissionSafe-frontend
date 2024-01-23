@@ -2,7 +2,7 @@
 import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
 import { staffType } from "./models/staffModel";
 
-const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/users/staff`;
+const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/staff`;
 
 // GET all staff
 export const getAllStaff = async (token: string) => {

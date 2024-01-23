@@ -5,6 +5,7 @@ export async function handleJsonResponse(response: Response) {
     let failedResponse;
     try {
       failedResponse = await response.json();
+			console.log("FAILEDRESPONSE: ", failedResponse)
     } catch (err) {
       //case where response isn't json
       throw new Error(response.statusText);

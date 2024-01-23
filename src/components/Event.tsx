@@ -19,8 +19,8 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate}) => {
     <div className = "event-container">
         <img src={Calendar} width={30} height={30} alt="Calendar Image" className="calImg"/>
         <div className='event-text'>
-            <h2>{eventName}</h2>
-            <p>Date: {formattedDate}</p>
+            <h2 className="event">{eventName}</h2>
+            <p className="event">Date: {formattedDate}</p>
         </div>
     </div>
   );

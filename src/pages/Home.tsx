@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { getEventsByDate } from "../utils/eventInterface";
 import { getYouthByProgram } from "../utils/youthInterface";
@@ -41,10 +40,10 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <>
+    <div className="pageContainer">
       <TodayEvents token={userDetails.token}></TodayEvents>
       <ProgramYouth token={userDetails.token} userId={userDetails.userId}></ProgramYouth>
-    </>
+    </div>
   );
 };
 
@@ -72,17 +71,17 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
 
   return (
     <section>
-      <h1>Today's Events</h1>
+      <h1 className="home header">Today's Events</h1>
       {(() => {
         if (eventsError != "") {
-          return <h2 className="error">{eventsError}</h2>;
+          return <h2 className="error home status">{eventsError}</h2>;
         } else if (events.length == 0) {
-          return <h2>No events today</h2>;
+          return <h2 className="home status">No events today</h2>;
         } else {
           return (
-            <ul>
+            <ul className="home">
               {events.map((i) => (
-                <li>
+                <li className="home">
                   <Event
                     eventName={i.name}
                     eventDate={i.date}
@@ -135,23 +134,23 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
   return (
     <section>
       {programName == "" ? (
-        <h1>Youth In Your Program</h1>
+        <h1 className="home header">Youth In Your Program</h1>
       ) : (
-        <h1>Youth In {programName}</h1>
+        <h1 className="home header">Youth In {programName}</h1>
       )}
 
       {(() => {
         if (youthError != "") {
-          return <h2 className="error">{youthError}</h2>;
+          return <h2 className="error home status">{youthError}</h2>;
         } else if (youth.length == 0) {
-          return <h2>No youth found</h2>;
+          return <h2 className="home status">No youth found</h2>;
         } else {
           return (
-            <ul>
+            <ul className="home">
               {youth.map((i) => (
-                <li>
+                <li className="home">
                   <FillerYouth
-                    name={i.firebaseUID + i.lastName}
+                    name={i.firstName + i.lastName}
                     key={i.firebaseUID}
                   ></FillerYouth>
                 </li>
@@ -187,7 +186,7 @@ const FillerYouth: React.FC<{ name: string}> = ({name}) => {
 	};
 
 	return (
-		<div style={elementStyle}>
+		<div style={elementStyle} className="home">
 			{name}
 		</div>
 	)
