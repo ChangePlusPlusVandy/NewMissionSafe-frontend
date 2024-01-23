@@ -1,0 +1,10 @@
+.red-corner {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%; 
+    height: 15%;
+    max-height: 200px; 
+    background-color: #C12B34;
+    clip-path: polygon(100% 0,0 0, 0 20%, 100% 100%);
+  }

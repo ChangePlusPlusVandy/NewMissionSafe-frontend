@@ -16,7 +16,8 @@ interface FormValues {
   password: string;
   confirmPassword: string;
   programs: string;
-  role: string;
+  admin: boolean; 
+  counselor: boolean;
 }
 
 const schema = Yup.object().shape({
@@ -32,20 +33,13 @@ const schema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
   programs: Yup.string().required("Program selection is required"),
-  role: Yup.string()
+  admin: Yup.boolean().required("Please select a staff type"),
+  counselor: Yup.boolean().required("Please select a staff type")
 });
-
 
 const RegisterStaff: React.FC = () => {
   const { registerUser, currentUser } = useAuth();
-  const [role, setRole] = useState<string>("");
-  const [uid, setUid] = useState<string>("");
-
-  const handleRoleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRole(event.target.value);
-    console.log("Role change now!");
-    console.log("\nthe role is: ", role);
-  };
+  const [role, setRole] = useState<string | null>(null);
 
   const navigate = useNavigate();
 
@@ -59,29 +53,40 @@ const RegisterStaff: React.FC = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    setValue,
+    trigger,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
+
+  const handleRoleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(event.target.value);
+    setValue("admin", event.target.value === "admin");
+    setValue("counselor", event.target.value === "counselor");
+    await trigger(["admin", "counselor"]); 
+  };
 
   const [error, setError] = useState<string>("");
 
   const onSubmit = async (values: FormValues) => {
     try {
+      if (!role) {
+        setError("Please select a role (Admin, Counselor)");
+        return;
+      }
+
 
       setError("");
       console.log("User values: ", values);
 
       const name = values.firstName + " " + values.lastName;
-      const firebaseUID = await registerUser(name, values.email, values.password);
-      setUid(firebaseUID);
+      await registerUser(name, values.email, values.password);
 
-      console.log("User id is: ", firebaseUID);
-      navigate("/"); // Redirect to home page
+      navigate("/");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        // Handle unexpected error type
         setError("An unknown error occurred");
       }
     }
@@ -122,13 +127,13 @@ const RegisterStaff: React.FC = () => {
           <div className="role-selection">
             <div>
               <label>
-                <input type="radio" value="staff" checked={role === "staff"} onChange={handleRoleChange} />
+              <input type="radio" value="staff" checked={role === "staff"} onChange={handleRoleChange} />
                 Staff
               </label>
             </div>
             <div>
               <label>
-                <input type="radio" value="counselor" checked={role === "counselor"} onChange={handleRoleChange} />
+              <input type="radio" value="counselor" checked={role === "counselor"} onChange={handleRoleChange} />
                 Counselor
               </label>
             </div>

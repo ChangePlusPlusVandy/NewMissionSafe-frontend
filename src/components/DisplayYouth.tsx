@@ -1,20 +1,16 @@
 import React from 'react';
 import './DisplayYouth.css'; 
 
-interface Youth {
+interface DisplayYouthProps {
   name: string;
   email: string;
 }
 
-interface DisplayYouthProps {
-  youth: Youth;
-}
-
-const DisplayYouth: React.FC<DisplayYouthProps> = ({ youth }) => {
+const DisplayYouth: React.FC<DisplayYouthProps> = ({ name, email }) => {
   return (
     <div className="youth-display-container">
-      <p><strong>Name:</strong> {youth.name}</p>
-      <p><strong>Email:</strong> {youth.email}</p>
+      <p><strong>Name:</strong> {name}</p>
+      <p><strong>Email:</strong> {email}</p>
     </div>
   );
 };

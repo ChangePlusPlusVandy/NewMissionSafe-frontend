@@ -1,10 +1,8 @@
-
 #root {
   max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-  align-items: center;
 }
 
 .logo {
@@ -41,8 +39,4 @@
 
 .read-the-docs {
   color: #888;
-}
-
-.div {  
-  align-items: center;
 }

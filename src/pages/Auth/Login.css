@@ -1,0 +1,142 @@
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    min-height: 100vh; /* Full viewport height */
+    margin: 0; 
+    background: #FFF;
+
+}
+
+/* This styles the login-container */
+.login-container {
+    padding: 35px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in the width calculation */
+    height: 100vh; /* Full viewport height */
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* This will distribute space between children */
+    align-items: center; 
+
+    background: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
+    
+    position: relative; /* Needed for positioning the pseudo-element */
+    border-radius: 10px; /* Adjust if needed */
+    overflow: hidden;
+}
+.login-container div {
+    margin-bottom: 15px; /* Space between each input field */
+}
+.login-container input{
+    width: 323px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 5px;
+    border: 1px solid #D9D9D9;
+
+    background: #F4F4F4;
+
+    padding: 8px; /* Adjust padding as needed */
+    margin-bottom: 5px; /* Space below the input field */
+    box-sizing: border-box;
+}
+.login-container label {
+    display: block; /* Makes the label take the full width and forces the input onto the next line */
+    margin-bottom: 5px; /* Space between the label and the input field */
+    color: #5A5A5A;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1px;
+}
+
+.login-container h1 {
+    color: #000;
+    font-family: Arial;
+    font-size: 38px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 2px;
+    padding-top: 50px;
+
+    margin-bottom: 10px;
+}
+
+.login-container p {
+    color: #5A5A5A;
+
+    font-family: Arial;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.12px;
+
+    margin-top: 0;
+}
+
+.bottom-text {
+    margin-top: auto; /* Pushes it to the bottom */
+    text-align: center;
+    padding-bottom: 10px; /* 22px padding from the bottom */
+
+  
+}
+
+.login-button {
+    padding: 10px;
+    display: flex; /* Use flexbox for alignment */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    border-radius: 10px;
+    border: 1px solid #A02B2B;
+    background: #CF2329;
+    color: #FFF; /* Adjust text color as needed */
+    font-family: Arial; /* Adjust font settings as needed */
+    text-align: center; /* Center text horizontally */
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    text-decoration: none; /* Remove underline if it's a link */
+}
+
+/* Regular text style */
+.bottom-text p {
+    color: #000;
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1px;
+}
+.login-container form {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+/* Link style */
+.bottom-text a {
+    color: #CF2329; /* Red color for links */
+    font-family: Arial;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 1px;
+    text-decoration-line: underline;
+}
+
+
+.bottom-text a:hover {
+    color: #A81B22;
+    text-decoration: none;
+}
