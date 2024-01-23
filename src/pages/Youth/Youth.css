@@ -1,0 +1,29 @@
+.youth-page-main-card{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.youth-page-subcontainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.youth-card-container{ 
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-items: center;
+}
+
+.youth-page-title{
+    color: black;
+}
+
+.youth-page-register{
+    border-color: #213547;
+}
+
+.youth-page-empty{
+    color:black;
+}
