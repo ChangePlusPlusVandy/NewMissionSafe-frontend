@@ -1,0 +1,70 @@
+.pageContainer {
+	height: 100vh;
+}
+
+h1.home, h2.home {
+	color: black;
+}
+
+h1.home {
+	margin-top: 40px;
+	margin-bottom: 40px;
+	color: #000;
+    font-family: Arial;
+    font-size: 38px !important;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 2px;
+}
+
+h1.home.header {
+	text-align: center;
+}
+
+h2.home  {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	color: #5A5A5A;
+    font-family: Arial;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    letter-spacing: 0.12px;
+	text-align: center;
+}
+
+.error {
+	color: red;
+}
+
+section.home {
+	width: 100%;
+	max-width: 1000px;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+ul.home {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	justify-content: center;
+	flex-wrap: wrap;
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	list-style: none;
+}
+
