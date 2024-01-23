@@ -43,7 +43,10 @@ const Home: React.FC = () => {
   return (
     <div className="pageContainer">
       <TodayEvents token={userDetails.token}></TodayEvents>
-      <ProgramYouth token={userDetails.token} userId={userDetails.userId}></ProgramYouth>
+      <ProgramYouth
+        token={userDetails.token}
+        userId={userDetails.userId}
+      ></ProgramYouth>
     </div>
   );
 };
@@ -85,7 +88,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                 <li className="home">
                   <Event
                     eventName={i.name}
-                    eventDate={i.date}
+                    eventDate={new Date(i.date)}
                     key={i.code}
                   ></Event>
                 </li>
@@ -150,7 +153,11 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
             <ul className="home">
               {youth.map((i) => (
                 <li className="home">
-									<DisplayYouth name={i.firstName + " " + i.lastName} email={i.email} key={i.firebaseUID}></DisplayYouth>
+                  <DisplayYouth
+                    name={i.firstName + " " + i.lastName}
+                    email={i.email}
+                    key={i.firebaseUID}
+                  ></DisplayYouth>
                 </li>
               ))}
             </ul>

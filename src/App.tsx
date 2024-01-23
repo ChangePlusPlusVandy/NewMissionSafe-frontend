@@ -15,6 +15,7 @@ import Register from "./pages/Auth/Register";
 import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
+import Events from "./pages/Events";
 import Youth from "./pages/Youth/Youth";
 
 const router = createBrowserRouter(
@@ -29,7 +30,8 @@ const router = createBrowserRouter(
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/youth" element={<PrivateRoute element={<Youth/>}/>} />
+      <Route path="/events" element={<PrivateRoute element={<Events />} />} />
+      <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
     </>
   )
 );
