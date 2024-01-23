@@ -1,5 +1,5 @@
 import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
-import { eventType } from "./models/eventModel";
+import { eventType, returnedEventType } from "./models/eventModel";
 
 // GET all events
 export const getAllEvents = async (token: string) => {
@@ -9,6 +9,25 @@ export const getAllEvents = async (token: string) => {
     },
   });
   return await handleJsonResponse(response);
+};
+
+//Filter events to a date range (second value is exclusive)
+export const getEventsByDate = async (
+  token: string,
+  startDate: Date,
+  end?: Date
+) => {
+  if (end == null) {
+    //If only startDate is provided, check next 24 hrs
+    end = new Date(startDate.getTime() + 24 * 60 * 60 * 1000);
+  }
+  const endDate = end;
+  const allEvents: returnedEventType[] = await getAllEvents(token);
+  const filteredEvents = allEvents.filter((event) => {
+    const eventDate = new Date(event.date);
+    return eventDate >= startDate && eventDate <= endDate;
+  });
+  return filteredEvents;
 };
 
 // GET event with @eventCode
@@ -22,6 +41,31 @@ export const getEvent = async (eventCode: string, token: string) => {
     }
   );
   return await handleJsonResponse(response);
+};
+
+export const createCode = async (token: string) => {
+  let result = "";
+  try {
+    for (;;) {
+      const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+      const charactersLength = characters.length;
+      for (let i = 0; i < 7; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      }
+
+      await getEvent(result, token);
+    }
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      err.message === "No event with code " + result
+    ) {
+      return result;
+    }
+    throw err;
+  }
 };
 
 // POST new event

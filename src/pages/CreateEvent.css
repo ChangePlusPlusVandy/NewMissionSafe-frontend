@@ -9,8 +9,8 @@ body {
 
 }
 
-/* This styles the login-container */
-.login-container {
+/* This styles the create-event-container */
+.create-event-container {
     padding: 35px;
     width: 100%;
     box-sizing: border-box; /* Include padding in the width calculation */
@@ -22,20 +22,22 @@ body {
     align-items: center; 
 
     background: #FFF;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: adds a shadow for better visibility */
     
     position: relative; /* Needed for positioning the pseudo-element */
     border-radius: 10px; /* Adjust if needed */
     overflow: hidden;
 }
-.login-container div {
+.create-event-container div {
     margin-bottom: 15px; /* Space between each input field */
 }
-.login-container input{
+.create-event-container input{
     width: 323px;
     height: 34px;
     flex-shrink: 0;
     border-radius: 5px;
     border: 1px solid #D9D9D9;
+    color: black;
 
     background: #F4F4F4;
 
@@ -43,7 +45,7 @@ body {
     margin-bottom: 5px; /* Space below the input field */
     box-sizing: border-box;
 }
-.login-container label {
+.create-event-container label {
     display: block; /* Makes the label take the full width and forces the input onto the next line */
     margin-bottom: 5px; /* Space between the label and the input field */
     color: #5A5A5A;
@@ -55,7 +57,7 @@ body {
     letter-spacing: 1px;
 }
 
-.login-container h1 {
+.create-event-container h1 {
     color: #000;
     font-family: Arial;
     font-size: 38px;
@@ -68,7 +70,7 @@ body {
     margin-bottom: 10px;
 }
 
-.login-container p {
+.create-event-container p {
     color: #5A5A5A;
 
     font-family: Arial;
@@ -89,7 +91,7 @@ body {
   
 }
 
-.login-button {
+.create-event-button {
     padding: 10px;
     display: flex; /* Use flexbox for alignment */
     justify-content: center; /* Center horizontally */
@@ -117,7 +119,7 @@ body {
     line-height: normal;
     letter-spacing: 1px;
 }
-.login-container form {
+.create-event-container form {
     display: flex;
     flex-direction: column;
     flex-grow: 1;

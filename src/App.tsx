@@ -12,19 +12,26 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
 import Register from "./pages/Auth/Register";
+import CreateEvent from "./pages/CreateEvent";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Events from "./pages/Events";
+import Youth from "./pages/Youth/Youth";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<PrivateRoute element={<Home />} />} />
       <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+      <Route
+        path="/create-event"
+        element={<PrivateRoute element={<CreateEvent />} />}
+      />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
+      <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
     </>
   )
 );

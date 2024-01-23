@@ -2,10 +2,15 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    padding: 15px 65px;
+    width: 100%;
+    box-sizing: border-box; /* Include padding in the width calculation */
+    height: 100vh;
 }
 
 .event-card-container {
-    overflow-y: auto;
+    /* overflow-y: auto; */
     overflow-x: hidden;
     min-height: 40vh;
     max-height: 60vh;
@@ -22,10 +27,10 @@
     align-items: center;
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
-  }
+  } */
  
  ::-webkit-scrollbar-track {
    background: #f1f1f1;

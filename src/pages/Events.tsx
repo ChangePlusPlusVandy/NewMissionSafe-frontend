@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { getAllEvents } from "../utils/eventInterface";
-import RedCorner from "../components/RedCorner";
 import { eventType } from "../utils/models/eventModel";
 import "./Events.css";
 import Event from "../components/Event";
@@ -53,10 +52,6 @@ const Events: React.FC = () => {
 
   return (
     <div>
-      <RedCorner />
-      {/* TODO: add once implemented 
-      <Navbar /> 
-      */}
       <div className="main-container">
         <h1>Events</h1>
         {isLoading ? (
