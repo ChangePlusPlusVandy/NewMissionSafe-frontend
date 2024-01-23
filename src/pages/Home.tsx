@@ -6,6 +6,7 @@ import { getStaffByID } from "../utils/staffInterface";
 import { returnedEventType } from "../utils/models/eventModel";
 import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
+import DisplayYouth from "../components/DisplayYouth";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
@@ -149,10 +150,7 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
             <ul className="home">
               {youth.map((i) => (
                 <li className="home">
-                  <FillerYouth
-                    name={i.firstName + i.lastName}
-                    key={i.firebaseUID}
-                  ></FillerYouth>
+									<DisplayYouth name={i.firstName + " " + i.lastName} email={i.email} key={i.firebaseUID}></DisplayYouth>
                 </li>
               ))}
             </ul>
@@ -161,35 +159,6 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
       })()}
     </section>
   );
-};
-
-const FillerYouth: React.FC<{ name: string}> = ({name}) => {
-	const elementStyle = {
-		paddingTop: '20px',
-		paddingBottom: '12px',
-		width: '250px',
-		height: '100%',
-		boxSizing: 'border-box' as 'border-box',
-	
-		display: 'flex',
-		flexDirection: 'row' as 'row',
-		justifyContent: 'flex-start',
-		alignItems: 'flex-start',
-	
-		background: '#FFF',
-		
-		position: 'relative' as 'relative',
-		overflow: 'hidden',
-	
-		borderBottom: '1px solid #C0C0C0',
-		margin: '5px 25px'
-	};
-
-	return (
-		<div style={elementStyle} className="home">
-			{name}
-		</div>
-	)
 };
 
 export default Home;
