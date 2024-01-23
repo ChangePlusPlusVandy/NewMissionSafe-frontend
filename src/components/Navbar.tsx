@@ -12,11 +12,12 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
   const navigate = useNavigate();
-  const { currentUser, logout } = useAuth();
+  const { logout } = useAuth();
   const variants = {
     normal: { opacity: 0.5, scale: 1 },
     active: { opacity: 1, scale: 1.1 },
     hover: { opacity: 0.7, scale: 1.2 },
+    iconhover: {scale: 1.4}
   };
 
 
@@ -35,31 +36,42 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
     { to: "/forms", text: "Forms", className: "bottom" },
     
   ];
-  const icons = [
-    { icon: <FaHome className="navicon" />, to: "/", className: "icon-link" },
-    { icon: <img src={Logo} alt="Logo" className="logo" />, to: undefined, className: undefined },
-    { icon: <FaDoorOpen className="navicon" />, to: "/logout", className: "icon-link", onClick: handleSignOut },
-  ];
+  
   
 
   return (
     <div className="main">
       <div className="navbar" style={{ borderBottom: '5px solid' }}>
-
-            {icons.map((icon, index) => (
-            <motion.div
-                key={index}
-                className="icon"
-                variants={variants}
-                animate={location.pathname === icon.to ? 'active' : 'normal'}
-                whileHover="hover"
-                onClick={icon.onClick}
-            >
-                <Link to={icon.to} className={icon.className}>
-                {icon.icon}
-                </Link>
-            </motion.div>
-            ))}
+        <motion.div
+          className="icon"
+          variants={variants}
+          animate={location.pathname === "/" ? 'active' : 'normal'}
+          whileHover="hover"
+        >
+          <Link to="/" className="icon-link">
+            <FaHome className="navicon" />
+          </Link>
+        </motion.div>
+        <motion.div
+          className="icon"
+          variants={variants}
+          whileHover="iconhover"
+        >
+          <Link to="" className="logo-link">
+            <img src={Logo} alt="Logo" className="logo" />
+          </Link>
+        </motion.div>
+        <motion.div
+          className="icon"
+          variants={variants}
+          animate={location.pathname === "/" ? 'active' : 'normal'}
+          whileHover="hover"
+          onClick={handleSignOut}
+        >
+          <Link to="" className="icon-link">
+            <FaDoorOpen className="navicon" />
+          </Link>
+        </motion.div>
       </div>
       <div className="content">{children}</div>
       <div className="navbar" style={{ borderTop: '5px solid' }}>
