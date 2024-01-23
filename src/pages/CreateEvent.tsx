@@ -52,7 +52,7 @@ const CreateEvent: React.FC = () => {
           "Authentication token is not available. Please log in."
         );
       } else {
-        const eventCode = await createCode(); // pass the token as needed, once token re-generation is handled
+        const eventCode = await createCode(token);
 
         // Construct the event object
         const event: eventType = {
@@ -66,7 +66,7 @@ const CreateEvent: React.FC = () => {
         };
 
         // Create the event
-        const response = await createEvent(event, token); // pass the token as needed
+        const response = await createEvent(event, token);
         console.log(response);
 
         // Redirect to home page or another relevant page
