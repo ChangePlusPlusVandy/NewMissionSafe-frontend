@@ -24,6 +24,31 @@ export const getEvent = async (eventCode: string, token: string) => {
   return await handleJsonResponse(response);
 };
 
+export const createCode = async (token: string) => {
+  let result = "";
+  try {
+    for (;;) {
+      const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+      const charactersLength = characters.length;
+      for (let i = 0; i < 7; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
+      }
+
+      await getEvent(result, token);
+    }
+  } catch (err) {
+    if (
+      err instanceof Error &&
+      err.message === "No event with code " + result
+    ) {
+      return result;
+    }
+    throw err;
+  }
+};
+
 // POST new event
 export const createEvent = async (event: eventType, token: string) => {
   const response = await fetch(`${import.meta.env.VITE_BACKEND_ROUTE}/events`, {
