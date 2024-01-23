@@ -1,16 +1,16 @@
 .youth-display-container {
-	padding: 20px;
-	background: #FFF;
-	border: 1px solid #C0C0C0;
-	margin: 10px 25px;
-	border-radius: 4px;
-	box-sizing: border-box; 
-  }
-  
-  .youth-display-container p {
-	margin: 10px 0;
-	color: #333;
-	font-family: Arial;
-	font-size: 14px;
-	line-height: normal;
-  }
+  padding: 20px;
+  background: #FFF;
+  border: 1px solid #C0C0C0;
+  margin: 10px 25px;
+  border-radius: 4px;
+  box-sizing: border-box; 
+}
+
+.youth-display-container p {
+  margin: 10px 0;
+  color: #333;
+  font-family: Arial;
+  font-size: 14px;
+  line-height: normal;
+}
