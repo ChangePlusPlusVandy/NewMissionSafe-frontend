@@ -73,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
           </Link>
         </motion.div>
       </div>
-      <div className="content">{children}</div>
+      {children}
       <div className="navbar" style={{ borderTop: '5px solid' }}>
         {links.map((link, index) => (
             <motion.div
