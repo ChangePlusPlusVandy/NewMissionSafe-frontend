@@ -7,15 +7,17 @@ import { returnedEventType } from "../utils/models/eventModel";
 import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
 import DisplayYouth from "../components/DisplayYouth";
+import { Title, Center, Space } from "@mantine/core";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
-//todo: data fetching
-//	uid prop on User type is used to identify users
-//todo: html
-//todo: styling
-//todo: extra focus on breakpoints
-//todo: copy sobenna's text stylings
+//todo for mantine:
+//switch flex boxes to mantine flex element
+//use divider component
+//add loading skeletons
+//use mantine title and text elements
+//potentially use mantine spacing element
+//potentially use paper element
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
@@ -75,12 +77,19 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
 
   return (
     <section>
-      <h1 className="home header">Today's Events</h1>
+      {/* <h1 className="home header">Today's Events</h1> */}
+      <Center h={100} bg="var(--mantine-color-gray-light)">
+        <Title order={1}>Today's Events</Title>
+      </Center>
+      <Space h="xl" />
+
       {(() => {
         if (eventsError != "") {
-          return <h2 className="error home status">{eventsError}</h2>;
+          // return <h2 className="error home status">{eventsError}</h2>;
+          return <Center><Title order={2}  c={"red"}>{eventsError}</Title></Center>;
         } else if (events.length == 0) {
-          return <h2 className="home status">No events today</h2>;
+					return <Center><Title order={2}>No events today</Title></Center>;
+          // return <h2 className="home status">No events today</h2>;
         } else {
           return (
             <ul className="home">
@@ -97,6 +106,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
           );
         }
       })()}
+      <Space h="xl" />
     </section>
   );
 };
@@ -137,17 +147,22 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
 
   return (
     <section>
-      {programName == "" ? (
-        <h1 className="home header">Youth In Your Program</h1>
-      ) : (
-        <h1 className="home header">Youth In {programName}</h1>
-      )}
+      <Center h={100} bg="var(--mantine-color-gray-light)">
+        {programName == "" ? (
+          <Title order={1}>Youth In Your Program</Title>
+        ) : (
+          <Title order={1}>Youth In {programName}</Title>
+        )}
+        <Title order={1}>Today's Events</Title>
+      </Center>
+      <Space h="xl" />
 
       {(() => {
         if (youthError != "") {
-          return <h2 className="error home status">{youthError}</h2>;
+          return <Center><Title order={2} c={"red"}>{youthError}</Title></Center>;
         } else if (youth.length == 0) {
-          return <h2 className="home status">No youth found</h2>;
+					return <Center><Title order={2}>No youth found</Title></Center>
+          // return <h2 className="home status">No youth found</h2>;
         } else {
           return (
             <ul className="home">
