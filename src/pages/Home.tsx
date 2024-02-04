@@ -7,14 +7,12 @@ import { returnedEventType } from "../utils/models/eventModel";
 import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
 import DisplayYouth from "../components/DisplayYouth";
-import { Title, Center, Space, Flex } from "@mantine/core";
+import { Title, Center, Space, Flex, Skeleton } from "@mantine/core";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
 //todo for mantine:
-//switch flex boxes to mantine flex element
 //add loading skeletons
-//potentially use paper element
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
@@ -53,13 +51,16 @@ const Home: React.FC = () => {
 const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
   const [events, setEvents] = useState<returnedEventType[]>([]);
   const [eventsError, setEventsError] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getTodayEvents = async (token: string) => {
       try {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
+				setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
+				setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
         setEventsError("Failed to retrieve today's events");
@@ -88,7 +89,13 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
               </Title>
             </Center>
           );
-        } else if (events.length == 0) {
+        } else if(loading) {
+					return (
+						<Center>
+							<Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+						</Center>
+					);
+				} else if (events.length == 0) {
           return (
             <Center>
               <Title order={2}>No events today</Title>
@@ -125,10 +132,12 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
   const [youth, setYouth] = useState<youthType[]>([]);
   const [youthError, setYouthError] = useState<string>("");
   const [programName, setProgramName] = useState<string>("");
+	const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getYouth = async (t: string, uid: string) => {
       try {
+				setLoading(true);
         //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
         const currentStaffMember: staffType = await getStaffByID(uid, t);
         if (currentStaffMember.programs.length == 0) {
@@ -141,6 +150,7 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
           );
           setYouth(youth);
         }
+				setLoading(false);
       } catch (err) {
         setYouthError("Failed to retrieve youth");
         console.log(err);
@@ -172,7 +182,13 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               </Title>
             </Center>
           );
-        } else if (youth.length == 0) {
+        } else if(loading) {
+					return (
+						<Center>
+							<Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+						</Center>
+					);
+				} else if (youth.length == 0) {
           return (
             <Center>
               <Title order={2}>No youth found</Title>
