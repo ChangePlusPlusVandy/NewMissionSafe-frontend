@@ -11,9 +11,6 @@ import { Title, Center, Space, Flex, Skeleton } from "@mantine/core";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
-//todo for mantine:
-//add loading skeletons
-
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
   const [userDetails, setUserDetails] = useState<{
