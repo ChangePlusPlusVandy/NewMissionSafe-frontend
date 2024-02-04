@@ -7,7 +7,7 @@ import { returnedEventType } from "../utils/models/eventModel";
 import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
 import DisplayYouth from "../components/DisplayYouth";
-import { Title, Center, Space, Flex, Skeleton } from "@mantine/core";
+import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
@@ -35,29 +35,30 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <div className="pageContainer">
+    // <div className="pageContainer">
+    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
       <TodayEvents token={userDetails.token}></TodayEvents>
       <ProgramYouth
         token={userDetails.token}
         userId={userDetails.userId}
       ></ProgramYouth>
-    </div>
+    </Paper>
   );
 };
 
 const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
   const [events, setEvents] = useState<returnedEventType[]>([]);
   const [eventsError, setEventsError] = useState<string>("");
-	const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getTodayEvents = async (token: string) => {
       try {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
-				setLoading(true);
+        setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
-				setLoading(false);
+        setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
         setEventsError("Failed to retrieve today's events");
@@ -72,30 +73,34 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
 
   return (
     <section>
-      <Center h={100} bg="var(--mantine-color-gray-light)">
-        <Title order={1}>Today's Events</Title>
+      <Center h={60}>
+        <Title order={2} c={"white"}>
+          Today's Events
+        </Title>
       </Center>
-      <Space h="xl" />
+      <Space h="sm" />
 
       {(() => {
         if (eventsError != "") {
           return (
             <Center>
-              <Title order={2} c={"red"}>
+              <Title order={3} c={"red"}>
                 {eventsError}
               </Title>
             </Center>
           );
-        } else if(loading) {
-					return (
-						<Center>
-							<Skeleton width={"80%"} height={100} radius={0}></Skeleton>
-						</Center>
-					);
-				} else if (events.length == 0) {
+        } else if (loading) {
           return (
             <Center>
-              <Title order={2}>No events today</Title>
+              <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+            </Center>
+          );
+        } else if (events.length == 0) {
+          return (
+            <Center>
+              <Title order={3} c={"white"}>
+                No events today
+              </Title>
             </Center>
           );
         } else {
@@ -107,17 +112,17 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
               wrap={"wrap"}
             >
               {events.map((i) => (
-                  <Event
-                    eventName={i.name}
-                    eventDate={new Date(i.date)}
-                    key={i.code}
-                  ></Event>
+                <Event
+                  eventName={i.name}
+                  eventDate={new Date(i.date)}
+                  key={i.code}
+                ></Event>
               ))}
             </Flex>
           );
         }
       })()}
-      <Space h="xl" />
+      <Space h="lg" />
     </section>
   );
 };
@@ -129,12 +134,12 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
   const [youth, setYouth] = useState<youthType[]>([]);
   const [youthError, setYouthError] = useState<string>("");
   const [programName, setProgramName] = useState<string>("");
-	const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getYouth = async (t: string, uid: string) => {
       try {
-				setLoading(true);
+        setLoading(true);
         //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
         const currentStaffMember: staffType = await getStaffByID(uid, t);
         if (currentStaffMember.programs.length == 0) {
@@ -147,7 +152,7 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
           );
           setYouth(youth);
         }
-				setLoading(false);
+        setLoading(false);
       } catch (err) {
         setYouthError("Failed to retrieve youth");
         console.log(err);
@@ -161,34 +166,40 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
 
   return (
     <section>
-      <Center h={100} bg="var(--mantine-color-gray-light)">
+      <Center h={60}>
         {programName == "" ? (
-          <Title order={1}>Youth In Your Program</Title>
+          <Title order={2} c={"white"}>
+            Youth In Your Program
+          </Title>
         ) : (
-          <Title order={1}>Youth In {programName}</Title>
+          <Title order={2} c={"white"}>
+            Youth In {programName}
+          </Title>
         )}
       </Center>
-      <Space h="xl" />
+      <Space h="sm" />
 
       {(() => {
         if (youthError != "") {
           return (
             <Center>
-              <Title order={2} c={"red"}>
+              <Title order={3} c={"red"}>
                 {youthError}
               </Title>
             </Center>
           );
-        } else if(loading) {
-					return (
-						<Center>
-							<Skeleton width={"80%"} height={100} radius={0}></Skeleton>
-						</Center>
-					);
-				} else if (youth.length == 0) {
+        } else if (loading) {
           return (
             <Center>
-              <Title order={2}>No youth found</Title>
+              <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+            </Center>
+          );
+        } else if (youth.length == 0) {
+          return (
+            <Center>
+              <Title order={3} c={"white"}>
+                No youth found
+              </Title>
             </Center>
           );
         } else {
@@ -200,11 +211,11 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               wrap={"wrap"}
             >
               {youth.map((i) => (
-                  <DisplayYouth
-                    name={i.firstName + " " + i.lastName}
-                    email={i.email}
-                    key={i.firebaseUID}
-                  ></DisplayYouth>
+                <DisplayYouth
+                  name={i.firstName + " " + i.lastName}
+                  email={i.email}
+                  key={i.firebaseUID}
+                ></DisplayYouth>
               ))}
             </Flex>
           );
