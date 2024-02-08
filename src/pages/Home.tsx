@@ -7,15 +7,9 @@ import { returnedEventType } from "../utils/models/eventModel";
 import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
 import DisplayYouth from "../components/DisplayYouth";
+import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
 import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
-
-//todo: data fetching
-//	uid prop on User type is used to identify users
-//todo: html
-//todo: styling
-//todo: extra focus on breakpoints
-//todo: copy sobenna's text stylings
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
@@ -41,26 +35,29 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <div className="pageContainer">
+    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
       <TodayEvents token={userDetails.token}></TodayEvents>
       <ProgramYouth
         token={userDetails.token}
         userId={userDetails.userId}
       ></ProgramYouth>
-    </div>
+    </Paper>
   );
 };
 
 const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
   const [events, setEvents] = useState<returnedEventType[]>([]);
   const [eventsError, setEventsError] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getTodayEvents = async (token: string) => {
       try {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
+        setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
+        setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
         setEventsError("Failed to retrieve today's events");
@@ -75,28 +72,56 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
 
   return (
     <section>
-      <h1 className="home header">Today's Events</h1>
+      <Center h={60}>
+        <Title order={2} c={"white"}>
+          Today's Events
+        </Title>
+      </Center>
+      <Space h="sm" />
+
       {(() => {
         if (eventsError != "") {
-          return <h2 className="error home status">{eventsError}</h2>;
+          return (
+            <Center>
+              <Title order={3} c={"red"}>
+                {eventsError}
+              </Title>
+            </Center>
+          );
+        } else if (loading) {
+          return (
+            <Center>
+              <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+            </Center>
+          );
         } else if (events.length == 0) {
-          return <h2 className="home status">No events today</h2>;
+          return (
+            <Center>
+              <Title order={3} c={"white"}>
+                No events today
+              </Title>
+            </Center>
+          );
         } else {
           return (
-            <ul className="home">
+            <Flex
+              dir={"row"}
+              align={"stretch"}
+              justify={"center"}
+              wrap={"wrap"}
+            >
               {events.map((i) => (
-                <li className="home">
-                  <Event
-                    eventName={i.name}
-                    eventDate={new Date(i.date)}
-                    key={i.code}
-                  ></Event>
-                </li>
+                <Event
+                  eventName={i.name}
+                  eventDate={new Date(i.date)}
+                  key={i.code}
+                ></Event>
               ))}
-            </ul>
+            </Flex>
           );
         }
       })()}
+      <Space h="lg" />
     </section>
   );
 };
@@ -108,10 +133,12 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
   const [youth, setYouth] = useState<youthType[]>([]);
   const [youthError, setYouthError] = useState<string>("");
   const [programName, setProgramName] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const getYouth = async (t: string, uid: string) => {
       try {
+        setLoading(true);
         //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
         const currentStaffMember: staffType = await getStaffByID(uid, t);
         if (currentStaffMember.programs.length == 0) {
@@ -124,6 +151,7 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
           );
           setYouth(youth);
         }
+        setLoading(false);
       } catch (err) {
         setYouthError("Failed to retrieve youth");
         console.log(err);
@@ -137,30 +165,58 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
 
   return (
     <section>
-      {programName == "" ? (
-        <h1 className="home header">Youth In Your Program</h1>
-      ) : (
-        <h1 className="home header">Youth In {programName}</h1>
-      )}
+      <Center h={60}>
+        {programName == "" ? (
+          <Title order={2} c={"white"}>
+            Youth In Your Program
+          </Title>
+        ) : (
+          <Title order={2} c={"white"}>
+            Youth In {programName}
+          </Title>
+        )}
+      </Center>
+      <Space h="sm" />
 
       {(() => {
         if (youthError != "") {
-          return <h2 className="error home status">{youthError}</h2>;
+          return (
+            <Center>
+              <Title order={3} c={"red"}>
+                {youthError}
+              </Title>
+            </Center>
+          );
+        } else if (loading) {
+          return (
+            <Center>
+              <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
+            </Center>
+          );
         } else if (youth.length == 0) {
-          return <h2 className="home status">No youth found</h2>;
+          return (
+            <Center>
+              <Title order={3} c={"white"}>
+                No youth found
+              </Title>
+            </Center>
+          );
         } else {
           return (
-            <ul className="home">
+            <Flex
+              dir={"row"}
+              align={"stretch"}
+              justify={"center"}
+              wrap={"wrap"}
+            >
               {youth.map((i) => (
-                <li className="home">
-                  <DisplayYouth
-                    name={i.firstName + " " + i.lastName}
-                    email={i.email}
-                    key={i.firebaseUID}
-                  ></DisplayYouth>
-                </li>
+                <DisplayYouth
+                  name={i.firstName + " " + i.lastName}
+                  email={i.email}
+                  key={i.firebaseUID}
+                ></DisplayYouth>
               ))}
-            </ul>
+            </Flex>
           );
         }
       })()}

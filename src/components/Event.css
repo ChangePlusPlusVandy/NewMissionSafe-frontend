@@ -16,7 +16,7 @@
     overflow: hidden;
 
     border-bottom: 1px solid #C0C0C0;
-    margin: 5px 10%;
+    margin: 5px/* 10%*/;
 }
 
 .event-text {
