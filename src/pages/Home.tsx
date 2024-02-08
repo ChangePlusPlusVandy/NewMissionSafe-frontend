@@ -35,7 +35,6 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    // <div className="pageContainer">
     <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
       <TodayEvents token={userDetails.token}></TodayEvents>
       <ProgramYouth
