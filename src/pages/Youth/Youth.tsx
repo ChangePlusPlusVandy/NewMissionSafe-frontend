@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { useAuth } from "../../AuthContext"
+import { Title, Center, Space, Button, Text, Flex, Skeleton, Paper } from "@mantine/core";
 import { getActiveYouth } from "../../utils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
 import DisplayYouth from "../../components/DisplayYouth";
@@ -12,7 +12,6 @@ const Youth: React.FC = () => {
 
   const { currentUser } = useAuth();
   const navigate = useNavigate();
-
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [youth, setYouth] = useState<[youthType]>();
 
@@ -45,12 +44,17 @@ const Youth: React.FC = () => {
 
       return (
         youth?.map((item) =>
-        <div className="youth-card-container">
+        <Flex
+              dir={"row"}
+              align={"stretch"}
+              justify={"center"}
+              wrap={"wrap"}
+            >
           <DisplayYouth
             key={item.firebaseUID}
             name={item.lastName + " " + item.lastName}
             email={item.email} />
-          </div>
+          </Flex>
         )
       );
 
@@ -58,7 +62,9 @@ const Youth: React.FC = () => {
 
       return (
         <div>
-          <p className="youth-page-empty">There are currently no youth</p>
+          <Text c={"black"}>
+              There are currently no youth
+          </Text>
         </div>
       );
 
@@ -67,26 +73,48 @@ const Youth: React.FC = () => {
   };
 
   return (
-      <div className="youth-page-main-card">
-        <h1 className="youth-page-title">Youth</h1>
+    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
 
-        {isLoading ? (
-          <p>Loading Youth...</p>
+          <Center>
+            <Title order={1} c={"white"}>
+              Youth
+            </Title>
+          </Center>
+          <Space h="sm" />
 
-        ) : (
-          <div className="youth-page-subcontainer">
-            <button
-              className="youth-page-register"
-              onClick={handleRegisterYouth} >
-              Register New Youth
-            </button>
+          {isLoading ? (
+            <Center>
+              <Text>
+                Loading Youth...
+              </Text>
+            </Center>
 
-            <br />
-            {renderYouth()}
-          </div>
-        )}
-      </div>
+          ) : (
+            <Center>
+              <Flex
+                direction="column"
+                align="center"
+              >
+                <Center>
+                  <Button
+                    color="white"
+                    variant="filled"
+                    style={{ backgroundColor: "#CF2329", borderColor: "#213547" }}
+                    onClick={handleRegisterYouth}
+                  >
+                    Register New Youth
+                  </Button>
+                </Center>
+                <Title order={3}>
+                    Directory
+                </Title>
+                <br/>
+                {renderYouth()}
+              </Flex>
+            </Center>
+          )}
+
+      </Paper>
   );
 };
-
 export default Youth;
