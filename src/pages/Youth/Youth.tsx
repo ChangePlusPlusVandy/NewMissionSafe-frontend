@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext"
-import { Title, Center, Space, Button, Text, Flex, Skeleton, Paper } from "@mantine/core";
+import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
 import { getActiveYouth } from "../../utils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
 import DisplayYouth from "../../components/DisplayYouth";
