@@ -106,40 +106,11 @@ export const deactivateStaff = async (fireID: string, token: string) => {
       return await handleMiscResponse(response);
 }
 
-// PUT new @firstName for staff w/ @fireID
-// TODO: Should this take a fireID or staffType?
-export const updateFirstName = async (firstName: string, fireID: string, token: string) => {
-    const response = await fetch(`${BACKEND_ROUTE}/updateFirstName/${fireID}`, {
+// PUT new @value for @attribute for staff w/ @fireID
+export const updateAttribute = async (key: string, value: string, fireID: string, token: string) => {
+    const response = await fetch(`${BACKEND_ROUTE}/updateStaffAttribute/${fireID}`, {
         method: "PUT",
-        body: JSON.stringify(firstName),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return await handleMiscResponse(response);
-}
-
-// PUT new @lastName for staff w/ @fireID
-// TODO: Should this take a fireID or staffType?
-export const updateLastName = async (lastName: string, fireID: string, token: string) => {
-    const response = await fetch(`${BACKEND_ROUTE}/updateLastName/${fireID}`, {
-        method: "PUT",
-        body: JSON.stringify(lastName),
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      return await handleMiscResponse(response);
-}
-
-// PUT new @email for staff w/ @fireID
-// TODO: Should this take a fireID or staffType?
-export const updateEmail = async (email: string, fireID: string, token: string) => {
-    const response = await fetch(`${BACKEND_ROUTE}/updateEmail/${fireID}`, {
-        method: "PUT",
-        body: JSON.stringify(email),
+        body: JSON.stringify({key, value}),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
