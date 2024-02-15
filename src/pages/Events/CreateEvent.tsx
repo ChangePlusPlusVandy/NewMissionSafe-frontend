@@ -3,11 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
-import { useAuth } from "../AuthContext";
-import FormError from "./Auth/FormError";
-import { createCode, createEvent } from "../utils/eventInterface";
+import { useAuth } from "../../AuthContext";
+import FormError from "../Auth/FormError";
+import { createCode, createEvent } from "../../utils/eventInterface";
 import "./CreateEvent.css";
-import { eventType } from "../utils/models/eventModel";
+import { eventType } from "../../utils/models/eventModel";
 
 interface FormValues {
   name: string;

@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
-import { getAllEvents } from "../utils/eventInterface";
-import { eventType } from "../utils/models/eventModel";
+import { useAuth } from "../../AuthContext";
+import { getAllEvents } from "../../utils/eventInterface";
+import { eventType } from "../../utils/models/eventModel";
 import "./Events.css";
-import Event from "../components/Event";
+import Event from "../../components/Event";
+import { Paper, Button, Autocomplete} from "@mantine/core";
+import { IconSearch } from '@tabler/icons-react';
 
 const Events: React.FC = () => {
   const { currentUser } = useAuth();
@@ -12,6 +14,8 @@ const Events: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [events, setEvents] = useState<[eventType]>();
+
+  const icon = <IconSearch style={{color:"grey"}}/>;
 
   useEffect(() => {
     async function fetchEvents() {
@@ -51,22 +55,21 @@ const Events: React.FC = () => {
   };
 
   return (
-    <div>
+    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
       <div className="main-container">
         <h1>Events</h1>
         {isLoading ? (
           <p>Loading Events...</p>
         ) : (
           <div className="sub-container">
-            <button onClick={handleCreateEvent} className="event-button">
-              Create New Event
-            </button>
+            <Button variant="filled" bg={"missionSafeRed.9"} loading={isLoading} onClick={handleCreateEvent}>Create New Event</Button>
+            <Autocomplete bg={"missionSafeBlue.9"} placeholder="Search" leftSection={icon}/>
             <br />
             {renderEvents()}
           </div>
         )}
       </div>
-    </div>
+    </Paper>
   );
 };
 
