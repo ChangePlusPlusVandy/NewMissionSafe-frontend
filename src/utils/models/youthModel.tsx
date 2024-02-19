@@ -1,12 +1,22 @@
 export interface youthType {
-    firstName: string;
-    lastName: string;
-    birthDate: Date;
-    ssn: string;
-    email: string;
-    firebaseUID: string;
-    program: string;
-    active: boolean;
-    attached_forms?: string[];
-    attended_events?: string[];
+  uuid: string;
+  firstName: string;
+  lastName: string;
+  middleInitial: string;
+  birthDate: Date;
+  ageJoined: number;
+  schoolName: string;
+  schoolDepartureTime: string;
+  programArrivalTime: string;
+  gender: string;
+  pronouns: string;
+  race: string;
+  ethnicity: string;
+  guardianName: string;
+  guardianPhone: string;
+  guardianEmail: string;
+  ssn: string;
+  attached_forms: string[];
+  attended_events: string[];
+  active: boolean;
   }
