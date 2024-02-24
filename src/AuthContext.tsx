@@ -10,9 +10,12 @@ import {
 import React, { useContext, useState, useEffect, createContext } from "react";
 import auth from "./firebase";
 import type { UserCredential, User } from "firebase/auth";
+import { getStaffByID } from "./utils/staffInterface";
+import type { staffType } from "./utils/models/staffModel";
 
 interface AuthContextData {
   currentUser: User | null;
+  mongoUser: staffType | null;
   login: (email: string, password: string) => Promise<UserCredential>;
   registerUser: (
     name: string,
@@ -21,6 +24,7 @@ interface AuthContextData {
   ) => Promise<void>;
   logout: () => Promise<void>;
   getUser: () => User | null;
+  getMongoUser: () => staffType | null;
   forgotPassword: (email: string) => Promise<void>;
   confirmReset: (code: string, password: string) => Promise<void>;
 }
@@ -33,6 +37,7 @@ export function useAuth(): AuthContextData {
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
+  const [mongoUser, setMongoUser] = useState<staffType | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   async function login(email: string, password: string) {
@@ -57,6 +62,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return currentUser;
   }
 
+	function getMongoUser(): staffType | null {
+    return mongoUser;
+  }
+
   async function forgotPassword(email: string): Promise<void> {
     return await sendPasswordResetEmail(auth, email);
   }
@@ -68,6 +77,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setCurrentUser(user);
+
+      if (user == null) {
+        setMongoUser(null);
+      } else {
+        user?.getIdToken().then((t) => {
+          if (t == null) {
+            console.log("No token available");
+          } else {
+            //review: should there be error handling here and how would it work (error state in context maybe?)
+            //review: is there a disadvantage to calling getStaffByID directly?
+            getStaffByID(user.uid, t).then((newMongoUser) => {
+              setMongoUser(newMongoUser);
+            });
+          }
+        });
+      }
+
       setIsLoading(false);
     });
     return unsubscribe;
@@ -75,10 +101,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     currentUser,
+		mongoUser,
     login,
     registerUser,
     logout,
     getUser,
+		getMongoUser,
     forgotPassword,
     confirmReset,
   };
