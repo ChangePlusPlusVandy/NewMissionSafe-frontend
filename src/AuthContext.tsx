@@ -62,7 +62,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return currentUser;
   }
 
-	function getMongoUser(): staffType | null {
+  function getMongoUser(): staffType | null {
     return mongoUser;
   }
 
@@ -75,23 +75,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
       setCurrentUser(user);
 
       if (user == null) {
         setMongoUser(null);
       } else {
-        user?.getIdToken().then((t) => {
-          if (t == null) {
-            console.log("No token available");
-          } else {
-            //review: should there be error handling here and how would it work (error state in context maybe?)
-            //review: is there a disadvantage to calling getStaffByID directly?
-            getStaffByID(user.uid, t).then((newMongoUser) => {
-              setMongoUser(newMongoUser);
-            });
-          }
-        });
+        const token = await user?.getIdToken();
+        if (token == null) {
+          console.log("No token available");
+        } else {
+          //review: should there be error handling here and how would it work (error state in context maybe?)
+          const newMongoUser = await getStaffByID(user.uid, token);
+          setMongoUser(newMongoUser);
+        }
       }
 
       setIsLoading(false);
@@ -101,12 +98,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const value = {
     currentUser,
-		mongoUser,
+    mongoUser,
     login,
     registerUser,
     logout,
     getUser,
-		getMongoUser,
+    getMongoUser,
     forgotPassword,
     confirmReset,
   };
