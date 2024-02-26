@@ -43,19 +43,20 @@ const Youth: React.FC = () => {
     if (youth?.length != undefined && youth.length > 0) {
 
       return (
-        youth?.map((item) =>
         <Flex
-              dir={"row"}
-              align={"stretch"}
-              justify={"center"}
-              wrap={"wrap"}
-            >
-          <DisplayYouth
-            key={item.firebaseUID}
-            name={item.lastName + " " + item.lastName}
-            email={item.email} />
-          </Flex>
-        )
+          dir={"row"}
+          align={"stretch"}
+          justify={"center"}
+          wrap={"wrap"}
+        >
+          {youth?.map((item) => (
+            <DisplayYouth
+              key={item.firebaseUID}
+              name={item.lastName + " " + item.lastName}
+              email={item.email}
+            />
+          ))}
+        </Flex>
       );
 
     } else {
@@ -71,17 +72,15 @@ const Youth: React.FC = () => {
     }
 
   };
-
   return (
     <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
-
+      <Space h="xl" />
           <Center>
             <Title order={1} c={"white"}>
               Youth
             </Title>
           </Center>
-          <Space h="sm" />
-
+          <Space h="lg" />
           {isLoading ? (
             <Center>
               <Text>
@@ -95,16 +94,16 @@ const Youth: React.FC = () => {
                 direction="column"
                 align="center"
               >
-                <Center>
-                  <Button
-                    color="white"
-                    variant="filled"
-                    style={{ backgroundColor: "#CF2329", borderColor: "#213547" }}
-                    onClick={handleRegisterYouth}
-                  >
-                    Register New Youth
-                  </Button>
-                </Center>
+              <Center>
+                <Button
+                  color="white"
+                  variant="filled"
+                  style={{ backgroundColor: "#861F25", boxShadow: '0 0 5px rgba(255, 255, 255, 0.5)'}}
+                  onClick={handleRegisterYouth}
+                >
+                    Add Youth
+                </Button>
+              </Center>
                 <Title order={3}>
                     Directory
                 </Title>
