@@ -81,13 +81,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (user == null) {
         setMongoUser(null);
       } else {
-        const token = await user?.getIdToken();
-        if (token == null) {
-          console.log("No token available");
-        } else {
+        try {
+          const token = await user?.getIdToken();
+          if (token == null) {
+            console.log("No token available");
+          } else {
+            const newMongoUser = await getStaffByID(user.uid, token);
+            setMongoUser(newMongoUser);
+          }
+        } catch (err) {
           //review: should there be error handling here and how would it work (error state in context maybe?)
-          const newMongoUser = await getStaffByID(user.uid, token);
-          setMongoUser(newMongoUser);
         }
       }
 
