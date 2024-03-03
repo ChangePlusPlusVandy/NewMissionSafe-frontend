@@ -104,9 +104,10 @@ const Youth: React.FC = () => {
                     Add Youth
                 </Button>
               </Center>
-                <Title order={3}>
-                    Directory
-                </Title>
+              <br/>
+              <Title order={3} style={{ color: 'white' }}>
+                  Directory
+              </Title>
                 <br/>
                 {renderYouth()}
               </Flex>
