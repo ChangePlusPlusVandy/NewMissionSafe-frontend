@@ -59,7 +59,7 @@ const RegisterYouth: React.FC = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
-    resolver: yupResolver(schema) as any, //is this okay
+    resolver: yupResolver(schema), //is this okay
   });
   
 
