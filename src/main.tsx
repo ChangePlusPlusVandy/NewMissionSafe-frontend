@@ -19,6 +19,18 @@ const theme = createTheme({
       "#2581be",
       "#022B41",
     ],
+    missionSafeRed: [
+      "#fbeeef",
+      "#f0dadb",
+      "#e4b1b4",
+      "#da868a",
+      "#d16166",
+      "#cd4b50",
+      "#cb3f44",
+      "#b33236",
+      "#a12b2f",
+      "#8d2127"
+    ]
   },
   fontFamily: "Almarai, sans-serif",
   headings: {

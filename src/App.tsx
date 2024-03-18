@@ -12,10 +12,10 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
 import Register from "./pages/Auth/Register";
-import CreateEvent from "./pages/CreateEvent";
+import CreateEvent from "./pages/Events/CreateEvent";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Events from "./pages/Events";
+import Events from "./pages/Events/Events";
 import Youth from "./pages/Youth/Youth";
 
 const router = createBrowserRouter(
