@@ -90,7 +90,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setMongoUser(newMongoUser);
           }
         } catch (err) {
-          //review: should there be error handling here and how would it work (error state in context maybe?)
+          alert("Error fetching user data.");
+          logout();
         }
       }
 
