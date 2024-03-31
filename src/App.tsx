@@ -17,6 +17,10 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Events from "./pages/Events";
 import Youth from "./pages/Youth/Youth";
+import Forms from "./pages/Forms";
+// Forms
+import ExpenseForm from "./pages/Forms/ExpenseForm";
+import HorizonForm from "./pages/Forms/HorizonForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +36,10 @@ const router = createBrowserRouter(
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
+      <Route path="/forms" element={<PrivateRoute element={<Forms />} />} />
+
+      <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm />} />} />
+      <Route path="/forms/horizon-form" element={<PrivateRoute element={<HorizonForm />} />} />
     </>
   )
 );

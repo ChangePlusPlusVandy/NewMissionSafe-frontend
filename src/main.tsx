@@ -19,6 +19,23 @@ const theme = createTheme({
       "#2581be",
       "#022B41",
     ],
+    outline: [
+      "#eff4fe",
+      "#e3e5ee",
+      "#c6c8d4",
+      "#a7a9bc",
+      "#8d8fa7",
+      "#7c7f9a",
+      "#727695",
+      "#616582",
+      "#555a75",
+      "#484d69"
+    ],
+  },
+  shadows: {
+    md: '1px 1px 3px rgba(0, 0, 0, .25)',
+    xl: '5px 5px 3px rgba(0, 0, 0, .25)',
+    white: "0px 0px 10px rgba(255, 255, 255, 0.5)"
   },
   fontFamily: "Almarai, sans-serif",
   headings: {
