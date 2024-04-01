@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Text, TextInput, Checkbox, Group, Flex, Paper, Title, Center, Space } from '@mantine/core';
+import { createAndAddResponseToForm } from '../../utils/formInterface';
+import { useAuth } from '../../AuthContext';
 
 interface Expense {
     date: string;
@@ -12,7 +14,8 @@ interface Expense {
     [key: string]: string; // Index signature
   }
 const ExpenseForm = () => {
-    
+  
+  const { currentUser } = useAuth();
   const [employeeName, setEmployeeName] = useState('');
   const [dateOfAdvance, setDateOfAdvance] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
@@ -31,10 +34,35 @@ const ExpenseForm = () => {
     setExpenses([...expenses, { date: '', vendor: '', budgetCategory: '', explanation: '', program: '', reimbursement: '', amount: '' }]);
   };
 
-  const handleSubmit = () => {
-    // Perform form submission logic
-    console.log({ employeeName, dateOfAdvance, expenses, confirmChecked });
+  const handleSubmit = async () => {
+    for (let i = 0; i < expenses.length; i++) {
+      const expense = expenses[i];
+
+      const responseFields = {
+        responseID: '', 
+        creatorID: '', 
+        associatedYouthID: '', 
+        timestamp: new Date(), 
+        responses: Object.values(expense) 
+      };
+
+      const token = await currentUser?.getIdToken(); 
+      if (!token) {
+        throw new Error(
+          "Authentication token is not available. Please log in."
+        );
+      } else {
+          try {
+            await createAndAddResponseToForm("expense-form", responseFields, token);
+            console.log('Form response added successfully for expense:', i + 1);
+          } catch (error) {
+            console.error('Error adding form response for expense:', i + 1, error);
+        
+          }
+      }
+    }
   };
+
 
   const calculateTotal = () => {
     let total = 0;
