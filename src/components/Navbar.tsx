@@ -41,7 +41,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 
   return (
     <div className="main">
-      <div className="navbar" style={{ borderBottom: '5px solid' }}>
+      <div className="navbar" style={{ borderBottom: '5px solid', width:"100vw" }}>
         <motion.div
           className="icon"
           variants={variants}
