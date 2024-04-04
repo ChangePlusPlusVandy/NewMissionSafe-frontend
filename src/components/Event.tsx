@@ -14,11 +14,12 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes }) => {
     day: "2-digit",
   });
 
-  const daysOfWeek = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+  const months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"];
 
   const [opened, { close, open }] = useDisclosure(false);
 
-  const day = daysOfWeek[new Date(eventDate).getDay()];
+  const month = months[new Date(eventDate).getMonth()];
+
   return (
     <Center>
       <Card w={"95%"} radius="md"  bg={"missionSafeBlue.9"} style={{boxShadow:  "0 0 4px 2px rgba(255,255,255,0.4)", marginTop: "2.1px"}}>
@@ -26,7 +27,7 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes }) => {
         <Grid.Col span={2}>
           <Stack gap={0} align="center" justify="center">
             <Title order={2} c="white" >{formattedDate}</Title>
-            <Title order={5} c="white">{day}</Title>
+            <Title order={5} c="white">{month}</Title>
           </Stack>
         </Grid.Col>
         <Grid.Col span={9}>
