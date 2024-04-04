@@ -114,6 +114,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                 <Event
                   eventName={i.name}
                   eventDate={new Date(i.date)}
+                  eventDes={i.description}
                   key={i.code}
                 ></Event>
               ))}
