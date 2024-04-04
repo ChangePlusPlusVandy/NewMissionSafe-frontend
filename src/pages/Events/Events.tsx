@@ -18,8 +18,10 @@ import {
   Space,
   Paper,
   Text,
+  Divider,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
+import { render } from "react-dom";
 
 const Events: React.FC = () => {
   const { currentUser } = useAuth();
@@ -27,14 +29,40 @@ const Events: React.FC = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [events, setEvents] = useState<[eventType]>();
+  const [pastEvents, setPastEvents] = useState<eventType[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<eventType[]>([]);
 
   const icon = <IconSearch style={{ color: "grey" }} />;
 
   useEffect(() => {
     async function fetchEvents() {
-      const token = await currentUser?.getIdToken();
-      if (token) {
-        setEvents(await getAllEvents(token));
+      if (currentUser) {
+        const token = await currentUser.getIdToken();
+        const fetchedEvents = await getAllEvents(token);
+        setEvents(fetchedEvents);
+
+        const now = new Date();
+        const past = fetchedEvents.filter(
+          (event: eventType) => new Date(event.date) < now
+        );
+        const upcoming = fetchedEvents.filter(
+          (event: eventType) => new Date(event.date) >= now
+        );
+
+        // Sort past events so the most recent is first
+        past.sort(
+          (a: eventType, b: eventType) =>
+            new Date(b.date).getTime() - new Date(a.date).getTime()
+        );
+
+        // Sort upcoming events so the soonest is first
+        upcoming.sort(
+          (a: eventType, b: eventType) =>
+            new Date(a.date).getTime() - new Date(b.date).getTime()
+        );
+
+        setPastEvents(past);
+        setUpcomingEvents(upcoming);
         setIsLoading(false);
       } else {
         navigate("/login");
@@ -42,68 +70,54 @@ const Events: React.FC = () => {
     }
 
     fetchEvents();
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   const handleCreateEvent = async () => {
-    // TODO: double check that this will be the route
     navigate("/create-event");
   };
 
-  const renderEvents = () => {
-    if (events?.length != undefined && events.length > 0) {
-      return (
-        <Stack>
-          <Center>
-            <Group justify="space-between" gap="0" w={"85%"}>
-              <TextInput
-                variant="unstyled"
-                placeholder="Search"
-                w={"90%"}
-                leftSection={icon}
-                style={{
-                  boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
-                  borderRadius: "5px",
-                }}
-                styles={{
-                  input: {
-                    color: "white",
-                  },
-                }}
-              />
-              <IconAdjustmentsHorizontal
-                width="10%"
-                color="white"
-                stroke={1.2}
-              />
-            </Group>
-          </Center>
+  const getSearchbar = () => {
+    return (
+      <Center>
+        <Group justify="space-between" gap="0" w={"85%"}>
+          <TextInput
+            variant="unstyled"
+            placeholder="Search"
+            w={"90%"}
+            leftSection={icon}
+            style={{
+              boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
+              borderRadius: "5px",
+            }}
+            styles={{
+              input: {
+                color: "white",
+              },
+            }}
+          />
+          <IconAdjustmentsHorizontal width="10%" color="white" stroke={1.2} />
+        </Group>
+      </Center>
+    );
+  };
 
-          <Center>
-            <ScrollArea type="never" h={"40vh"} w={"90%"}>
-              <Flex direction={"column"} gap="md">
-                {events?.map((item) => {
-                  return (
-                    <Event
-                      eventName={item.name}
-                      eventDate={item.date}
-                      eventDes={item.description}
-                    />
-                  );
-                })}
-              </Flex>
-            </ScrollArea>
-          </Center>
-        </Stack>
-      );
-    } else {
-      return (
-        <Center>
-          <Title c="white" order={4}>
-            There are no events currently
-          </Title>
-        </Center>
-      );
-    }
+  const renderEvents = (events: eventType[]) => {
+    return (
+      <Center>
+        <ScrollArea type="never" h={"20vh"} w={"90%"}>
+          <Flex direction={"column"} gap="md">
+            {events?.map((item, i) => (
+              <Event
+                key={i}
+                eventName={item.name}
+                eventDate={item.date}
+                eventDes={item.description}
+              />
+            ))}
+          </Flex>
+        </ScrollArea>
+      </Center>
+    );
   };
 
   return (
@@ -138,10 +152,21 @@ const Events: React.FC = () => {
             </Center>
             <br />
             <Title order={3} style={{ color: "white" }}>
-              Past Events
+              Upcoming
             </Title>
             <br />
-            {renderEvents()}
+            <Stack gap={"sm"}>
+              {getSearchbar()}
+              {renderEvents(upcomingEvents)}
+              <Divider />
+              <Center>
+                <Title order={3} style={{ color: "white" }}>
+                  Previous
+                </Title>
+              </Center>
+
+              {renderEvents(pastEvents)}
+            </Stack>
           </Flex>
         </Center>
       )}
