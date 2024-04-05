@@ -53,7 +53,7 @@ const ExpenseForm = () => {
         );
       } else {
           try {
-            await createAndAddResponseToForm("expense-form", responseFields, token);
+            await createAndAddResponseToForm("0002", responseFields, token);
             console.log('Form response added successfully for expense:', i + 1);
           } catch (error) {
             console.error('Error adding form response for expense:', i + 1, error);
