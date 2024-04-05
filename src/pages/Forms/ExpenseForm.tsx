@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button, Text, TextInput, Checkbox, Group, Flex, Paper, Title, Center, Space } from '@mantine/core';
+import { useState } from 'react';
+import { Button, Text, TextInput, Checkbox, Group, Flex, Paper, Title, Space } from '@mantine/core';
 import { createAndAddResponseToForm } from '../../utils/formInterface';
 import { useAuth } from '../../AuthContext';
 
@@ -20,7 +20,6 @@ const ExpenseForm = () => {
   const [dateOfAdvance, setDateOfAdvance] = useState('');
   const [confirmChecked, setConfirmChecked] = useState(false);
   const [expenses, setExpenses] = useState([{ date: '', vendor: '', budgetCategory: '', explanation: '', program: '', reimbursement: '', amount: '' }]);
-  const [totalAmount, setTotalAmount] = useState(0);
 
   const handleExpenseChange = (index: number, key: keyof Expense, value: string) => {
     const newExpenses = [...expenses];
@@ -64,15 +63,6 @@ const ExpenseForm = () => {
   };
 
 
-  const calculateTotal = () => {
-    let total = 0;
-    expenses.forEach((expense) => {
-      if (!isNaN(parseFloat(expense.amount))) {
-        total += parseFloat(expense.amount);
-      }
-    });
-    setTotalAmount(total);
-  };
 
   return (
     <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0} pl={40} pr={40}>
@@ -162,9 +152,6 @@ const ExpenseForm = () => {
             Submit
             </Button>
         </Flex>
-        <Text size="sm" style={{ marginTop: 10 }} fw={700} c="#758993">
-            Total Amount: ${totalAmount.toFixed(2)}
-        </Text>
       </Flex>
     </Paper>
   );
