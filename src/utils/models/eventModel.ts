@@ -3,6 +3,9 @@ export interface eventType {
   description: string;
   code: string;
   date: Date;
+  startTime: string;
+  endTime: string;
+  location: string;
   programs: string[];
   staff: string[];
   attended_youth?: string[];
@@ -14,6 +17,9 @@ export interface returnedEventType {
   description: string;
   code: string;
   date: string;
+  startTime: string;
+  endTime: string;
+  location: string;
   programs: string[];
   staff: string[];
   attended_youth?: string[];
