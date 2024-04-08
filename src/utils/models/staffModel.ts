@@ -3,8 +3,7 @@ export interface staffType {
   lastName: string;
   email: string;
   firebaseUID: string;
-  programs: string[];
+  program: string;
   active: boolean;
-  counselor: boolean;
-  admin: boolean;
+  role: number;
 }

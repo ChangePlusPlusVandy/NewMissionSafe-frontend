@@ -13,6 +13,7 @@ import "./Home.css";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
+  console.log(currentUser?.displayName);
   const [userDetails, setUserDetails] = useState<{
     token: string;
     userId: string;
@@ -141,14 +142,11 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
         setLoading(true);
         //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
         const currentStaffMember: staffType = await getStaffByID(uid, t);
-        if (currentStaffMember.programs.length == 0) {
+        if (!currentStaffMember.program) {
           setYouthError("You are not associated with a program");
         } else {
-          setProgramName(currentStaffMember.programs[0]);
-          const youth = await getYouthByProgram(
-            currentStaffMember.programs[0],
-            t
-          );
+          setProgramName(currentStaffMember.program);
+          const youth = await getYouthByProgram(currentStaffMember.program, t);
           setYouth(youth);
         }
         setLoading(false);
@@ -212,8 +210,8 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               {youth.map((i) => (
                 <DisplayYouth
                   name={i.firstName + " " + i.lastName}
-                  email={i.email}
-                  key={i.firebaseUID}
+                  uuid={i.uuid}
+                  key={i.uuid}
                 ></DisplayYouth>
               ))}
             </Flex>
