@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
-import { createStaff } from "../../utils/staffInterface";
 
 interface FormValues {
   firstName: string;
@@ -52,17 +51,20 @@ const RegisterStaff: React.FC = () => {
       setError("");
       const name = values.firstName + " " + values.lastName;
       
+
       const finalValues = {
-        ...values,
-        firebaseUID: currentUser.uid,
-        active: true,
-      };
+          ...values,
+          firebaseUID: currentUser ? currentUser.uid : "No UID found", 
+          active: true,
+        };
+      
+      
 
       const { password, confirmPassword, ...rest } = finalValues;
       console.log(rest)
       await registerUser(name, values.email, values.password, rest);
 
-      // navigate("/");
+      navigate("/");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

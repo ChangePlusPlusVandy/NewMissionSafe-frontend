@@ -51,9 +51,8 @@ const Youth: React.FC = () => {
         >
           {youth?.map((item) => (
             <DisplayYouth
-              key={item.firebaseUID}
+              key={item.uuid}
               name={item.lastName + " " + item.lastName}
-              email={item.email}
             />
           ))}
         </Flex>
