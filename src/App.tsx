@@ -17,6 +17,12 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Events from "./pages/Events";
 import Youth from "./pages/Youth/Youth";
+import ProgramSupplyRequest from "./pages/Forms/ProgramSupplyRequest";
+import ProgressLog from "./pages/Forms/ProgressLog";
+import VanLog from "./pages/Forms/VanLog";
+import PartnershipsResourcesInternshipsForm from "./pages/Forms/PartnershipsResourcesInternshipsForm";
+import CheckRequestForm from "./pages/Forms/CheckRequestForm";
+import IncidentReport from "./pages/Forms/IncidentReport";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -32,6 +38,12 @@ const router = createBrowserRouter(
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
+      <Route path="/forms/partnerships-resources-internships" element={<PrivateRoute element={<PartnershipsResourcesInternshipsForm formID = "10"/>} />} />
+      <Route path="/forms/program-supply-request" element={<PrivateRoute element={<ProgramSupplyRequest formID = "5"/>} />} />
+      <Route path="/forms/progress-log" element={<PrivateRoute element={<ProgressLog formID = "19" />} />} />
+      <Route path="/forms/van-log" element={<PrivateRoute element={<VanLog formID = "0015"/>} />} />
+      <Route path="/forms/check-request-form" element={<PrivateRoute element={<CheckRequestForm formID = "0012"/>} />} />
+      <Route path="/forms/incident-report" element={<PrivateRoute element={<IncidentReport formID = "00124"/>} />} />
     </>
   )
 );

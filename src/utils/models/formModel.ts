@@ -1,9 +1,9 @@
 export interface responseType {
     responseID: string;
     creatorID: string;
-    associatedYouthID: string;
     timestamp: Date;
-    responses: string[];
+    responses: (string | string[])[];
+    associatedYouthID?: string;
   }
 
   export interface formType {

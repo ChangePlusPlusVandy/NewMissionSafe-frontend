@@ -1,5 +1,5 @@
 import {formType, responseType } from "./models/formModel";
-import { handleJsonResponse } from "./responseHelpers";
+import { handleJsonResponse, handleMiscResponse } from "./responseHelpers";
 
 const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/forms`;
 
@@ -39,7 +39,7 @@ export const createAndAddResponseToForm = async(
             }
         }
     )
-    return await handleJsonResponse(response)
+    return await handleMiscResponse(response)
 }
 
 export const getFormResponse = async (
@@ -54,6 +54,6 @@ export const getFormResponse = async (
         },
     }
     );
-    return await handleJsonResponse(response);
+    return await handleMiscResponse(response);
 }
 
