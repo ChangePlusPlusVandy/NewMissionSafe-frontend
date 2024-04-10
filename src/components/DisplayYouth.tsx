@@ -3,17 +3,17 @@ import "./DisplayYouth.css";
 
 interface DisplayYouthProps {
   name: string;
-  email: string;
+  uuid: string;
 }
 
-const DisplayYouth: React.FC<DisplayYouthProps> = ({ name, email }) => {
+const DisplayYouth: React.FC<DisplayYouthProps> = ({ name, uuid }) => {
   return (
     <div className="youth-display-container">
       <p>
         <strong>Name:</strong> {name}
       </p>
       <p>
-        <strong>Email:</strong> {email}
+        <strong>Email:</strong> {uuid}
       </p>
     </div>
   );
