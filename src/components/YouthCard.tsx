@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Text, Avatar } from "@mantine/core";
+import { Flex, Text, Avatar } from "@mantine/core";
 
 interface YouthCardProps {
   firstName: string;
@@ -19,26 +19,26 @@ const YouthCard: React.FC<YouthCardProps> = ({
   };
 
   return (
-    <Box
+    <Flex
       onClick={handleClick}
+      direction="column"
+      w={"25%"}
+      h={"12.5%"}
+      bg={"missionSafeBlue.9"}
+      p="2%"
+      mb="3%"
+      align="center"
       style={{
-        width: "25%",
-        height: "12.5%",
-        background: "#022B41",
         border: "1px solid #686C8B",
         borderRadius: "5px",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        padding: "2%",
-        marginBottom: "3%",
       }}
     >
       <Avatar
+        mb={"10%"}
+        pos={"relative"}
+        w={"55%"}
+        h={"45%"}
         style={{
-          position: "relative",
-          width: "55%",
-          height: "45%",
           border: "1px solid #FFFFFF",
         }}
       />
@@ -46,8 +46,6 @@ const YouthCard: React.FC<YouthCardProps> = ({
         lineClamp={1}
         style={{
           color: "white",
-          maxWidth: "90%",
-          textOverflow: "ellipsis",
         }}
       >
         {firstName}
@@ -56,14 +54,19 @@ const YouthCard: React.FC<YouthCardProps> = ({
         lineClamp={1}
         style={{
           color: "white",
-          maxWidth: "90%",
-          textOverflow: "ellipsis",
         }}
       >
         {lastName}
       </Text>
-      <Text style={{ color: "white" }}>{program}</Text>
-    </Box>
+      <Text
+        lineClamp={1}
+        style={{
+          color: "white",
+        }}
+      >
+        {program}
+      </Text>
+    </Flex>
   );
 };
 

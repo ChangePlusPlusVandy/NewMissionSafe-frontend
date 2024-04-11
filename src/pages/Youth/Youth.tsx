@@ -40,6 +40,7 @@ const Youth: React.FC = () => {
           justify={"center"}
           wrap={"wrap"}
           style={{ gap: "5%" }}
+          mb={"25%"}
         >
           {youth?.map((item) => (
             <YouthComponent

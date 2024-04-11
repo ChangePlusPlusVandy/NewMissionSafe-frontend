@@ -1,26 +1,20 @@
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import './Navbar.css';
-import { FaHome, FaDoorOpen } from 'react-icons/fa';
-import Logo from '../assets/MissionSafeLogo.png';
-import { motion } from "framer-motion";
+import { Paper, Box, Container, Image } from "@mantine/core";
+import { FaHome, FaDoorOpen } from "react-icons/fa";
+import Logo from "../assets/MissionSAFELogoWhiteBg.png";
+import Folder from "../assets/Folder.png";
+import Calendar from "../assets/Calendar.png";
+import People from "../assets/People.png";
 
 interface NavbarProps {
   children: React.ReactNode;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ children }) => {
-  const navigate = useNavigate();
   const { logout } = useAuth();
-  const variants = {
-    normal: { opacity: 0.5, scale: 1 },
-    active: { opacity: 1, scale: 1.1 },
-    hover: { opacity: 0.7, scale: 1.2 },
-    iconhover: {scale: 1.4}
-  };
-
-
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     try {
@@ -30,66 +24,95 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
       console.error("Error during sign out:", error);
     }
   };
+
   const links = [
-    { to: "/events", text: "Events", className: "bottom"},
-    { to: "/youth", text: "Youth", className: "bottom" },
-    { to: "/forms", text: "Forms", className: "bottom" },
-    
+    { to: "/events", text: "Events", className: "bottom", image: Calendar },
+    { to: "/youth", text: "Youth", className: "bottom", image: People },
+    { to: "/staff", text: "Staff", className: "bottom", image: People },
+    { to: "/forms", text: "Forms", className: "bottom", image: Folder },
   ];
-  
-  
+
+  const topStyle = {
+    width: "100%",
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: " center",
+  };
+  const topIconStyle = { color: "white", width: "100%", height: "50%" };
+
+  const top = [
+    <Link to="/" style={topStyle}>
+      <FaHome style={topIconStyle} />{" "}
+    </Link>,
+    <Image src={Logo} w={"50%"} />,
+    <Link onClick={handleSignOut} to="" style={topStyle}>
+      <FaDoorOpen style={topIconStyle} />{" "}
+    </Link>,
+  ];
 
   return (
-    <div className="main">
-      <div className="navbar" style={{ borderBottom: '5px solid', width:"100vw" }}>
-        <motion.div
-          className="icon"
-          variants={variants}
-          animate={location.pathname === "/" ? 'active' : 'normal'}
-          whileHover="hover"
-        >
-          <Link to="/" className="icon-link">
-            <FaHome className="navicon" />
-          </Link>
-        </motion.div>
-        <motion.div
-          className="icon"
-          variants={variants}
-          whileHover="iconhover"
-        >
-          <Link to="" className="logo-link">
-            <img src={Logo} alt="Logo" className="logo" />
-          </Link>
-        </motion.div>
-        <motion.div
-          className="icon"
-          variants={variants}
-          animate={location.pathname === "/" ? 'active' : 'normal'}
-          whileHover="hover"
-          onClick={handleSignOut}
-        >
-          <Link to="" className="icon-link">
-            <FaDoorOpen className="navicon" />
-          </Link>
-        </motion.div>
-      </div>
-      {children}
-      <div className="navbar" style={{ borderTop: '5px solid' }}>
-        {links.map((link, index) => (
-            <motion.div
-                key={index}
-                className="bottom"
-                variants={variants}
-                animate={location.pathname === link.to ? 'active' : 'normal'}
-                whileHover="hover"
-                >
-                <Link to={link.to} className={link.to === "/" ? "home-link" : undefined}>
-                {link.text}
-                </Link>
-            </motion.div>
+    <Container fluid style={{ height: "100dvh", width: "100dvw", padding: 0 }}>
+      <Paper
+        h={"10%"}
+        w={"100%"}
+        display={"flex"}
+        style={{
+          position: "sticky",
+          top: 0,
+          left: 0,
+          zIndex: 2,
+          background: "#022B41",
+          borderRadius: 3,
+          justifyContent: "space-between",
+        }}
+      >
+        {top.map((t) => (
+          <Box
+            w={"33%"}
+            display={"flex"}
+            style={{ alignItems: "center", justifyContent: "center" }}
+          >
+            {t}
+          </Box>
         ))}
-      </div>
-    </div>
+      </Paper>
+      <Box h={"auto"} w={"100%"} mih={"100%"}>
+        {children}
+      </Box>
+      <Paper
+        style={{
+          position: "fixed",
+          width: "100%",
+          height: "10%",
+          bottom: 0,
+          left: 0,
+          zIndex: 2,
+          background: "#F4F4F4",
+          borderRadius: 3,
+          display: "flex",
+          justifyContent: "space-between",
+        }}
+      >
+        {links.map((link) => (
+          <Box w={"25%"}>
+            <Link
+              to={link.to}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                color: "#022B41",
+              }}
+            >
+              {link.text}
+              <Image src={link.image} w={"50%"} />
+            </Link>
+          </Box>
+        ))}
+      </Paper>
+    </Container>
   );
 };
 
