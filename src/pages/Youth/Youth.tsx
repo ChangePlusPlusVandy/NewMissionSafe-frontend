@@ -4,9 +4,7 @@ import { useAuth } from "../../AuthContext";
 import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
 import { getActiveYouth } from "../../utils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
-import DisplayYouth from "../../components/DisplayYouth";
-
-import "./Youth.css";
+import YouthComponent from "../../components/YouthCard";
 
 const Youth: React.FC = () => {
   const { currentUser } = useAuth();
@@ -36,12 +34,19 @@ const Youth: React.FC = () => {
   const renderYouth = () => {
     if (youth?.length != undefined && youth.length > 0) {
       return (
-        <Flex dir={"row"} align={"stretch"} justify={"center"} wrap={"wrap"}>
+        <Flex
+          dir={"row"}
+          align={"stretch"}
+          justify={"center"}
+          wrap={"wrap"}
+          style={{ gap: "5%" }}
+        >
           {youth?.map((item) => (
-            <DisplayYouth
-              key={item.uuid}
-              name={item.lastName + " " + item.lastName}
+            <YouthComponent
               uuid={item.uuid}
+              firstName={item.firstName}
+              lastName={item.lastName}
+              program={item.program}
             />
           ))}
         </Flex>
