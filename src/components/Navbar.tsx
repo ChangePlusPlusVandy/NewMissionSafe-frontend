@@ -5,7 +5,7 @@ import { Paper, Box, Container, Image } from "@mantine/core";
 import { FaHome, FaDoorOpen } from "react-icons/fa";
 import Logo from "../assets/MissionSAFELogoWhiteBg.png";
 import Folder from "../assets/Folder.png";
-import Calendar from "../assets/Calendar.png";
+import Calendar from "../assets/CalendarNav.png";
 import People from "../assets/People.png";
 
 interface NavbarProps {
@@ -84,7 +84,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
         style={{
           position: "fixed",
           width: "100%",
-          height: "10%",
+          height: "7.5%",
           bottom: 0,
           left: 0,
           zIndex: 2,
@@ -107,7 +107,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
               }}
             >
               {link.text}
-              <Image src={link.image} w={"50%"} />
+              <Image src={link.image} w={"30%"} />
             </Link>
           </Box>
         ))}
