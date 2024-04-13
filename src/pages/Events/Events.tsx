@@ -5,13 +5,12 @@ import { getEventsByDate } from "../../utils/eventInterface";
 import { returnedEventType } from "../../utils/models/eventModel";
 import Event from "../../components/Event";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
-import { add, sub } from 'date-fns'
+import { add, sub } from "date-fns";
 
 import {
   Group,
   Button,
   TextInput,
-  ScrollArea,
   Title,
   Center,
   Flex,
@@ -41,9 +40,18 @@ const Events: React.FC = () => {
         const now = new Date();
 
         // get all events up to 4 month in the past and 2 month in the future
-        const past = await getEventsByDate(token, sub(now, {months: 2}), now);
-        const upcoming = await getEventsByDate(token, now, add(now, {months: 4}));
+        const past = await getEventsByDate(
+          token,
+          sub(now, { months: 12 }),
+          now
+        );
+        past.reverse();
 
+        const upcoming = await getEventsByDate(
+          token,
+          now,
+          add(now, { months: 4 })
+        );
 
         setPastEvents(past);
         setUpcomingEvents(upcoming);
@@ -88,18 +96,17 @@ const Events: React.FC = () => {
   const renderEvents = (events: returnedEventType[]) => {
     return (
       <Center>
-        <ScrollArea type="never" h={"20vh"} w={"100%"}>
-          <Flex direction={"column"} gap="md">
-            {events?.map((item, i) => (
-              <Event
-                key={i}
-                eventName={item.name}
-                eventDate={new Date(item.date)}
-                eventDes={item.description}
-              />
-            ))}
-          </Flex>
-        </ScrollArea>
+        <Flex direction={"column"} gap="md">
+          {events?.map((item, i) => (
+            <Event
+              key={i}
+              eventName={item.name}
+              eventDate={new Date(item.date)}
+              eventDes={item.description}
+              eventCode={item.code}
+            />
+          ))}
+        </Flex>
       </Center>
     );
   };
@@ -119,7 +126,7 @@ const Events: React.FC = () => {
         </Center>
       ) : (
         <Center>
-          <Flex direction="column" align="center" w={"80%"}>
+          <Flex direction="column" align="center" w={"80%"} mb={"30%"}>
             <Center w={"100%"}>
               <Button
                 color="white"
@@ -139,13 +146,13 @@ const Events: React.FC = () => {
             <br />
             <Stack gap={"sm"} w={"100%"}>
               <Center>
-              <Title order={3} style={{ color: "white" }}>
-              Upcoming
-            </Title>
+                <Title order={3} style={{ color: "white" }}>
+                  Upcoming
+                </Title>
               </Center>
-            
+
               {renderEvents(upcomingEvents)}
-              <Divider />
+              <Divider mt={"5%"} />
               <Center>
                 <Title order={3} style={{ color: "white" }}>
                   Previous
