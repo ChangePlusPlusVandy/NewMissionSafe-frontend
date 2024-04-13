@@ -13,6 +13,7 @@ import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
 import Register from "./pages/Auth/Register";
 import CreateEvent from "./pages/Events/CreateEvent";
+import EventInfo from "./pages/Events/EventInfo";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Events from "./pages/Events/Events";
@@ -31,6 +32,7 @@ const router = createBrowserRouter(
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
+      <Route path="/view-event/:eventCode" element={<PrivateRoute element={<EventInfo />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
     </>
   )

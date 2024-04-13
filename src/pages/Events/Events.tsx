@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-import { getAllEvents } from "../../utils/eventInterface";
-import { eventType } from "../../utils/models/eventModel";
+import { getEventsByDate } from "../../utils/eventInterface";
+import { returnedEventType } from "../../utils/models/eventModel";
 import Event from "../../components/Event";
 import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
+import { add, sub } from 'date-fns'
 
 import {
   Group,
@@ -21,16 +22,14 @@ import {
   Divider,
 } from "@mantine/core";
 import { IconSearch } from "@tabler/icons-react";
-import { render } from "react-dom";
 
 const Events: React.FC = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [events, setEvents] = useState<[eventType]>();
-  const [pastEvents, setPastEvents] = useState<eventType[]>([]);
-  const [upcomingEvents, setUpcomingEvents] = useState<eventType[]>([]);
+  const [pastEvents, setPastEvents] = useState<returnedEventType[]>([]);
+  const [upcomingEvents, setUpcomingEvents] = useState<returnedEventType[]>([]);
 
   const icon = <IconSearch style={{ color: "grey" }} />;
 
@@ -38,28 +37,13 @@ const Events: React.FC = () => {
     async function fetchEvents() {
       if (currentUser) {
         const token = await currentUser.getIdToken();
-        const fetchedEvents = await getAllEvents(token);
-        setEvents(fetchedEvents);
 
         const now = new Date();
-        const past = fetchedEvents.filter(
-          (event: eventType) => new Date(event.date) < now
-        );
-        const upcoming = fetchedEvents.filter(
-          (event: eventType) => new Date(event.date) >= now
-        );
 
-        // Sort past events so the most recent is first
-        past.sort(
-          (a: eventType, b: eventType) =>
-            new Date(b.date).getTime() - new Date(a.date).getTime()
-        );
+        // get all events up to 4 month in the past and 2 month in the future
+        const past = await getEventsByDate(token, sub(now, {months: 2}), now);
+        const upcoming = await getEventsByDate(token, now, add(now, {months: 4}));
 
-        // Sort upcoming events so the soonest is first
-        upcoming.sort(
-          (a: eventType, b: eventType) =>
-            new Date(a.date).getTime() - new Date(b.date).getTime()
-        );
 
         setPastEvents(past);
         setUpcomingEvents(upcoming);
@@ -78,8 +62,8 @@ const Events: React.FC = () => {
 
   const getSearchbar = () => {
     return (
-      <Center>
-        <Group justify="space-between" gap="0" w={"85%"}>
+      <Center w={"100%"}>
+        <Group justify="space-between" gap="0" w={"90%"}>
           <TextInput
             variant="unstyled"
             placeholder="Search"
@@ -101,16 +85,16 @@ const Events: React.FC = () => {
     );
   };
 
-  const renderEvents = (events: eventType[]) => {
+  const renderEvents = (events: returnedEventType[]) => {
     return (
       <Center>
-        <ScrollArea type="never" h={"20vh"} w={"90%"}>
+        <ScrollArea type="never" h={"20vh"} w={"100%"}>
           <Flex direction={"column"} gap="md">
             {events?.map((item, i) => (
               <Event
                 key={i}
                 eventName={item.name}
-                eventDate={item.date}
+                eventDate={new Date(item.date)}
                 eventDes={item.description}
               />
             ))}
@@ -135,7 +119,7 @@ const Events: React.FC = () => {
         </Center>
       ) : (
         <Center>
-          <Flex direction="column" align="center">
+          <Flex direction="column" align="center" w={"80%"}>
             <Center w={"100%"}>
               <Button
                 color="white"
@@ -151,12 +135,15 @@ const Events: React.FC = () => {
               </Button>
             </Center>
             <br />
-            <Title order={3} style={{ color: "white" }}>
+            {getSearchbar()}
+            <br />
+            <Stack gap={"sm"} w={"100%"}>
+              <Center>
+              <Title order={3} style={{ color: "white" }}>
               Upcoming
             </Title>
-            <br />
-            <Stack gap={"sm"}>
-              {getSearchbar()}
+              </Center>
+            
               {renderEvents(upcomingEvents)}
               <Divider />
               <Center>

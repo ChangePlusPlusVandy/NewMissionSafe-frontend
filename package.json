@@ -33,6 +33,7 @@
     "@tiptap/starter-kit": "^2.1.16",
     "@types/react-router": "^5.1.20",
     "@types/react-router-dom": "^5.3.3",
+    "date-fns": "^3.6.0",
     "dayjs": "^1.11.10",
     "embla-carousel-react": "^7.1.0",
     "firebase": "^10.5.2",

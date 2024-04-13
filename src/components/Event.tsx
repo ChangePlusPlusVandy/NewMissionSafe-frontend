@@ -33,7 +33,7 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes }) => {
         <Grid.Col span={9}>
           <Title c="white" order={4} w={"100%"} textWrap="wrap" style={{wordBreak: "break-all", msWordBreak:"break-all", whiteSpace: "pre-wrap"}}>{eventName}</Title>
         </Grid.Col>
-        <Grid.Col span={1}>
+        <Grid.Col w={"100%"} span={1}>
           <Popover opened={opened} position="left">
             <Popover.Target>
               <IconInfoCircle onMouseOver={open} onMouseOut={close} color="white"/>
