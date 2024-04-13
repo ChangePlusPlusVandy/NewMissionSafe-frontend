@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { yupResolver } from 'mantine-form-yup-resolver';
 import * as Yup from "yup";
-import { Button, Select, TextInput, Text, Group, Flex, Paper, Title, Space, Checkbox, RadioGroup, Radio, Stack, FileInput } from '@mantine/core';
+import { Button, Select, TextInput, Flex, Paper, Title, Space, FileInput } from '@mantine/core';
 import { createAndAddResponseToForm } from '../../utils/formInterface';
 import { useForm } from '@mantine/form';
 import { useAuth } from '../../AuthContext';
@@ -10,7 +10,7 @@ import { responseType } from '../../utils/models/formModel';
 import { getAllStaff } from "../../utils/staffInterface.tsx";
 import { staffType } from '../../utils/models/staffModel.ts';
 import { ScrollArea } from '@mantine/core';
-import { allowedFileMessage, isImageFile } from './FormUtils/ImageUtils.tsx';
+import { allowedFileMessage, isImageFile, extractFileData } from './FormUtils/ImageUtils.tsx';
 import { programs } from './FormUtils/ProgramUtils.tsx'
 
 const schema = Yup.object().shape({
@@ -28,7 +28,7 @@ const schema = Yup.object().shape({
     image1: Yup.mixed().test('fileFormat', allowedFileMessage, isImageFile),
     image2: Yup.mixed().test('fileFormat', allowedFileMessage, isImageFile),
     image3: Yup.mixed().test('fileFormat', allowedFileMessage, isImageFile),
-})
+});
 
 const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
     const [staff, setStaff] = useState([]);
@@ -37,16 +37,16 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
     const form = useForm({
         initialValues: {
             email: currentUser?.email || '',
-            staffReporting: '',
-            program: '',
-            reportDate: '',
-            incidentDate: '',
-            staffInvolved: '',
-            youthInvolved: '',
-            incidentLocation: '',
-            incidentDetails: '',
-            incidentHandling: '',
-            nextSteps: '',
+            staffReporting: 'adsf',
+            program: 'adf',
+            reportDate: 'asdf',
+            incidentDate: 'asdf',
+            staffInvolved: 'asdf',
+            youthInvolved: 'asdf',
+            incidentLocation: 'adsf',
+            incidentDetails: 'asdf',
+            incidentHandling: 'adsf',
+            nextSteps: 'afds',
             image1: null,
             image2: null,
             image3: null,
@@ -54,11 +54,14 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
     });
 
     const submit = async (values: any) => {
+				const images = await extractFileData(values, ['image1', 'image2', 'image3']);
+				const {image1, image2, image3, ...nonImageFields} = values; //get a nonImageFields obj which excludes the image objects since they are sent separately
         const responseFields: responseType = {
             responseID: crypto.randomUUID(),
             creatorID: currentUser?.uid || '',
             timestamp: new Date(),
-            responses: Object.values(values)
+            responses: Object.values(nonImageFields),
+						images,
         }
         
         try {
