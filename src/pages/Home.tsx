@@ -115,6 +115,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                   eventName={i.name}
                   eventDate={new Date(i.date)}
                   eventDes={i.description}
+                  eventCode={i.code}
                   key={i.code}
                 ></Event>
               ))}
@@ -213,8 +214,8 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               {youth.map((i) => (
                 <DisplayYouth
                   name={i.firstName + " " + i.lastName}
-                  email={i.email}
-                  key={i.firebaseUID}
+                  email={i.uuid}
+                  key={i.uuid}
                 ></DisplayYouth>
               ))}
             </Flex>
