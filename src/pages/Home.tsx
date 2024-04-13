@@ -113,6 +113,8 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                 <Event
                   eventName={i.name}
                   eventDate={new Date(i.date)}
+                  eventDes={i.description}
+                  eventCode={i.code}
                   key={i.code}
                 ></Event>
               ))}
@@ -195,9 +197,11 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
             >
               {events.map((i) => (
                 <Event
+                key={i.code}
                   eventName={i.name}
                   eventDate={new Date(i.date)}
-                  key={i.code}
+                  eventDes={i.description}
+                  eventCode={i.code}
                 ></Event>
               ))}
             </Flex>
