@@ -15,9 +15,8 @@ import {
   Text,
   Space,
   Paper,
-  Stack,
 } from "@mantine/core";
-import { DatePicker, DatePickerInput } from "@mantine/dates";
+//import { DatePicker, DatePickerInput } from "@mantine/dates";
 import { showNotification } from "@mantine/notifications";
 
 //import * as Yup from "yup";
@@ -55,7 +54,7 @@ const CreateEvent: React.FC = () => {
     validate: {
       name: (value) => (value ? null : "Name is required"),
       description: (value) => (value ? null : "Description is required"),
-      //date: (value) => (value ? null : "Date is required"),
+      date: (value) => (value ? null : "Date is required"),
       startTime: (value) => (value ? null : "Start time is required"),
       endTime: (value) => (value ? null : "End time is required"), // End time must be after start time?
       location: (value) => (value.length > 0 ? null : "Location is required"),
@@ -94,7 +93,7 @@ const CreateEvent: React.FC = () => {
           name: values.name,
           description: values.description,
           code: eventCode,
-          date: date,
+          date: values.date,
           startTime: values.startTime,
           endTime: values.endTime,
           location: values.location,
@@ -139,7 +138,7 @@ const CreateEvent: React.FC = () => {
         <Space h="md" />
 
         <form
-          onSubmit={form.onSubmit((values) => console.log("values: ", values))}
+          onSubmit={form.onSubmit(onSubmit)} // onSubmit={form.onSubmit((values) => console.log("values: ", values))}
         >
           <TextInput
             label="Event Name"
@@ -157,16 +156,18 @@ const CreateEvent: React.FC = () => {
           />
           <Space h="sm" />
 
-          <DatePickerInput
+          <TextInput
             label="Pick date"
-            placeholder="Pick date"
-            value={date}
-            onChange={setDate}
+            type="date"
+            placeholder="MM-DD-YYYY"
             styles={{ label: { color: "white" } }}
+            {...form.getInputProps("date")}
           />
+          <Space h="sm" />
 
           <TextInput
             label="Start Time"
+            placeholder="Start Time"
             styles={{ label: { color: "white" } }}
             {...form.getInputProps("startTime")}
           />
@@ -174,6 +175,7 @@ const CreateEvent: React.FC = () => {
 
           <TextInput
             label="End Time"
+            placeholder="End Time"
             styles={{ label: { color: "white" } }}
             {...form.getInputProps("endTime")}
           />
@@ -210,10 +212,14 @@ const CreateEvent: React.FC = () => {
             style={{
               backgroundColor: "#861F25",
               boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)",
+              marginBottom: 10,
             }}
           >
             Create Event
           </Button>
+          <Space h="sm" />
+          <Space h="sm" />
+          <Space h="sm" />
         </form>
       </Box>
     </Paper>
