@@ -25,7 +25,6 @@ import PartnershipsResourcesInternshipsForm from "./pages/Forms/PartnershipsReso
 import CheckRequestForm from "./pages/Forms/CheckRequestForm";
 import IncidentReport from "./pages/Forms/IncidentReport";
 import FormLanding from "./pages/Forms/FormLanding";
-import Test2 from "./pages/Test2";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
