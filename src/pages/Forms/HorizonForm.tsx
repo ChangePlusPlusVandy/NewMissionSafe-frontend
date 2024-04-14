@@ -6,7 +6,7 @@ import { createAndAddResponseToForm } from '../../utils/formInterface';
 import { useNavigate } from 'react-router';
 import { responseType } from '../../utils/models/formModel';
 import { yupResolver } from 'mantine-form-yup-resolver';
-import { allowedFileMessage, isImageFile, extractFileData } from './FormUtils/ImageUtils.tsx';
+import { allowedFileMessage, isImageFile, extractFileData } from "./FormUtils/ImageUtils"
 import * as Yup from 'yup';
 
 const schema = Yup.object().shape({
