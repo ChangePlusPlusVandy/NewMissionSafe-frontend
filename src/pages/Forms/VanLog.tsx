@@ -21,7 +21,7 @@ import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel.ts";
 import { getAllStaff } from "../../utils/staffInterface.tsx";
 import { staffType } from "../../utils/models/staffModel.ts";
-import { ScrollArea } from "@mantine/core";
+import { Box } from "@mantine/core";
 import { programs } from "./FormUtils/ProgramUtils.tsx";
 import {
   allowedFileMessage,
@@ -104,11 +104,25 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
 
   const submit = async (values: any) => {
     const images = await extractFileData(values, [
+      "startingMilage",
+      "endingMilage",
+      "startingGasTank",
+      "endingGasTank",
+      "initialImage",
+      "cleanVanImage",
       "additionalImage1",
       "additionalImage2",
       "additionalImage3",
     ]);
+
+    console.log("THESE ARE THE IMGS", images);
     const {
+      startingMilage,
+      endingMilage,
+      startingGasTank,
+      endingGasTank,
+      initialImage,
+      cleanVanImage,
       additionalImage1,
       additionalImage2,
       additionalImage3,
@@ -148,12 +162,12 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
   }, [currentUser]);
 
   return (
-    <ScrollArea bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} pl={40} pr={40}>
-      <Space h="xl">
+    <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100%"} pl={"5%"} pr={"5%"}>
+      <Space>
         <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>
           Van Log
         </Title>
-        <Paper w={"70%"} bg={"missionSafeBlue.9"}>
+        <Paper w={"100%"} bg={"missionSafeBlue.9"}>
           <Flex direction="column" gap={5}>
             <form onSubmit={form.onSubmit(submit, console.log)}>
               <TextInput
@@ -221,6 +235,7 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
                 styles={{ label: { color: "white" } }}
                 accept="image/jpeg,image/png,image/gif,image/jpg,image/svg,image/webp"
                 {...form.getInputProps("endingGasTank")}
+                required
               />
               <RadioGroup
                 label="Was The van clean when you got in it?"
@@ -233,12 +248,17 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
                   <Radio
                     label="Yes"
                     value="yes"
-                    styles={{ label: { color: "white" } }}
+                    styles={{
+                      label: { color: "white", marginRight: "0.5rem" },
+                    }}
+                    mr={"5%"}
                   />
                   <Radio
                     label="No"
                     value="no"
-                    styles={{ label: { color: "white" } }}
+                    styles={{
+                      label: { color: "white", marginRight: "0.5rem" },
+                    }}
                   />
                 </Group>
               </RadioGroup>
@@ -264,12 +284,17 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
                   <Radio
                     label="Yes"
                     value="yes"
-                    styles={{ label: { color: "white" } }}
+                    styles={{
+                      label: { color: "white", marginRight: "0.5rem" },
+                    }}
+                    mr={"5%"}
                   />
                   <Radio
                     label="No"
                     value="no"
-                    styles={{ label: { color: "white" } }}
+                    styles={{
+                      label: { color: "white", marginRight: "0.5rem" },
+                    }}
                   />
                 </Group>
               </RadioGroup>
@@ -299,14 +324,14 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
                 {...form.getInputProps("additionalImage3")}
               />
 
-              <Group justify="flex-end" mt="md">
+              <Group justify="flex-end" mt="md" mb="35%">
                 <Button type="submit">Submit</Button>
               </Group>
             </form>
           </Flex>
         </Paper>
       </Space>
-    </ScrollArea>
+    </Box>
   );
 };
 export default VanLog;

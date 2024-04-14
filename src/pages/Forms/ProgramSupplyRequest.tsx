@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { yupResolver } from 'mantine-form-yup-resolver';
 import * as Yup from "yup";
-import { Button, TextInput, Group, Flex, Paper, Title, Space, RadioGroup, Radio, Select } from '@mantine/core';
+import { Button, TextInput, Group, Flex, Paper, Title, Space, Select } from '@mantine/core';
 import { createAndAddResponseToForm } from '../../utils/formInterface';
 import { useForm } from '@mantine/form';
 import { useAuth } from '../../AuthContext';
@@ -9,8 +9,7 @@ import { useNavigate } from 'react-router';
 import { responseType } from '../../utils/models/formModel';
 import { getAllStaff } from "../../utils/staffInterface.tsx";
 import { staffType } from '../../utils/models/staffModel.ts';
-import { DateInput } from "@mantine/dates";
-import { ScrollArea } from '@mantine/core';
+import { Box } from '@mantine/core';
 import { programs } from './FormUtils/ProgramUtils.tsx';
 
 const schema = Yup.object().shape({
@@ -33,11 +32,6 @@ const schema = Yup.object().shape({
     itemQuantity5: Yup.number(),
     itemCost5: Yup.number(),     
 });
-
-interface formProps {
-    formID: string;
-    programs: string[];
-}
 
 const ProgramSupplyRequest: React.FC<{formID: string}> = ({ formID }) => {
     const [staff, setStaff] = useState([]);
@@ -110,12 +104,12 @@ const ProgramSupplyRequest: React.FC<{formID: string}> = ({ formID }) => {
     }, [currentUser]);
 
     return (
-        <ScrollArea bg={"missionSafeBlue.9"} w={"100%"} h={"100%"}  pl={40} pr={40}>
+        <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100vh"}  pl={40} pr={40}>
             <Space h="xl" />
             <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>
                 Program Supply Request
             </Title>
-            <Paper w={"70%"} bg={"missionSafeBlue.9"}>
+            <Paper w={"95%"} bg={"missionSafeBlue.9"}>
                 <Flex
                     direction="column"
                     gap={5}
@@ -251,9 +245,14 @@ const ProgramSupplyRequest: React.FC<{formID: string}> = ({ formID }) => {
                         <Button type="submit">Submit</Button>
                     </Group>
                     </form>
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    {/* will look at this in the future */}
                 </Flex>
             </Paper>
-        </ScrollArea>
+        </Box>
 
     )
 }

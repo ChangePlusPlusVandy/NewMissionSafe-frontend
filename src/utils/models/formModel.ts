@@ -2,7 +2,7 @@ export interface responseType {
   responseID: string;
   creatorID: string;
   timestamp: Date;
-  responses: (string | string[])[];
+  responses: (string | string[] | {key : string})[];
   associatedYouthID?: string;
   images?: {
     data: string;
