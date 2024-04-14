@@ -3,9 +3,10 @@ import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { createCode, createEvent } from "../utils/eventInterface";
-import "./CreateEvent.css";
 import { eventType } from "../utils/models/eventModel";
 import "@mantine/dates/styles.css";
+import { showNotification } from "@mantine/notifications";
+import { getAllStaff } from "../utils/staffInterface";
 import {
   TextInput,
   Textarea,
@@ -15,40 +16,27 @@ import {
   Text,
   Space,
   Paper,
+  MultiSelect,
 } from "@mantine/core";
-//import { DatePicker, DatePickerInput } from "@mantine/dates";
-import { showNotification } from "@mantine/notifications";
-
-//import * as Yup from "yup";
-
-// const schema = Yup.object().shape({
-//   name: Yup.string().required("Event name is required"),
-//   description: Yup.string().required("Description is required"),
-//   date: Yup.date().required("Event date is required"),
-//   startTime: Yup.string().required("Start time is required"),
-//   endTime: Yup.string().required("End time is required"),
-//   location: Yup.string().required("Location is required"),
-//   programs: Yup.string().required("Program is required"),
-//   staff: Yup.string().required("Staff name is required"),
-// });
 
 const CreateEvent: React.FC = () => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
+  const [staff, setStaff] = useState<{ value: string; label: string }[]>([]);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const [date, setDate] = useState<Date | null>(null);
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
 
   const form = useForm({
-    //resolver: yupResolver(schema),
     initialValues: {
       name: "",
       description: "",
-      date: null,
+      date: "",
       startTime: "",
       endTime: "",
       location: "",
-      programs: "",
-      staff: "",
+      programs: [],
+      staff: [],
     },
 
     validate: {
@@ -56,19 +44,63 @@ const CreateEvent: React.FC = () => {
       description: (value) => (value ? null : "Description is required"),
       date: (value) => (value ? null : "Date is required"),
       startTime: (value) => (value ? null : "Start time is required"),
-      endTime: (value) => (value ? null : "End time is required"), // End time must be after start time?
+      endTime: (value, values) => {
+        if (!value) {
+          return "End time is required";
+        }
+        if (!values.startTime) {
+          return "Start time must be set first";
+        }
+        if (values.startTime >= value) {
+          return "End time must be after start time";
+        }
+        return null;
+      },
       location: (value) => (value.length > 0 ? null : "Location is required"),
       programs: (value) => (value.length > 0 ? null : "Program is required"),
       staff: (value) => (value.length > 0 ? null : "Staff name is required"),
     },
   });
 
-  /// const [error, setError] = useState<string>("");
+  useEffect(() => {
+    const getStaff = async () => {
+      const token = await currentUser?.getIdToken();
+      if (token) {
+        const s = await getAllStaff(token);
+        const mappedArray = s.map(
+          (item: {
+            firebaseUID: string;
+            firstName: string;
+            lastName: string;
+          }) => ({
+            value: item.firebaseUID,
+            label: `${item.firstName} ${item.lastName}`,
+          })
+        );
 
-  useEffect(() => {}, [currentUser, navigate]);
+        setStaff(mappedArray);
+        setIsLoading(false);
+      } else {
+        navigate("/events");
+      }
+    };
+    getStaff();
+  }, [currentUser, navigate]);
+
+  const programs = [
+    "EA",
+    "YLSC",
+    "InVest NOW!",
+    "Futures Plus",
+    "SCD",
+    "Power Boxing & Fitness",
+    "Metro Men's Movement",
+  ];
 
   const onSubmit = async (values: typeof form.values) => {
     try {
+      console.log("got to here");
+      setError("");
       // Generate a unique event code
       const token = await currentUser?.getIdToken();
       if (!token) {
@@ -93,13 +125,12 @@ const CreateEvent: React.FC = () => {
           name: values.name,
           description: values.description,
           code: eventCode,
-          date: values.date,
+          date: new Date(values.date),
           startTime: values.startTime,
           endTime: values.endTime,
           location: values.location,
-          programs: [values.programs], // Assuming programs is a single string, convert to array
-          staff: [values.staff], // Assuming staff is a single string, convert to array
-          // include other fields as necessary
+          programs: values.programs,
+          staff: values.staff,
         };
 
         // Create the event
@@ -107,16 +138,18 @@ const CreateEvent: React.FC = () => {
         console.log(response);
 
         // Redirect to home page or another relevant page
-        navigate("/");
+        navigate("/events");
       }
     } catch (err) {
       if (err instanceof Error) {
+        setError(err.message);
         showNotification({
           title: "Error",
           message: err.message,
           color: "red",
         });
       } else {
+        setError("An unknown error occurred");
         showNotification({
           title: "Error",
           message: "An unknown error occurred",
@@ -127,101 +160,122 @@ const CreateEvent: React.FC = () => {
   };
 
   return (
-    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
-      <Box maw={500} mx="auto">
-        <Title order={1} c={"white"}>
-          Create Event
-        </Title>
-        <Text size="sm" c={"white"}>
-          Enter the following information to create a new event.
-        </Text>
-        <Space h="md" />
+    <Paper
+      bg={"missionSafeBlue.9"}
+      w={"100%"}
+      mih={"100dvh"}
+      radius={0}
+      pl={"5%"}
+      pr={"5%"}
+    >
+      {isLoading ? (
+        <Title c="white">Fetching Data...</Title>
+      ) : (
+        <Box>
+          <Space h={"lg"} />
+          <Box maw={500} mx="auto">
+            <Title order={1} c={"white"}>
+              Create Event
+            </Title>
+            <Text size="sm" c={"white"}>
+              Enter the following information to create a new event.
+            </Text>
+            <Space h="md" />
 
-        <form
-          onSubmit={form.onSubmit(onSubmit)} // onSubmit={form.onSubmit((values) => console.log("values: ", values))}
-        >
-          <TextInput
-            label="Event Name"
-            placeholder="Enter event name"
-            {...form.getInputProps("name")}
-            styles={{ label: { color: "white" } }}
-          />
-          <Space h="sm" />
+            <form onSubmit={form.onSubmit(onSubmit)}>
+              <TextInput
+                label="Event Name"
+                placeholder="Enter event name"
+                {...form.getInputProps("name")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
 
-          <Textarea
-            label="Description"
-            placeholder="Event description"
-            {...form.getInputProps("description")}
-            styles={{ label: { color: "white" } }}
-          />
-          <Space h="sm" />
+              <Textarea
+                label="Description"
+                placeholder="Event description"
+                {...form.getInputProps("description")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="Pick date"
-            type="date"
-            placeholder="MM-DD-YYYY"
-            styles={{ label: { color: "white" } }}
-            {...form.getInputProps("date")}
-          />
-          <Space h="sm" />
+              <TextInput
+                label="Pick date"
+                type="date"
+                placeholder="MM-DD-YYYY"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("date")}
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="Start Time"
-            placeholder="Start Time"
-            styles={{ label: { color: "white" } }}
-            {...form.getInputProps("startTime")}
-          />
-          <Space h="sm" />
+              <TextInput
+                type="time"
+                label="Start Time"
+                placeholder="Start Time"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("startTime")}
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="End Time"
-            placeholder="End Time"
-            styles={{ label: { color: "white" } }}
-            {...form.getInputProps("endTime")}
-          />
-          <Space h="sm" />
+              <TextInput
+                type="time"
+                label="End Time"
+                placeholder="End Time"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("endTime")}
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="Location"
-            placeholder="Enter location"
-            {...form.getInputProps("location")}
-            styles={{ label: { color: "white" } }}
-          />
-          <Space h="sm" />
+              <TextInput
+                label="Location"
+                placeholder="Enter location"
+                {...form.getInputProps("location")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="Programs"
-            placeholder="Related programs"
-            {...form.getInputProps("programs")}
-            styles={{ label: { color: "white" } }}
-          />
-          <Space h="sm" />
+              <MultiSelect
+                data={programs}
+                {...form.getInputProps("programs")}
+                label="Program"
+                styles={{ label: { color: "white" } }}
+                required
+                searchable
+              />
+              <Space h="sm" />
 
-          <TextInput
-            label="Staff"
-            placeholder="Staff involved"
-            {...form.getInputProps("staff")}
-            styles={{ label: { color: "white" } }}
-          />
-          <Space h="md" />
+              <MultiSelect
+                data={staff}
+                {...form.getInputProps("staff")}
+                label="Staff"
+                styles={{ label: { color: "white" } }}
+                required
+                searchable
+              />
+              <Space h="md" />
 
-          <Button
-            type="submit"
-            color="white"
-            variant="filled"
-            style={{
-              backgroundColor: "#861F25",
-              boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)",
-              marginBottom: 10,
-            }}
-          >
-            Create Event
-          </Button>
-          <Space h="sm" />
-          <Space h="sm" />
-          <Space h="sm" />
-        </form>
-      </Box>
+              <Button
+                type="submit"
+                color="white"
+                variant="filled"
+                style={{
+                  backgroundColor: "#861F25",
+                  boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)",
+                  marginBottom: 10,
+                }}
+              >
+                Create Event
+              </Button>
+              {error && <Text c="red">{error}</Text>}
+              <Space h="sm" />
+              <Space h="sm" />
+              <Space h="sm" />
+            </form>
+          </Box>
+          <br />
+          <br />
+        </Box>
+      )}
     </Paper>
   );
 };
