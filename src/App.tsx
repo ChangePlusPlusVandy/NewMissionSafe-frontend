@@ -47,7 +47,6 @@ const router = createBrowserRouter(
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
-      <Route path="/test" element={<PrivateRoute element={<Test2 />} />} />
       <Route
         path="/forms/partnerships-resources-internships"
         element={
