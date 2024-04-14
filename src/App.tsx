@@ -38,8 +38,8 @@ const router = createBrowserRouter(
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
       <Route path="/forms" element={<PrivateRoute element={<Forms />} />} />
 
-      <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm />} />} />
-      <Route path="/forms/horizon-form" element={<PrivateRoute element={<HorizonForm />} />} />
+      <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm formID = "0002"/>} />} />
+      <Route path="/forms/horizon-form" element={<PrivateRoute element={<HorizonForm formID = "0003"/>} />} />
     </>
   )
 );

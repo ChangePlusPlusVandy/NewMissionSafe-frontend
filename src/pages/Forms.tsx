@@ -10,7 +10,7 @@ const Forms: React.FC = () => {
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const buttons = [
-    { name: "Horizon Broadening", desc: "", link: "/forms/horizon-form" },
+    { name: "Horizon Broadening", desc: "Log interaction with another service provider.", link: "/forms/horizon-form" },
     { name: "Expense Report", desc: "List and store expenses.", link: "/forms/expense-form" }, 
     { name: "Partnerships, Resources & Internships List", desc: "List and store partnerships, resources & internships." },
     { name: "Program Supply and Request", desc: "Request and supply programs" },

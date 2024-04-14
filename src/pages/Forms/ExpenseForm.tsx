@@ -13,7 +13,8 @@ interface Expense {
     amount: string;
     [key: string]: string; // Index signature
   }
-const ExpenseForm = () => {
+
+const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
   
   const { currentUser } = useAuth();
   const [employeeName, setEmployeeName] = useState('');
@@ -38,8 +39,8 @@ const ExpenseForm = () => {
       const expense = expenses[i];
 
       const responseFields = {
-        responseID: '', 
-        creatorID: '', 
+        responseID: crypto.randomUUID(),
+        creatorID: currentUser?.uid || '',
         associatedYouthID: '', 
         timestamp: new Date(), 
         responses: Object.values(expense) 
@@ -52,7 +53,7 @@ const ExpenseForm = () => {
         );
       } else {
           try {
-            await createAndAddResponseToForm("0002", responseFields, token);
+            await createAndAddResponseToForm(formID, responseFields, token);
             console.log('Form response added successfully for expense:', i + 1);
           } catch (error) {
             console.error('Error adding form response for expense:', i + 1, error);
