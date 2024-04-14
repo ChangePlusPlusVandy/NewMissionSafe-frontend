@@ -25,6 +25,9 @@ import PartnershipsResourcesInternshipsForm from "./pages/Forms/PartnershipsReso
 import CheckRequestForm from "./pages/Forms/CheckRequestForm";
 import IncidentReport from "./pages/Forms/IncidentReport";
 import FormLanding from "./pages/Forms/FormLanding";
+import Forms from "./pages/Forms";
+import ExpenseForm from "./pages/Forms/ExpenseForm";
+import HorizonForm from "./pages/Forms/HorizonForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -76,6 +79,10 @@ const router = createBrowserRouter(
         element={<PrivateRoute element={<IncidentReport formID="00124" />} />}
       />
       <Route path="/forms/:formID" element={<PrivateRoute element={<FormLanding />} />} />
+      <Route path="/forms" element={<PrivateRoute element={<Forms />} />} />
+
+      <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm formID = "0002"/>} />} />
+      <Route path="/forms/horizon-form" element={<PrivateRoute element={<HorizonForm formID = "0003"/>} />} />
     </>
   )
 );

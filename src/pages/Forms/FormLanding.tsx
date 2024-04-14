@@ -12,7 +12,7 @@ const FormLanding: React.FC = () => {
   const { formID } = useParams<{ formID: string }>();
   const [form, setForm] = useState<formType | null>(null);
   const [error, setError] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true)
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const newRoutes: Record<string, string> = {
     "10": "/forms/partnerships-resources-internships",
@@ -21,6 +21,8 @@ const FormLanding: React.FC = () => {
     "0015": "/forms/van-log",
     "0012": "/forms/check-request-form",
     "00124": "/forms/incident-report",
+    "002": "/forms/expense-form",
+    "003": "/forms/horizon-form",
   };
 
   useEffect(() => {
@@ -29,7 +31,7 @@ const FormLanding: React.FC = () => {
         setError("No token available");
       } else {
         setForm(await getFormByID(formID, t));
-        setIsLoading(false)
+        setIsLoading(false);
       }
     });
   }, [currentUser, formID]);
