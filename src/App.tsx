@@ -11,12 +11,14 @@ import { AuthProvider } from "./AuthContext";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
-import Register from "./pages/Auth/Register";
-import CreateEvent from "./pages/CreateEvent";
+import CreateEvent from "./pages/Events/CreateEvent";
+import EventInfo from "./pages/Events/EventInfo";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Events from "./pages/Events";
+import Events from "./pages/Events/Events";
 import Youth from "./pages/Youth/Youth";
+import RegisterYouth from "./pages/Auth/RegisterYouth";
+import RegisterStaff from "./pages/Auth/RegisterStaff";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -28,9 +30,17 @@ const router = createBrowserRouter(
         element={<PrivateRoute element={<CreateEvent />} />}
       />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
+      <Route
+        path="/register-staff"
+        element={<PrivateRoute element={<RegisterStaff />} />}
+      />
+      <Route
+        path="/register-youth"
+        element={<PrivateRoute element={<RegisterYouth />} />}
+      />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
+      <Route path="/view-event/:eventCode" element={<PrivateRoute element={<EventInfo />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
     </>
   )

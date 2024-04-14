@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
-import { createCode, createEvent } from "../utils/eventInterface";
-import { eventType } from "../utils/models/eventModel";
+import { useAuth } from "../../AuthContext";
+import { createCode, createEvent } from "../../utils/eventInterface";
+import { eventType } from "../../utils/models/eventModel";
 import "@mantine/dates/styles.css";
 import { showNotification } from "@mantine/notifications";
-import { getAllStaff } from "../utils/staffInterface";
+import { getAllStaff } from "../../utils/staffInterface";
 import {
   TextInput,
   Textarea,
