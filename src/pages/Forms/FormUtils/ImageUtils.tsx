@@ -28,7 +28,10 @@ export const extractFileData = async (
 
   fieldNames.forEach((fieldName) => {
     const file = input[fieldName];
+		console.log("type of file:", typeof file);
+		console.log("instnace file:", file.constructor.name);
     if (file instanceof File) {
+			console.log("thing was an instance of File")
       const promise = file.arrayBuffer().then((data) => {
         let binary = "";
         const bytes = new Uint8Array(data);
@@ -36,6 +39,7 @@ export const extractFileData = async (
         for (let i = 0; i < len; i++) {
           binary += String.fromCharCode(bytes[i]);
         }
+				console.log("binary created: ", binary);
         return {
           data: window.btoa(binary),
           mimeType: file.type,

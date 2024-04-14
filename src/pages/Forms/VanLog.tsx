@@ -14,7 +14,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mantine/core";
-import { createAndAddResponseToForm } from "../../utils/formInterface.ts";
+import { createAndAddResponseFormData } from "../../utils/formInterface.ts";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext.tsx";
 import { useNavigate } from "react-router";
@@ -103,30 +103,25 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
   });
 
   const submit = async (values: any) => {
-    const images = await extractFileData(values, [
-      "additionalImage1",
-      "additionalImage2",
-      "additionalImage3",
-    ]);
-    const {
-      additionalImage1,
-      additionalImage2,
-      additionalImage3,
-      ...nonImageFields
-    } = values; //get a nonImageFields obj which excludes the image objects since they are sent separately
-    const responseFields: responseType = {
-      responseID: crypto.randomUUID(),
-      creatorID: currentUser?.uid || "",
-      timestamp: new Date(),
-      responses: Object.values(nonImageFields),
-      images,
-    };
+		const formData = new FormData();
+		formData.append("responseID", crypto.randomUUID());
+		formData.append("creatorID", currentUser?.uid || "");
+		formData.append("timestamp", new Date().toISOString());
+		for (const value of Object.values(values)) {
+			if(value instanceof File){
+				formData.append("images", value);
+				formData.append("responses", "image");
+			} else {
+				formData.append("responses", value as string);
+			}
+		}
+
     try {
       const token = await currentUser?.getIdToken();
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseToForm(formID, responseFields, token);
+        await createAndAddResponseFormData(formID, formData as any, token);
         navigate("/forms");
       }
     } catch (error) {

@@ -24,7 +24,24 @@ export const getAllForms = async(token: string) =>{
     return await handleJsonResponse(response);
 }
 
-export const createAndAddResponseToForm = async(
+export const createAndAddResponseFormData = async(
+    formID: string,
+    responseFields: responseType,
+    token: string,
+) => {
+    const response = await fetch(
+        `${BACKEND_ROUTE}/${formID}`, {
+            method: 'PUT',
+            body: responseFields as any,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+    )
+    return await handleMiscResponse(response)
+}
+
+export const createAndAddResponseJson = async(
     formID: string,
     responseFields: responseType,
     token: string,
@@ -34,7 +51,7 @@ export const createAndAddResponseToForm = async(
             method: 'PUT',
             body: JSON.stringify(responseFields),
             headers: {
-                'Content-Type': 'application/json',
+				'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
             }
         }
