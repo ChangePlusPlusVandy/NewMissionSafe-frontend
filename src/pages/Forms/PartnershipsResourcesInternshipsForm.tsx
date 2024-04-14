@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mantine/core";
-import { createAndAddResponseToForm } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
@@ -68,7 +68,7 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseToForm(formID, responseFields, token);
+        await createAndAddResponseJson(formID, responseFields, token);
         navigate("/forms");
       }
     } catch (error) {
@@ -81,11 +81,10 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
     <Paper
       bg={"missionSafeBlue.9"}
       w={"100%"}
-      h={"100%"}
       mih={"100dvh"}
       radius={0}
-      pl={40}
-      pr={40}
+      pl={"5%"}
+      pr={"5%"}
     >
       <Space h="xl" />
       <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>

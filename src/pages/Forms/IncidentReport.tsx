@@ -11,18 +11,16 @@ import {
   Space,
   FileInput,
 } from "@mantine/core";
-import { createAndAddResponseToForm } from "../../utils/formInterface";
+import { createAndAddResponseFormData } from "../../utils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
-import { responseType } from "../../utils/models/formModel";
 import { getAllStaff } from "../../utils/staffInterface.tsx";
 import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
 import {
   allowedFileMessage,
   isImageFile,
-  extractFileData,
 } from "./FormUtils/ImageUtils.tsx";
 import { programs } from "./FormUtils/ProgramUtils.tsx";
 
@@ -70,26 +68,25 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
   });
 
   const submit = async (values: any) => {
-    const images = await extractFileData(values, [
-      "image1",
-      "image2",
-      "image3",
-    ]);
-    const { image1, image2, image3, ...nonImageFields } = values; //get a nonImageFields obj which excludes the image objects since they are sent separately
-    const responseFields: responseType = {
-      responseID: crypto.randomUUID(),
-      creatorID: currentUser?.uid || "",
-      timestamp: new Date(),
-      responses: Object.values(nonImageFields),
-      images,
-    };
+    const formData = new FormData();
+    formData.append("responseID", crypto.randomUUID());
+    formData.append("creatorID", currentUser?.uid || "");
+    formData.append("timestamp", new Date().toISOString());
+    for (const value of Object.values(values)) {
+      if (value instanceof File) {
+        formData.append("images", value);
+        formData.append("responses", "image");
+      } else {
+        formData.append("responses", value as string);
+      }
+    }
 
     try {
       const token = await currentUser?.getIdToken();
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseToForm(formID, responseFields, token);
+        await createAndAddResponseFormData(formID, formData as any, token);
         navigate("/forms");
       }
     } catch (error) {
@@ -233,3 +230,4 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
   );
 };
 export default IncidentReport;
+

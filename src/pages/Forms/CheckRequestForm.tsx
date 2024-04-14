@@ -13,7 +13,7 @@ import {
   Radio,
   Stack,
 } from "@mantine/core";
-import { createAndAddResponseToForm } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
@@ -57,7 +57,7 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseToForm(formID, responseFields, token);
+        await createAndAddResponseJson(formID, responseFields, token);
         navigate("/forms");
       }
     } catch (error) {
@@ -65,6 +65,7 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
       console.error(error);
     }
   };
+
   const form = useForm({
     initialValues: {
       reasonForCheck: "",
@@ -81,7 +82,7 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
   });
   return (
     <Box bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} pl={"5%"} pr={"5%"}>
-      <Space h="lg" />
+      <Space h="xl" />
       <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>
         Check Request
       </Title>
@@ -130,22 +131,22 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
                 <Radio
                   value="Mailed"
                   label="Mailed"
-                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
+                  styles={{ label: { color: "white" } }}
                 />
                 <Radio
                   value="In Person"
                   label="In Person"
-                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
+                  styles={{ label: { color: "white" } }}
                 />
                 <Radio
                   value="Emailed"
                   label="Emailed"
-                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
+                  styles={{ label: { color: "white" } }}
                 />
                 <Radio
                   value="Other"
                   label="Other"
-                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
+                  styles={{ label: { color: "white" } }}
                 />
                 {form.getInputProps("disbursalMethod")?.value === "Other" && (
                   <TextInput
@@ -199,4 +200,5 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
     </Box>
   );
 };
+
 export default CheckRequestForm;

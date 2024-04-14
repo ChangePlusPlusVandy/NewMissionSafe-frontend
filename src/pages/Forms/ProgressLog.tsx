@@ -13,7 +13,7 @@ import {
   Space,
   Checkbox,
 } from "@mantine/core";
-import { createAndAddResponseToForm } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
@@ -33,6 +33,7 @@ import {
   civicEngagementDevelopmentOptions,
   socialDevelopmentOptions,
 } from "./FormUtils/ProgressUtils.tsx";
+
 import { programs } from "./FormUtils/ProgramUtils.tsx";
 
 const schema = Yup.object().shape({
@@ -49,7 +50,7 @@ const schema = Yup.object().shape({
   programName: Yup.string().required("Program Name is required"),
   engagementDate: Yup.string().required("Date of Engagement is required"),
   personalDevelopment: Yup.array(),
-  professionalDevelopment: Yup.array(),
+  profressionalDevelopment: Yup.array(),
   educationalDevelopment: Yup.array(),
   leadershipDevelopment: Yup.array(),
   healthDevelopment: Yup.array(),
@@ -115,7 +116,7 @@ const ProgressLog: React.FC<{ formID: string }> = ({ formID }) => {
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseToForm(formID, responseFields, token);
+        await createAndAddResponseJson(formID, responseFields, token);
         navigate("/forms");
       }
     } catch (error) {
