@@ -8,7 +8,6 @@ import "./Home.css";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser?.displayName);
   const [userDetails, setUserDetails] = useState<{
     token: string;
     userId: string;
@@ -56,6 +55,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
         currentDate.setHours(0, 0, 0, 0);
         setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
+        console.log(todayEvents);
         setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
@@ -122,7 +122,6 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
           );
         }
       })()}
-      <Space h="lg" />
     </section>
   );
 };
@@ -137,11 +136,16 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
       try {
         const currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
-        const endDate = new Date(
-          currentDate.setDate(currentDate.getDate() + 7)
-        );
+        const tomorrrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+        const endDate = new Date(tomorrrow.getTime() + 24 * 60 * 60 * 1000 * 8);
+        
         setLoading(true);
-        const todayEvents = await getEventsByDate(token, currentDate, endDate);
+        const todayEvents = await getEventsByDate(token, tomorrrow, endDate);
+        console.log(todayEvents)
+        todayEvents.sort(function (a, b) {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        });
+
         setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
@@ -162,7 +166,7 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
           Upcoming Events
         </Title>
       </Center>
-      <Space h="sm" />
+      <Space h="sm" />  
 
       {(() => {
         if (eventsError != "") {
@@ -190,14 +194,14 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
         } else {
           return (
             <Flex
-              dir={"row"}
-              align={"stretch"}
+              direction={"column"}
+              align={"center"}
               justify={"center"}
-              wrap={"wrap"}
+              w={"100%"}
             >
               {events.map((i) => (
                 <Event
-                key={i.code}
+                  key={i.code}
                   eventName={i.name}
                   eventDate={new Date(i.date)}
                   eventDes={i.description}
@@ -208,7 +212,7 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
           );
         }
       })()}
-      <Space h="lg" />
+      <Space h="xl" />
     </section>
   );
 };

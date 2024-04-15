@@ -142,8 +142,8 @@ const Events: React.FC = () => {
               </Button>
             </Center>
             <br />
-            {getSearchbar()}
-            <br />
+            {/* {getSearchbar()} <-search bar not implemented yet */}
+            {/* <br /> */}
             <Stack gap={"sm"} w={"100%"}>
               <Center>
                 <Title order={3} style={{ color: "white" }}>

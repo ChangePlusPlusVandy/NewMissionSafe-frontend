@@ -4,7 +4,7 @@ import { useAuth } from "../../AuthContext";
 import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
 import { getActiveYouth } from "../../utils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
-import YouthComponent from "../../components/YouthCard";
+import YouthCard from "../../components/YouthCard";
 
 const Youth: React.FC = () => {
   const { currentUser } = useAuth();
@@ -43,7 +43,7 @@ const Youth: React.FC = () => {
           mb={"25%"}
         >
           {youth?.map((item) => (
-            <YouthComponent
+            <YouthCard
               uuid={item.uuid}
               firstName={item.firstName}
               lastName={item.lastName}
@@ -61,7 +61,7 @@ const Youth: React.FC = () => {
     }
   };
   return (
-    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
+    <Paper bg={"missionSafeBlue.9"} w={"100%"} mih={"100dvh"} radius={0}>
       <Space h="xl" />
       <Center>
         <Title order={1} c={"white"}>
@@ -86,7 +86,7 @@ const Youth: React.FC = () => {
                 }}
                 onClick={handleRegisterYouth}
               >
-                Add Youth
+                Register Youth
               </Button>
             </Center>
             <br />

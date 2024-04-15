@@ -17,8 +17,10 @@ import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Events from "./pages/Events/Events";
 import Youth from "./pages/Youth/Youth";
+import Staff from "./pages/Staff";
 import RegisterYouth from "./pages/Auth/RegisterYouth";
 import RegisterStaff from "./pages/Auth/RegisterStaff";
+import Unauthorized from "./pages/Auth/Unauthorized";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -42,6 +44,8 @@ const router = createBrowserRouter(
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
       <Route path="/view-event/:eventCode" element={<PrivateRoute element={<EventInfo />} />} />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
+      <Route path="/staff" element={<PrivateRoute element={<Staff />} />} />
+      <Route path="/unauthorized" element={<PrivateRoute element={<Unauthorized />} />} />
     </>
   )
 );

@@ -125,3 +125,10 @@ export const updateAttribute = async (
   );
   return await handleMiscResponse(response);
 };
+
+export const rolesMap: Record<number, string> = {
+  1: "Staff",
+  2: "Counselor",
+  3: "Manager",
+  4: "Admin",
+};
