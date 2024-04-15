@@ -12,12 +12,12 @@ const Forms: React.FC = () => {
     {
       name: "Horizon Broadening",
       desc: "Log interaction with another service provider.",
-      link: "/forms/003",
+      link: "/forms/0003",
     },
     {
       name: "Expense Report",
       desc: "List and store expenses.",
-      link: "/forms/002",
+      link: "/forms/0002",
     },
     {
       name: "Partnerships, Resources & Internships List",

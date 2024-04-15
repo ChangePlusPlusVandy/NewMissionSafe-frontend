@@ -55,35 +55,49 @@ const HorizonForm: React.FC<{ formID: string }> = ({ formID }) => {
       numYouthAttended: "",
       notes: "",
       reportDate: "",
-      image1: null,
-      image2: null,
-      image3: null,
+      image1: undefined,
+      image2: undefined,
+      image3: undefined,
     },
     validate: yupResolver(schema),
   });
 
   const handleSubmit = async (values: any) => {
-    const images = await extractFileData(values, [
-      "image1",
-      "image2",
-      "image3",
-    ]);
-    const { image1, image2, image3, ...nonImageFields } = values;
+    // const images = await extractFileData(values, [
+    //   "image1",
+    //   "image2",
+    //   "image3",
+    // ]);
+    // const { image1, image2, image3, ...nonImageFields } = values;
 
-    const responseFields: responseType = {
-      responseID: crypto.randomUUID(),
-      creatorID: currentUser?.uid || "",
-      timestamp: new Date(),
-      responses: Object.values(nonImageFields),
-      images,
-    };
+    // const responseFields: responseType = {
+    //   responseID: crypto.randomUUID(),
+    //   creatorID: currentUser?.uid || "",
+    //   timestamp: new Date(),
+    //   responses: Object.values(nonImageFields),
+    //   images,
+    // };
+
+
+    const formData = new FormData();
+    formData.append("responseID", crypto.randomUUID());
+    formData.append("creatorID", currentUser?.uid || "");
+    formData.append("timestamp", new Date().toISOString());
+    for (const value of Object.values(values)) {
+      if (value instanceof File) {
+        formData.append("images", value);
+        formData.append("responses", "image");
+      } else {
+        formData.append("responses", value as string);
+      }
+    }
 
     try {
       const token = await currentUser?.getIdToken();
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseJson(formID, responseFields, token);
+        await createAndAddResponseJson(formID, formData as any, token);
         navigate("/forms");
         console.log("Horizon form response added successfully");
       }

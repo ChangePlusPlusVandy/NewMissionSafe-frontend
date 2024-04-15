@@ -21,8 +21,8 @@ const FormLanding: React.FC = () => {
     "0015": "/forms/van-log",
     "0012": "/forms/check-request-form",
     "00124": "/forms/incident-report",
-    "002": "/forms/expense-form",
-    "003": "/forms/horizon-form",
+    "0002": "/forms/expense-form",
+    "0003": "/forms/horizon-form",
   };
 
   useEffect(() => {
@@ -68,7 +68,7 @@ const FormLanding: React.FC = () => {
     } else {
       return (
         <div>
-          <Text c={"black"}>There are no previously submitted responses</Text>
+          <Text c={"white"}>There are no previously submitted responses</Text>
         </div>
       );
     }
