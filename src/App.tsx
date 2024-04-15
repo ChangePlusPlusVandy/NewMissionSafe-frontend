@@ -11,9 +11,6 @@ import { AuthProvider } from "./AuthContext";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
-import RegisterYouth from "./pages/Auth/RegisterYouth";
-import RegisterStaff from "./pages/Auth/RegisterStaff";
-
 
 import CreateEvent from "./pages/Events/CreateEvent";
 import EventInfo from "./pages/Events/EventInfo";
@@ -37,13 +34,6 @@ const router = createBrowserRouter(
         element={<PrivateRoute element={<CreateEvent />} />}
       />
       <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/register-youth" element={<RegisterYouth />} />
-      <Route path="/register-staff" element={<RegisterStaff />} />
-      <Route path="/staff/:firebaseUID" element={<PrivateRoute element={<StaffInfoPage />} />} />
-      <Route path="/youth/:firebaseUID" element={<PrivateRoute element={<YouthInfoPage />} />} />
-
-
       
       <Route
         path="/register-staff"
@@ -53,6 +43,10 @@ const router = createBrowserRouter(
         path="/register-youth"
         element={<PrivateRoute element={<RegisterYouth />} />}
       />
+
+      <Route path="/staff/:firebaseUID" element={<PrivateRoute element={<StaffInfoPage />} />} />
+      <Route path="/youth/:firebaseUID" element={<PrivateRoute element={<YouthInfoPage />} />} />
+
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
       <Route path="/view-event/:eventCode" element={<PrivateRoute element={<EventInfo />} />} />
