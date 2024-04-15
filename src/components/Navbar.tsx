@@ -63,6 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
           left: 0,
           zIndex: 2,
           background: "#022B41",
+          borderBottom: "solid",
           justifyContent: "space-between",
         }}
       >

@@ -18,7 +18,7 @@ import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel";
-import { getAllStaff } from "../../utils/staffInterface.tsx";
+import { getAllStaff } from "../../utils/staffInterface.ts";
 import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
 import { CheckboxGroup } from "@mantine/core";

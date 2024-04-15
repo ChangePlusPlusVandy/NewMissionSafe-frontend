@@ -1,24 +1,25 @@
 import React from "react";
 import { Flex, Text, Avatar } from "@mantine/core";
+import { rolesMap } from "../utils/staffInterface";
 import { useNavigate } from "react-router-dom";
 
-interface YouthCardProps {
+interface StaffCardProps {
   firstName: string;
   lastName: string;
-  program: string;
+  role: number;
   uuid: string;
 }
 
-const YouthCard: React.FC<YouthCardProps> = ({
+const StaffCard: React.FC<StaffCardProps> = ({
   firstName,
   lastName,
-  program,
+  role,
   uuid,
 }) => {
-  const navigate = useNavigate();
-
+  const navigate = useNavigate()
+  
   const handleClick = () => {
-    navigate(`/youth/${uuid}`);
+    navigate(`/staff/${uuid}`);
   };
 
   return (
@@ -67,10 +68,10 @@ const YouthCard: React.FC<YouthCardProps> = ({
           color: "white",
         }}
       >
-        {program}
+        {rolesMap[role]}
       </Text>
     </Flex>
   );
 };
 
-export default YouthCard;
+export default StaffCard;

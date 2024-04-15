@@ -11,11 +11,13 @@ import { AuthProvider } from "./AuthContext";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import Login from "./pages/Auth/Login";
 import PrivateRoute from "./pages/Auth/PrivateRoute";
-import CreateEvent from "./pages/CreateEvent";
+import CreateEvent from "./pages/Events/CreateEvent";
+import EventInfo from "./pages/Events/EventInfo";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
-import Events from "./pages/Events";
+import Events from "./pages/Events/Events";
 import Youth from "./pages/Youth/Youth";
+import Staff from "./pages/Staff";
 import RegisterYouth from "./pages/Auth/RegisterYouth";
 import RegisterStaff from "./pages/Auth/RegisterStaff";
 import ProgramSupplyRequest from "./pages/Forms/ProgramSupplyRequest";
@@ -28,6 +30,9 @@ import FormLanding from "./pages/Forms/FormLanding";
 import Forms from "./pages/Forms";
 import ExpenseForm from "./pages/Forms/ExpenseForm";
 import HorizonForm from "./pages/Forms/HorizonForm";
+import YouthInfoPage from "./pages/YouthInfo";
+import StaffInfoPage from "./pages/StaffInfo";
+import Unauthorized from "./pages/Auth/Unauthorized";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -49,6 +54,10 @@ const router = createBrowserRouter(
       />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
+      <Route
+        path="/view-event/:eventCode"
+        element={<PrivateRoute element={<EventInfo />} />}
+      />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
       <Route
         path="/forms/partnerships-resources-internships"
@@ -83,6 +92,19 @@ const router = createBrowserRouter(
 
       <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm formID = "0002"/>} />} />
       <Route path="/forms/horizon-form" element={<PrivateRoute element={<HorizonForm formID = "0003"/>} />} />
+      <Route path="/staff" element={<PrivateRoute element={<Staff />} />} />
+      <Route
+        path="/unauthorized"
+        element={<PrivateRoute element={<Unauthorized />} />}
+      />
+      <Route
+        path="/staff/:firebaseUID"
+        element={<PrivateRoute element={<StaffInfoPage />} />}
+      />
+      <Route
+        path="/youth/:firebaseUID"
+        element={<PrivateRoute element={<YouthInfoPage />} />}
+      />
     </>
   )
 );

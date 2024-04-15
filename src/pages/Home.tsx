@@ -1,19 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { getEventsByDate } from "../utils/eventInterface";
-import { getYouthByProgram } from "../utils/youthInterface";
-import { getStaffByID } from "../utils/staffInterface";
 import { returnedEventType } from "../utils/models/eventModel";
-import { staffType } from "../utils/models/staffModel";
-import Event from "../components/Event";
-import DisplayYouth from "../components/DisplayYouth";
+import Event from "../components/EventCard";
 import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
-import { youthType } from "../utils/models/youthModel";
-import "./Home.css";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
-  console.log(currentUser?.displayName);
   const [userDetails, setUserDetails] = useState<{
     token: string;
     userId: string;
@@ -36,12 +29,15 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
+    <Paper
+      bg={"missionSafeBlue.9"}
+      w={"100%"}
+      h={"100%"}
+      mih={"100vh"}
+      radius={0}
+    >
       <TodayEvents token={userDetails.token}></TodayEvents>
-      <ProgramYouth
-        token={userDetails.token}
-        userId={userDetails.userId}
-      ></ProgramYouth>
+      <UpcomingEvents token={userDetails.token}></UpcomingEvents>
     </Paper>
   );
 };
@@ -58,6 +54,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
         currentDate.setHours(0, 0, 0, 0);
         setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
+
         setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
@@ -115,6 +112,8 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                 <Event
                   eventName={i.name}
                   eventDate={new Date(i.date)}
+                  eventDes={i.description}
+                  eventCode={i.code}
                   key={i.code}
                 ></Event>
               ))}
@@ -122,66 +121,58 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
           );
         }
       })()}
-      <Space h="lg" />
     </section>
   );
 };
 
-const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
-  token,
-  userId,
-}) => {
-  const [youth, setYouth] = useState<youthType[]>([]);
-  const [youthError, setYouthError] = useState<string>("");
-  const [programName, setProgramName] = useState<string>("");
+const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
+  const [events, setEvents] = useState<returnedEventType[]>([]);
+  const [eventsError, setEventsError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getYouth = async (t: string, uid: string) => {
+    const getUpcomingEvents = async (token: string) => {
       try {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const tomorrrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
+        const endDate = new Date(tomorrrow.getTime() + 24 * 60 * 60 * 1000 * 8);
+
         setLoading(true);
-        //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
-        const currentStaffMember: staffType = await getStaffByID(uid, t);
-        if (!currentStaffMember.program) {
-          setYouthError("You are not associated with a program");
-        } else {
-          setProgramName(currentStaffMember.program);
-          const youth = await getYouthByProgram(currentStaffMember.program, t);
-          setYouth(youth);
-        }
+        const todayEvents = await getEventsByDate(token, tomorrrow, endDate);
+
+        todayEvents.sort(function (a, b) {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        });
+
         setLoading(false);
+        setEvents(todayEvents);
       } catch (err) {
-        setYouthError("Failed to retrieve youth");
+        setEventsError("Failed to retrieve upcoming events");
         console.log(err);
       }
     };
 
-    if (token && userId) {
-      void getYouth(token, userId);
+    if (token) {
+      void getUpcomingEvents(token);
     }
   }, [token]);
 
   return (
     <section>
       <Center h={60}>
-        {programName == "" ? (
-          <Title order={2} c={"white"}>
-            Youth In Your Program
-          </Title>
-        ) : (
-          <Title order={2} c={"white"}>
-            Youth In {programName}
-          </Title>
-        )}
+        <Title order={2} c={"white"}>
+          Upcoming Events
+        </Title>
       </Center>
       <Space h="sm" />
 
       {(() => {
-        if (youthError != "") {
+        if (eventsError != "") {
           return (
             <Center>
               <Title order={3} c={"red"}>
-                {youthError}
+                {eventsError}
               </Title>
             </Center>
           );
@@ -191,33 +182,36 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
             </Center>
           );
-        } else if (youth.length == 0) {
+        } else if (events.length == 0) {
           return (
             <Center>
               <Title order={3} c={"white"}>
-                No youth found
+                No upcoming events
               </Title>
             </Center>
           );
         } else {
           return (
             <Flex
-              dir={"row"}
-              align={"stretch"}
+              direction={"column"}
+              align={"center"}
               justify={"center"}
-              wrap={"wrap"}
+              w={"100%"}
             >
-              {youth.map((i) => (
-                <DisplayYouth
-                  name={i.firstName + " " + i.lastName}
-                  uuid={i.uuid}
-                  key={i.uuid}
-                ></DisplayYouth>
+              {events.map((i) => (
+                <Event
+                  key={i.code}
+                  eventName={i.name}
+                  eventDate={new Date(i.date)}
+                  eventDes={i.description}
+                  eventCode={i.code}
+                ></Event>
               ))}
             </Flex>
           );
         }
       })()}
+      <Space h="xl" />
     </section>
   );
 };

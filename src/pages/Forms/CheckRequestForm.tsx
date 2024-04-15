@@ -131,22 +131,22 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
                 <Radio
                   value="Mailed"
                   label="Mailed"
-                  styles={{ label: { color: "white" } }}
+                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
                 />
                 <Radio
                   value="In Person"
                   label="In Person"
-                  styles={{ label: { color: "white" } }}
+                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
                 />
                 <Radio
                   value="Emailed"
                   label="Emailed"
-                  styles={{ label: { color: "white" } }}
+                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
                 />
                 <Radio
                   value="Other"
                   label="Other"
-                  styles={{ label: { color: "white" } }}
+                  styles={{ label: { color: "white", marginRight: "0.5rem" } }}
                 />
                 {form.getInputProps("disbursalMethod")?.value === "Other" && (
                   <TextInput
