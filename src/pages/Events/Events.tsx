@@ -67,7 +67,7 @@ const Events: React.FC = () => {
   };
 
   // TODO: Implement search bar
-  // const getSearchbar = () => {
+  // const bar = () => {
   //   return (
   //     <Center w={"100%"}>
   //       <Group justify="space-between" gap="0" w={"90%"}>

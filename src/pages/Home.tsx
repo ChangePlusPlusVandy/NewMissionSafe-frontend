@@ -4,7 +4,6 @@ import { getEventsByDate } from "../utils/eventInterface";
 import { returnedEventType } from "../utils/models/eventModel";
 import Event from "../components/Event";
 import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
-import "./Home.css";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
@@ -55,7 +54,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
         currentDate.setHours(0, 0, 0, 0);
         setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
-        console.log(todayEvents);
+        
         setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
@@ -141,7 +140,7 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
         
         setLoading(true);
         const todayEvents = await getEventsByDate(token, tomorrrow, endDate);
-        console.log(todayEvents)
+        
         todayEvents.sort(function (a, b) {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         });
