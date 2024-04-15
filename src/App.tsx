@@ -1,11 +1,5 @@
 import React from "react";
-
-import {
-  createBrowserRouter,
-  createRoutesFromElements,
-  Route,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 // Routes
 import ForgotPassword from "./pages/Auth/ForgotPassword";
