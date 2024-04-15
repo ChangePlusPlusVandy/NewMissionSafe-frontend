@@ -94,6 +94,8 @@ const Forms: React.FC = () => {
               />
             </React.Fragment>
           ))}
+          <Space h="xl" />
+          <Space h="xl" />
         </Flex>
       )}
     </Paper>
