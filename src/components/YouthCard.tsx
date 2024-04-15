@@ -1,5 +1,6 @@
 import React from "react";
 import { Flex, Text, Avatar } from "@mantine/core";
+import { useNavigate } from "react-router-dom";
 
 interface YouthCardProps {
   firstName: string;
@@ -14,8 +15,10 @@ const YouthCard: React.FC<YouthCardProps> = ({
   program,
   uuid,
 }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    console.log(uuid);
+    navigate(`/youth/${uuid}`);
   };
 
   return (

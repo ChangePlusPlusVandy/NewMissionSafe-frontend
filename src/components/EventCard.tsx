@@ -50,11 +50,10 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes, eventCode
           boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
           marginTop: "2.1px",
         }}
-        onClick={handleClick}
         mb={"7%"}
       >
         <Grid align="center">
-          <Grid.Col span={2}>
+          <Grid.Col onClick={handleClick} span={2}>
             <Stack gap={0} align="center" justify="center">
               <Title order={2} c="white">
                 {formattedDate}
@@ -64,7 +63,7 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes, eventCode
               </Title>
             </Stack>
           </Grid.Col>
-          <Grid.Col span={9}>
+          <Grid.Col onClick={handleClick} span={9}>
             <Title
               c="white"
               order={4}
