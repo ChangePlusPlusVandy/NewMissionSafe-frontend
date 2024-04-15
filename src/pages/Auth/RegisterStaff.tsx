@@ -1,13 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
-import RedCorner from "../../components/RedCorner";
-import './RegisterUser.css';
-
 
 interface FormValues {
   firstName: string;
@@ -15,9 +12,8 @@ interface FormValues {
   email: string;
   password: string;
   confirmPassword: string;
-  programs: string;
-  admin: boolean; 
-  counselor: boolean;
+  program: string;
+  role: number;
 }
 
 const schema = Yup.object().shape({
@@ -32,55 +28,41 @@ const schema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password")], "Passwords do not match")
     .required("Confirm password is required"),
-  programs: Yup.string().required("Program selection is required"),
-  admin: Yup.boolean().required("Please select a staff type"),
-  counselor: Yup.boolean().required("Please select a staff type")
+  program: Yup.string().required("Program selection is required"),
+  role: Yup.number().required("Please select a role"),
 });
 
 const RegisterStaff: React.FC = () => {
   const { registerUser, currentUser } = useAuth();
-  const [role, setRole] = useState<string | null>(null);
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (currentUser) {
-      navigate("/");
-    }
-  }, [currentUser, navigate]);
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    setValue,
-    trigger,
   } = useForm<FormValues>({
     resolver: yupResolver(schema),
   });
-
-  const handleRoleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRole(event.target.value);
-    setValue("admin", event.target.value === "admin");
-    setValue("counselor", event.target.value === "counselor");
-    await trigger(["admin", "counselor"]); 
-  };
 
   const [error, setError] = useState<string>("");
 
   const onSubmit = async (values: FormValues) => {
     try {
-      if (!role) {
-        setError("Please select a role (Admin, Counselor)");
-        return;
-      }
-
-
       setError("");
-      console.log("User values: ", values);
-
       const name = values.firstName + " " + values.lastName;
-      await registerUser(name, values.email, values.password);
+      
+
+      const finalValues = {
+          ...values,
+          firebaseUID: currentUser ? currentUser.uid : "No UID found", 
+          active: true,
+        };
+      
+      
+
+      const { password, confirmPassword, ...rest } = finalValues;
+      console.log(rest)
+      await registerUser(name, values.email, values.password, rest);
 
       navigate("/");
     } catch (err: unknown) {
@@ -94,13 +76,14 @@ const RegisterStaff: React.FC = () => {
 
   return (
     <div className="registration-container">
-      <RedCorner />
       <h2>Register</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="firstName">First Name</label>
           <input type="text" id="firstName" {...register("firstName")} />
-          {errors.firstName && <FormError>{errors.firstName.message}</FormError>}
+          {errors.firstName && (
+            <FormError>{errors.firstName.message}</FormError>
+          )}
         </div>
         <div>
           <label htmlFor="lastName">Last Name</label>
@@ -113,37 +96,28 @@ const RegisterStaff: React.FC = () => {
           {errors.email && <FormError>{errors.email.message}</FormError>}
         </div>
         <div>
-          <label htmlFor="programs">Program</label>
-          <select id="programs" {...register("programs")}>
-            <option value="YLSC"> YLSC</option>
+          <label htmlFor="program">Program</label>
+          <select id="program" {...register("program")}>
+            <option value="">Select One</option>
+            <option value="YLSC">YLSC</option>
             <option value="SCD">SCD</option>
             <option value="InVest">InVest</option>
-            <option value="Power Boxing & Fitness">Power Boxing & Fitness</option>
+            <option value="Power Boxing & Fitness">
+              Power Boxing & Fitness
+            </option>
           </select>
-          {errors.programs && <FormError>{errors.programs.message}</FormError>}
+          {errors.program && <FormError>{errors.program.message}</FormError>}
         </div>
         <div>
-          <div>Select one of the following:</div>
-          <div className="role-selection">
-            <div>
-              <label>
-              <input type="radio" value="staff" checked={role === "staff"} onChange={handleRoleChange} />
-                Staff
-              </label>
-            </div>
-            <div>
-              <label>
-              <input type="radio" value="counselor" checked={role === "counselor"} onChange={handleRoleChange} />
-                Counselor
-              </label>
-            </div>
-            <div>
-              <label>
-                <input type="radio" value="admin" checked={role === "admin"} onChange={handleRoleChange} />
-                Admin
-              </label>
-            </div>
-          </div>
+          <label htmlFor="role">Role</label>
+          <select id="role" {...register("role")}>
+            <option value="">Select One</option>
+            <option value={1}>Admin</option>
+            <option value={2}>Manager</option>
+            <option value={3}>Counselor</option>
+            <option value={4}>Staff</option>
+          </select>
+          {errors.program && <FormError>{errors.program.message}</FormError>}
         </div>
         <div>
           <label htmlFor="password">Password</label>
@@ -152,7 +126,11 @@ const RegisterStaff: React.FC = () => {
         </div>
         <div>
           <label htmlFor="confirmPassword">Confirm Password</label>
-          <input type="password" id="confirmPassword" {...register("confirmPassword")} />
+          <input
+            type="password"
+            id="confirmPassword"
+            {...register("confirmPassword")}
+          />
           {errors.confirmPassword && (
             <FormError>{errors.confirmPassword.message}</FormError>
           )}
@@ -162,9 +140,6 @@ const RegisterStaff: React.FC = () => {
           {isSubmitting ? "Submitting" : "Register"}
         </button>
       </form>
-      <p>
-        Already have an account? <Link to="/login">Login</Link>
-      </p>
     </div>
   );
 };

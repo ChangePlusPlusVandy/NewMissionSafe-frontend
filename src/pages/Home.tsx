@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { getEventsByDate } from "../utils/eventInterface";
-import { getYouthByProgram } from "../utils/youthInterface";
-import { getStaffByID } from "../utils/staffInterface";
 import { returnedEventType } from "../utils/models/eventModel";
-import { staffType } from "../utils/models/staffModel";
 import Event from "../components/Event";
-import DisplayYouth from "../components/DisplayYouth";
 import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
-import { youthType } from "../utils/models/youthModel";
 import "./Home.css";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
+  console.log(currentUser?.displayName);
   const [userDetails, setUserDetails] = useState<{
     token: string;
     userId: string;
@@ -35,12 +31,15 @@ const Home: React.FC = () => {
   }, [currentUser]);
 
   return (
-    <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>
+    <Paper
+      bg={"missionSafeBlue.9"}
+      w={"100%"}
+      h={"100%"}
+      mih={"100vh"}
+      radius={0}
+    >
       <TodayEvents token={userDetails.token}></TodayEvents>
-      <ProgramYouth
-        token={userDetails.token}
-        userId={userDetails.userId}
-      ></ProgramYouth>
+      <UpcomingEvents token={userDetails.token}></UpcomingEvents>
     </Paper>
   );
 };
@@ -114,6 +113,8 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
                 <Event
                   eventName={i.name}
                   eventDate={new Date(i.date)}
+                  eventDes={i.description}
+                  eventCode={i.code}
                   key={i.code}
                 ></Event>
               ))}
@@ -126,64 +127,49 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
   );
 };
 
-const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
-  token,
-  userId,
-}) => {
-  const [youth, setYouth] = useState<youthType[]>([]);
-  const [youthError, setYouthError] = useState<string>("");
-  const [programName, setProgramName] = useState<string>("");
+const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
+  const [events, setEvents] = useState<returnedEventType[]>([]);
+  const [eventsError, setEventsError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    const getYouth = async (t: string, uid: string) => {
+    const getUpcomingEvents = async (token: string) => {
       try {
+        const currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        const endDate = new Date(
+          currentDate.setDate(currentDate.getDate() + 7)
+        );
         setLoading(true);
-        //review: we need to make sure all staff who get created are associated with 1 program (types, input form, etc)
-        const currentStaffMember: staffType = await getStaffByID(uid, t);
-        if (currentStaffMember.programs.length == 0) {
-          setYouthError("You are not associated with a program");
-        } else {
-          setProgramName(currentStaffMember.programs[0]);
-          const youth = await getYouthByProgram(
-            currentStaffMember.programs[0],
-            t
-          );
-          setYouth(youth);
-        }
+        const todayEvents = await getEventsByDate(token, currentDate, endDate);
         setLoading(false);
+        setEvents(todayEvents);
       } catch (err) {
-        setYouthError("Failed to retrieve youth");
+        setEventsError("Failed to retrieve upcoming events");
         console.log(err);
       }
     };
 
-    if (token && userId) {
-      void getYouth(token, userId);
+    if (token) {
+      void getUpcomingEvents(token);
     }
   }, [token]);
 
   return (
     <section>
       <Center h={60}>
-        {programName == "" ? (
-          <Title order={2} c={"white"}>
-            Youth In Your Program
-          </Title>
-        ) : (
-          <Title order={2} c={"white"}>
-            Youth In {programName}
-          </Title>
-        )}
+        <Title order={2} c={"white"}>
+          Upcoming Events
+        </Title>
       </Center>
       <Space h="sm" />
 
       {(() => {
-        if (youthError != "") {
+        if (eventsError != "") {
           return (
             <Center>
               <Title order={3} c={"red"}>
-                {youthError}
+                {eventsError}
               </Title>
             </Center>
           );
@@ -193,11 +179,11 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               <Skeleton width={"80%"} height={100} radius={0}></Skeleton>
             </Center>
           );
-        } else if (youth.length == 0) {
+        } else if (events.length == 0) {
           return (
             <Center>
               <Title order={3} c={"white"}>
-                No youth found
+                No upcoming events
               </Title>
             </Center>
           );
@@ -209,17 +195,20 @@ const ProgramYouth: React.FC<{ token: string; userId: string }> = ({
               justify={"center"}
               wrap={"wrap"}
             >
-              {youth.map((i) => (
-                <DisplayYouth
-                  name={i.firstName + " " + i.lastName}
-                  email={i.email}
-                  key={i.firebaseUID}
-                ></DisplayYouth>
+              {events.map((i) => (
+                <Event
+                key={i.code}
+                  eventName={i.name}
+                  eventDate={new Date(i.date)}
+                  eventDes={i.description}
+                  eventCode={i.code}
+                ></Event>
               ))}
             </Flex>
           );
         }
       })()}
+      <Space h="lg" />
     </section>
   );
 };
