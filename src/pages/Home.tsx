@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext";
 import { getEventsByDate } from "../utils/eventInterface";
 import { returnedEventType } from "../utils/models/eventModel";
-import Event from "../components/Event";
+import Event from "../components/EventCard";
 import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
 
 const Home: React.FC = () => {
@@ -54,7 +54,7 @@ const TodayEvents: React.FC<{ token: string }> = ({ token }) => {
         currentDate.setHours(0, 0, 0, 0);
         setLoading(true);
         const todayEvents = await getEventsByDate(token, currentDate);
-        
+
         setLoading(false);
         setEvents(todayEvents);
       } catch (err) {
@@ -137,10 +137,10 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
         currentDate.setHours(0, 0, 0, 0);
         const tomorrrow = new Date(currentDate.getTime() + 24 * 60 * 60 * 1000);
         const endDate = new Date(tomorrrow.getTime() + 24 * 60 * 60 * 1000 * 8);
-        
+
         setLoading(true);
         const todayEvents = await getEventsByDate(token, tomorrrow, endDate);
-        
+
         todayEvents.sort(function (a, b) {
           return new Date(a.date).getTime() - new Date(b.date).getTime();
         });
@@ -165,7 +165,7 @@ const UpcomingEvents: React.FC<{ token: string }> = ({ token }) => {
           Upcoming Events
         </Title>
       </Center>
-      <Space h="sm" />  
+      <Space h="sm" />
 
       {(() => {
         if (eventsError != "") {

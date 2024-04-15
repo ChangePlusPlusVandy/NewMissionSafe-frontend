@@ -1,6 +1,7 @@
 import React from "react";
 import { Flex, Text, Avatar } from "@mantine/core";
 import { rolesMap } from "../utils/staffInterface";
+import { useNavigate } from "react-router-dom";
 
 interface StaffCardProps {
   firstName: string;
@@ -15,8 +16,10 @@ const StaffCard: React.FC<StaffCardProps> = ({
   role,
   uuid,
 }) => {
+  const navigate = useNavigate()
+  
   const handleClick = () => {
-    console.log(uuid);
+    navigate(`/staff/${uuid}`);
   };
 
   return (

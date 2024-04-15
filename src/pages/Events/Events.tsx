@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { getEventsByDate } from "../../utils/eventInterface";
 import { returnedEventType } from "../../utils/models/eventModel";
-import Event from "../../components/Event";
+import Event from "../../components/EventCard";
 // import { IconAdjustmentsHorizontal } from "@tabler/icons-react"; <- For search bar
 import { add, sub } from "date-fns";
 
@@ -16,7 +16,7 @@ import {
   Space,
   Paper,
   Text,
-  Divider,
+  Box,
 } from "@mantine/core";
 // import { IconSearch } from "@tabler/icons-react"; <- for search bar
 
@@ -94,8 +94,8 @@ const Events: React.FC = () => {
 
   const renderEvents = (events: returnedEventType[]) => {
     return (
-      <Center>
-        <Flex direction={"column"} gap="md">
+      <Box w={"100%"}>
+        <Flex direction={"column"} gap="xs">
           {events?.map((item, i) => (
             <Event
               key={i}
@@ -106,7 +106,7 @@ const Events: React.FC = () => {
             />
           ))}
         </Flex>
-      </Center>
+      </Box>
     );
   };
 
@@ -143,7 +143,7 @@ const Events: React.FC = () => {
             <br />
             {/* {getSearchbar()} <-search bar not implemented yet */}
             {/* <br /> */}
-            <Stack gap={"sm"} w={"100%"}>
+            <Stack gap={"sm"} w={"100dvw"}>
               <Center>
                 <Title order={3} style={{ color: "white" }}>
                   Upcoming
@@ -151,7 +151,6 @@ const Events: React.FC = () => {
               </Center>
 
               {renderEvents(upcomingEvents)}
-              <Divider mt={"5%"} />
               <Center>
                 <Title order={3} style={{ color: "white" }}>
                   Previous

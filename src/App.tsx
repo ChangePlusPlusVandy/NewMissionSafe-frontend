@@ -20,6 +20,8 @@ import Youth from "./pages/Youth/Youth";
 import Staff from "./pages/Staff";
 import RegisterYouth from "./pages/Auth/RegisterYouth";
 import RegisterStaff from "./pages/Auth/RegisterStaff";
+import YouthInfoPage from "./pages/YouthInfo";
+import StaffInfoPage from "./pages/StaffInfo";
 import Unauthorized from "./pages/Auth/Unauthorized";
 
 const router = createBrowserRouter(
@@ -42,10 +44,24 @@ const router = createBrowserRouter(
       />
       <Route path="/forgot-password" element={<ForgotPassword />} />
       <Route path="/events" element={<PrivateRoute element={<Events />} />} />
-      <Route path="/view-event/:eventCode" element={<PrivateRoute element={<EventInfo />} />} />
+      <Route
+        path="/view-event/:eventCode"
+        element={<PrivateRoute element={<EventInfo />} />}
+      />
       <Route path="/youth" element={<PrivateRoute element={<Youth />} />} />
       <Route path="/staff" element={<PrivateRoute element={<Staff />} />} />
-      <Route path="/unauthorized" element={<PrivateRoute element={<Unauthorized />} />} />
+      <Route
+        path="/unauthorized"
+        element={<PrivateRoute element={<Unauthorized />} />}
+      />
+      <Route
+        path="/staff/:firebaseUID"
+        element={<PrivateRoute element={<StaffInfoPage />} />}
+      />
+      <Route
+        path="/youth/:firebaseUID"
+        element={<PrivateRoute element={<YouthInfoPage />} />}
+      />
     </>
   )
 );
