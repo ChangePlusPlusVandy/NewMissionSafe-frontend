@@ -1,48 +1,105 @@
-import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm } from "@mantine/form";
 import { useNavigate } from "react-router-dom";
-import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
-import FormError from "../Auth/FormError";
 import { createCode, createEvent } from "../../utils/eventInterface";
-import "./CreateEvent.css";
 import { eventType } from "../../utils/models/eventModel";
-
-interface FormValues {
-  name: string;
-  description: string;
-  date: Date;
-  programs: string;
-  staff: string;
-}
-
-const schema = Yup.object().shape({
-  name: Yup.string().required("Event name is required"),
-  description: Yup.string().required("Description is required"),
-  date: Yup.date().required("Event date is required"),
-  programs: Yup.string().required("Program is required"),
-  staff: Yup.string().required("Staff name is required"),
-});
+import "@mantine/dates/styles.css";
+import { showNotification } from "@mantine/notifications";
+import { getAllStaff } from "../../utils/staffInterface";
+import {
+  TextInput,
+  Textarea,
+  Button,
+  Box,
+  Title,
+  Text,
+  Space,
+  Paper,
+  MultiSelect,
+} from "@mantine/core";
 
 const CreateEvent: React.FC = () => {
-  const { currentUser } = useAuth();
-  const navigate = useNavigate();
+  const [staff, setStaff] = useState<{ value: string; label: string }[]>([]);
+  const [error, setError] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<FormValues>({
-    resolver: yupResolver(schema),
+  const navigate = useNavigate();
+  const { currentUser } = useAuth();
+
+  const form = useForm({
+    initialValues: {
+      name: "",
+      description: "",
+      date: "",
+      startTime: "",
+      endTime: "",
+      location: "",
+      programs: [],
+      staff: [],
+    },
+
+    validate: {
+      name: (value) => (value ? null : "Name is required"),
+      description: (value) => (value ? null : "Description is required"),
+      date: (value) => (value ? null : "Date is required"),
+      startTime: (value) => (value ? null : "Start time is required"),
+      endTime: (value, values) => {
+        if (!value) {
+          return "End time is required";
+        }
+        if (!values.startTime) {
+          return "Start time must be set first";
+        }
+        if (values.startTime >= value) {
+          return "End time must be after start time";
+        }
+        return null;
+      },
+      location: (value) => (value.length > 0 ? null : "Location is required"),
+      programs: (value) => (value.length > 0 ? null : "Program is required"),
+      staff: (value) => (value.length > 0 ? null : "Staff name is required"),
+    },
   });
 
-  const [error, setError] = useState<string>("");
+  useEffect(() => {
+    const getStaff = async () => {
+      const token = await currentUser?.getIdToken();
+      if (token) {
+        const s = await getAllStaff(token);
+        const mappedArray = s.map(
+          (item: {
+            firebaseUID: string;
+            firstName: string;
+            lastName: string;
+          }) => ({
+            value: item.firebaseUID,
+            label: `${item.firstName} ${item.lastName}`,
+          })
+        );
 
-  useEffect(() => {}, [currentUser, navigate]);
+        setStaff(mappedArray);
+        setIsLoading(false);
+      } else {
+        navigate("/events");
+      }
+    };
+    getStaff();
+  }, [currentUser, navigate]);
 
-  const onSubmit = async (values: FormValues) => {
+  const programs = [
+    "EA",
+    "YLSC",
+    "InVest NOW!",
+    "Futures Plus",
+    "SCD",
+    "Power Boxing & Fitness",
+    "Metro Men's Movement",
+  ];
+
+  const onSubmit = async (values: typeof form.values) => {
     try {
+      console.log("got to here");
       setError("");
       // Generate a unique event code
       const token = await currentUser?.getIdToken();
@@ -53,15 +110,27 @@ const CreateEvent: React.FC = () => {
       } else {
         const eventCode = await createCode(token);
 
+        // Check if `date` is not null before using it
+        if (!values.date) {
+          showNotification({
+            title: "Validation Error",
+            message: "Please provide a valid date for the event.",
+            color: "red",
+          });
+          return; // Stop the form submission if date is not provided
+        }
+
         // Construct the event object
         const event: eventType = {
           name: values.name,
           description: values.description,
           code: eventCode,
-          date: values.date,
-          programs: [values.programs], // Assuming programs is a single string, convert to array
-          staff: [values.staff], // Assuming staff is a single string, convert to array
-          // include other fields as necessary
+          date: new Date(values.date),
+          startTime: values.startTime,
+          endTime: values.endTime,
+          location: values.location,
+          programs: values.programs,
+          staff: values.staff,
         };
 
         // Create the event
@@ -69,68 +138,145 @@ const CreateEvent: React.FC = () => {
         console.log(response);
 
         // Redirect to home page or another relevant page
-        navigate("/");
+        navigate("/events");
       }
-    } catch (err: unknown) {
+    } catch (err) {
       if (err instanceof Error) {
         setError(err.message);
+        showNotification({
+          title: "Error",
+          message: err.message,
+          color: "red",
+        });
       } else {
-        // Handle unexpected error type
         setError("An unknown error occurred");
+        showNotification({
+          title: "Error",
+          message: "An unknown error occurred",
+          color: "red",
+        });
       }
     }
   };
 
   return (
-    <div className="create-event-container">
-      <h1>Create Event</h1>
-      <p>Enter the following information to create a new event.</p>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label htmlFor="event-name">Event Name</label>
-          <input type="event-name" id="event-name" {...register("name")} />
-          {errors.name != null && <FormError>{errors.name.message}</FormError>}
-        </div>
-        <div>
-          <label htmlFor="description">Description</label>
-          <input
-            type="description"
-            id="description"
-            {...register("description")}
-          />
-          {errors.description != null && (
-            <FormError>{errors.description.message}</FormError>
-          )}
-        </div>
-        <div>
-          <label htmlFor="date">Date</label>
-          <input type="date" id="date" {...register("date")} />
-          {errors.description != null && (
-            <FormError>{errors.description.message}</FormError>
-          )}
-        </div>
-        <div>
-          <label htmlFor="programs">Programs</label>
-          <input type="programs" id="programs" {...register("programs")} />
-          {errors.description != null && (
-            <FormError>{errors.description.message}</FormError>
-          )}
-        </div>
-        <div>
-          <label htmlFor="staff">Staff</label>
-          <input type="staff" id="staff" {...register("staff")} />
-          {errors.name != null && <FormError>{errors.name.message}</FormError>}
-          {errors && <FormError>{error}</FormError>}
-        </div>
-        <button
-          className="create-event-button"
-          disabled={isSubmitting}
-          type="submit"
-        >
-          {isSubmitting ? "Submitting" : "Create"}
-        </button>
-      </form>
-    </div>
+    <Paper
+      bg={"missionSafeBlue.9"}
+      w={"100%"}
+      mih={"100dvh"}
+      radius={0}
+      pl={"5%"}
+      pr={"5%"}
+    >
+      {isLoading ? (
+        <Title c="white">Fetching Data...</Title>
+      ) : (
+        <Box>
+          <Space h={"lg"} />
+          <Box maw={500} mx="auto">
+            <Title order={1} c={"white"}>
+              Create Event
+            </Title>
+            <Text size="sm" c={"white"}>
+              Enter the following information to create a new event.
+            </Text>
+            <Space h="md" />
+
+            <form onSubmit={form.onSubmit(onSubmit)}>
+              <TextInput
+                label="Event Name"
+                placeholder="Enter event name"
+                {...form.getInputProps("name")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
+
+              <Textarea
+                label="Description"
+                placeholder="Event description"
+                {...form.getInputProps("description")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
+
+              <TextInput
+                label="Pick date"
+                type="date"
+                placeholder="MM-DD-YYYY"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("date")}
+              />
+              <Space h="sm" />
+
+              <TextInput
+                type="time"
+                label="Start Time"
+                placeholder="Start Time"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("startTime")}
+              />
+              <Space h="sm" />
+
+              <TextInput
+                type="time"
+                label="End Time"
+                placeholder="End Time"
+                styles={{ label: { color: "white" } }}
+                {...form.getInputProps("endTime")}
+              />
+              <Space h="sm" />
+
+              <TextInput
+                label="Location"
+                placeholder="Enter location"
+                {...form.getInputProps("location")}
+                styles={{ label: { color: "white" } }}
+              />
+              <Space h="sm" />
+
+              <MultiSelect
+                data={programs}
+                {...form.getInputProps("programs")}
+                label="Program"
+                styles={{ label: { color: "white" } }}
+                required
+                searchable
+              />
+              <Space h="sm" />
+
+              <MultiSelect
+                data={staff}
+                {...form.getInputProps("staff")}
+                label="Staff"
+                styles={{ label: { color: "white" } }}
+                required
+                searchable
+              />
+              <Space h="md" />
+
+              <Button
+                type="submit"
+                color="white"
+                variant="filled"
+                style={{
+                  backgroundColor: "#861F25",
+                  boxShadow: "0 0 5px rgba(255, 255, 255, 0.5)",
+                  marginBottom: 10,
+                }}
+              >
+                Create Event
+              </Button>
+              {error && <Text c="red">{error}</Text>}
+              <Space h="sm" />
+              <Space h="sm" />
+              <Space h="sm" />
+            </form>
+          </Box>
+          <br />
+          <br />
+        </Box>
+      )}
+    </Paper>
   );
 };
 
