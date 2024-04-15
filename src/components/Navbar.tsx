@@ -53,7 +53,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
 
   return (
     <Container fluid style={{ height: "100dvh", width: "100dvw", padding: 0 }}>
-      <Paper
+      <Box
         h={"10%"}
         w={"100%"}
         display={"flex"}
@@ -63,7 +63,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
           left: 0,
           zIndex: 2,
           background: "#022B41",
-          borderRadius: 3,
+          borderBottom: "solid",
           justifyContent: "space-between",
         }}
       >
@@ -76,7 +76,7 @@ const Navbar: React.FC<NavbarProps> = ({ children }) => {
             {t}
           </Box>
         ))}
-      </Paper>
+      </Box>
       <Box h={"auto"} w={"100%"} mih={"100%"}>
         {children}
       </Box>

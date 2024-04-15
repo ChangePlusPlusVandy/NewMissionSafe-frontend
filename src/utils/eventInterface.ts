@@ -25,7 +25,7 @@ export const getEventsByDate = async (
   const allEvents: returnedEventType[] = await getAllEvents(token);
   const filteredEvents = allEvents.filter((event) => {
     const eventDate = new Date(event.date);
-    return eventDate >= startDate && eventDate <= endDate;
+    return eventDate >= startDate && eventDate < endDate;
   });
   return filteredEvents;
 };

@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
@@ -33,8 +33,15 @@ const schema = Yup.object().shape({
 });
 
 const RegisterStaff: React.FC = () => {
-  const { registerUser, currentUser } = useAuth();
+  const { registerUser, currentUser, getMongoUser } = useAuth();
+  const mongoUser = getMongoUser();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!mongoUser || mongoUser?.role !== 4) {
+      navigate("/unauthorized");
+    }
+  });
 
   const {
     register,
@@ -50,21 +57,18 @@ const RegisterStaff: React.FC = () => {
     try {
       setError("");
       const name = values.firstName + " " + values.lastName;
-      
 
       const finalValues = {
-          ...values,
-          firebaseUID: currentUser ? currentUser.uid : "No UID found", 
-          active: true,
-        };
-      
-      
+        ...values,
+        firebaseUID: currentUser ? currentUser.uid : "No UID found",
+        active: true,
+      };
 
       const { password, confirmPassword, ...rest } = finalValues;
-      console.log(rest)
+      console.log(rest);
       await registerUser(name, values.email, values.password, rest);
 
-      navigate("/");
+      navigate("/staff");
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message);

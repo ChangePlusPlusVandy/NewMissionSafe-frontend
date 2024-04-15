@@ -4,13 +4,11 @@ import { useAuth } from "../../AuthContext";
 import { getEventsByDate } from "../../utils/eventInterface";
 import { returnedEventType } from "../../utils/models/eventModel";
 import Event from "../../components/Event";
-import { IconAdjustmentsHorizontal } from "@tabler/icons-react";
+// import { IconAdjustmentsHorizontal } from "@tabler/icons-react"; <- For search bar
 import { add, sub } from "date-fns";
 
 import {
-  Group,
   Button,
-  TextInput,
   Title,
   Center,
   Flex,
@@ -20,7 +18,7 @@ import {
   Text,
   Divider,
 } from "@mantine/core";
-import { IconSearch } from "@tabler/icons-react";
+// import { IconSearch } from "@tabler/icons-react"; <- for search bar
 
 const Events: React.FC = () => {
   const { currentUser } = useAuth();
@@ -30,7 +28,7 @@ const Events: React.FC = () => {
   const [pastEvents, setPastEvents] = useState<returnedEventType[]>([]);
   const [upcomingEvents, setUpcomingEvents] = useState<returnedEventType[]>([]);
 
-  const icon = <IconSearch style={{ color: "grey" }} />;
+  // const icon = <IconSearch style={{ color: "grey" }} />; <- for search bar
 
   useEffect(() => {
     async function fetchEvents() {
@@ -68,30 +66,31 @@ const Events: React.FC = () => {
     navigate("/create-event");
   };
 
-  const getSearchbar = () => {
-    return (
-      <Center w={"100%"}>
-        <Group justify="space-between" gap="0" w={"90%"}>
-          <TextInput
-            variant="unstyled"
-            placeholder="Search"
-            w={"90%"}
-            leftSection={icon}
-            style={{
-              boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
-              borderRadius: "5px",
-            }}
-            styles={{
-              input: {
-                color: "white",
-              },
-            }}
-          />
-          <IconAdjustmentsHorizontal width="10%" color="white" stroke={1.2} />
-        </Group>
-      </Center>
-    );
-  };
+  // TODO: Implement search bar
+  // const bar = () => {
+  //   return (
+  //     <Center w={"100%"}>
+  //       <Group justify="space-between" gap="0" w={"90%"}>
+  //         <TextInput
+  //           variant="unstyled"
+  //           placeholder="Search"
+  //           w={"90%"}
+  //           leftSection={icon}
+  //           style={{
+  //             boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
+  //             borderRadius: "5px",
+  //           }}
+  //           styles={{
+  //             input: {
+  //               color: "white",
+  //             },
+  //           }}
+  //         />
+  //         <IconAdjustmentsHorizontal width="10%" color="white" stroke={1.2} />
+  //       </Group>
+  //     </Center>
+  //   );
+  // };
 
   const renderEvents = (events: returnedEventType[]) => {
     return (
@@ -142,8 +141,8 @@ const Events: React.FC = () => {
               </Button>
             </Center>
             <br />
-            {getSearchbar()}
-            <br />
+            {/* {getSearchbar()} <-search bar not implemented yet */}
+            {/* <br /> */}
             <Stack gap={"sm"} w={"100%"}>
               <Center>
                 <Title order={3} style={{ color: "white" }}>

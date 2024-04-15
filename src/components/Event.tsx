@@ -41,9 +41,9 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes, eventCode
   }
 
   return (
-    <Center>
+    <Center miw={"100%"}>
       <Card
-        w={"95%"}
+        w={"80%"}
         radius="md"
         bg={"missionSafeBlue.9"}
         style={{
@@ -51,6 +51,7 @@ const Event: React.FC<EventProps> = ({ eventName, eventDate, eventDes, eventCode
           marginTop: "2.1px",
         }}
         onClick={handleClick}
+        mb={"7%"}
       >
         <Grid align="center">
           <Grid.Col span={2}>
