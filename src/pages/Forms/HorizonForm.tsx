@@ -15,13 +15,8 @@ import {
 import { useAuth } from "../../AuthContext";
 import { createAndAddResponseJson } from "../../utils/formInterface";
 import { useNavigate } from "react-router";
-import { responseType } from "../../utils/models/formModel";
 import { yupResolver } from "mantine-form-yup-resolver";
-import {
-  allowedFileMessage,
-  isImageFile,
-  extractFileData,
-} from "./FormUtils/ImageUtils";
+import { allowedFileMessage, isImageFile } from "./FormUtils/ImageUtils";
 import * as Yup from "yup";
 
 const schema = Yup.object().shape({
@@ -77,7 +72,6 @@ const HorizonForm: React.FC<{ formID: string }> = ({ formID }) => {
     //   responses: Object.values(nonImageFields),
     //   images,
     // };
-
 
     const formData = new FormData();
     formData.append("responseID", crypto.randomUUID());

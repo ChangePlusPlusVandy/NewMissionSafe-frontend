@@ -6,11 +6,11 @@ import { useNavigate } from "react-router-dom";
 
 interface ButtonProps {
   name: string;
-  desc: string;
+  desc?: string;
   link?: string;
 }
 
-const ButtonComponent: React.FC<ButtonProps> = ({ name, desc, link }) => {
+const ButtonComponent: React.FC<ButtonProps> = ({ name, link }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
