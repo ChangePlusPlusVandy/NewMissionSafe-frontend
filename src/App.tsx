@@ -33,12 +33,15 @@ import HorizonForm from "./pages/Forms/HorizonForm";
 import YouthInfoPage from "./pages/YouthInfo";
 import StaffInfoPage from "./pages/StaffInfo";
 import Unauthorized from "./pages/Auth/Unauthorized";
+import FormInfo from "./pages/Forms/FormInfo";
+import Test from "./pages/Test";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<PrivateRoute element={<Home />} />} />
       <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+      <Route path="/test" element={<PrivateRoute element={<Test />} />} />
       <Route
         path="/create-event"
         element={<PrivateRoute element={<CreateEvent />} />}
@@ -88,6 +91,7 @@ const router = createBrowserRouter(
         element={<PrivateRoute element={<IncidentReport formID="00124" />} />}
       />
       <Route path="/forms/:formID" element={<PrivateRoute element={<FormLanding />} />} />
+      <Route path="/forms/:formID/:responseID" element={<PrivateRoute element={<FormInfo />} />} />
       <Route path="/forms" element={<PrivateRoute element={<Forms />} />} />
 
       <Route path="/forms/expense-form" element={<PrivateRoute element={<ExpenseForm formID = "0002"/>} />} />

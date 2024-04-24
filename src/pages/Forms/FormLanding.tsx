@@ -59,7 +59,7 @@ const FormLanding: React.FC = () => {
             <FormCard
               formID={form.formID}
               creatorID={item.creatorID}
-              timestamp={form.dateCreated}
+              timestamp={item.timestamp}
               responseID={item.responseID}
             />
           ))}

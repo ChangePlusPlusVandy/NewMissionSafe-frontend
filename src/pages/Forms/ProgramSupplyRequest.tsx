@@ -118,72 +118,69 @@ const ProgramSupplyRequest: React.FC<{ formID: string }> = ({ formID }) => {
     getStaff();
   }, [currentUser]);
 
-    return (
-        <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100vh"}  pl={40} pr={40}>
-            <Space h="xl" />
-            <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>
-                Program Supply Request
-            </Title>
-            <Paper w={"95%"} bg={"missionSafeBlue.9"}>
-                <Flex
-                    direction="column"
-                    gap={5}
-                >   
-                    <form onSubmit={form.onSubmit(submit, console.log)} >
-                        <Select
-                            data={staff.map((staff: staffType) => {
-                                return staff.firstName + " " + staff.lastName;
-                            })}
-                            value={staff.map((staff: staffType) => {
-                                return staff.firebaseUID;
-                            })}
-                            {...form.getInputProps("employeeRequesting")}
-                            label="Employee Requesting"
-                            styles={{ label: { color: 'white' } }}
-                            searchable
-                            required
-                        />
-                        <Select
-                            data={programs.map((program: string) => {
-                                return program;
-                            })}
-                            value={programs.map((program: string) => {
-                                return program;
-                            })}
-                            {...form.getInputProps("programRequesting")}
-                            label="Name of Program Requesting"
-                            styles={{ label: { color: 'white' } }}
-                            searchable
-                            required
-                        />
-                        <TextInput
-                            type="date"
-                            placeholder='MM-DD-YYYY'
-                            label='Date Needed By'
-                            styles={{ label: { color: 'white' } }}
-                            required
-                            {...form.getInputProps("dateNeededBy")}
-                        />
-                        <TextInput
-                            label="Item #1 Description"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemDescription1")}
-                            required
-                        />
-                        <TextInput
-                            type="number"
-                            label="Item #1 Quantity"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemQuantity1")}
-                            required
-                        />
-                        <TextInput
-                            type="number"
-                            label="Item #1 Cost"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemCost1")}
-                            required
-                        />
+  return (
+    <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100vh"} pl={40} pr={40}>
+      <Space h="xl" />
+      <Title order={2} fw={700} c="#5f737d" style={{ marginBottom: 20 }}>
+        Program Supply Request
+      </Title>
+      <Paper w={"95%"} bg={"missionSafeBlue.9"}>
+        <Flex direction="column" gap={5}>
+          <form onSubmit={form.onSubmit(submit, console.log)}>
+            <Select
+              data={staff.map((staff: staffType) => {
+                return staff.firstName + " " + staff.lastName;
+              })}
+              value={staff.map((staff: staffType) => {
+                return staff.firebaseUID;
+              })}
+              {...form.getInputProps("employeeRequesting")}
+              label="Employee Requesting"
+              styles={{ label: { color: "white" } }}
+              searchable
+              required
+            />
+            <Select
+              data={programs.map((program: string) => {
+                return program;
+              })}
+              value={programs.map((program: string) => {
+                return program;
+              })}
+              {...form.getInputProps("programRequesting")}
+              label="Name of Program Requesting"
+              styles={{ label: { color: "white" } }}
+              searchable
+              required
+            />
+            <TextInput
+              type="date"
+              placeholder="MM-DD-YYYY"
+              label="Date Needed By"
+              styles={{ label: { color: "white" } }}
+              required
+              {...form.getInputProps("dateNeededBy")}
+            />
+            <TextInput
+              label="Item #1 Description"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemDescription1")}
+              required
+            />
+            <TextInput
+              type="number"
+              label="Item #1 Quantity"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemQuantity1")}
+              required
+            />
+            <TextInput
+              type="number"
+              label="Item #1 Cost"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemCost1")}
+              required
+            />
 
             <TextInput
               label="Item #2 Description"
@@ -239,36 +236,35 @@ const ProgramSupplyRequest: React.FC<{ formID: string }> = ({ formID }) => {
               {...form.getInputProps("itemCost4")}
             />
 
-                        <TextInput
-                            label="Item #5 Description"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemDescription5")}
-                        />
-                        <TextInput
-                            type="number"
-                            label="Item #5 Quantity"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemQuantity5")}
-                        />
-                        <TextInput
-                            type="number"
-                            label="Item #5 Cost"
-                            styles={{ label: { color: 'white' } }}
-                            {...form.getInputProps("itemCost5")}
-                        />
-                        <Group justify="flex-end" mt="md">
-                        <Button type="submit">Submit</Button>
-                    </Group>
-                    </form>
-                    <br />
-                    <br />
-                    <br />
-                    <br />
-                    {/* will look at this in the future */}
-                </Flex>
-            </Paper>
-        </Box>
-
-    )
-}
+            <TextInput
+              label="Item #5 Description"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemDescription5")}
+            />
+            <TextInput
+              type="number"
+              label="Item #5 Quantity"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemQuantity5")}
+            />
+            <TextInput
+              type="number"
+              label="Item #5 Cost"
+              styles={{ label: { color: "white" } }}
+              {...form.getInputProps("itemCost5")}
+            />
+            <Group justify="flex-end" mt="md">
+              <Button type="submit">Submit</Button>
+            </Group>
+          </form>
+          <br />
+          <br />
+          <br />
+          <br />
+          {/* will look at this in the future */}
+        </Flex>
+      </Paper>
+    </Box>
+  );
+};
 export default ProgramSupplyRequest;

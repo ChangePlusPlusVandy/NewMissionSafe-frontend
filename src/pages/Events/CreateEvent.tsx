@@ -7,6 +7,7 @@ import { eventType } from "../../utils/models/eventModel";
 import "@mantine/dates/styles.css";
 import { showNotification } from "@mantine/notifications";
 import { getAllStaff } from "../../utils/staffInterface";
+import { programs } from "../Forms/FormUtils/ProgramUtils";
 import {
   TextInput,
   Textarea,
@@ -86,16 +87,6 @@ const CreateEvent: React.FC = () => {
     };
     getStaff();
   }, [currentUser, navigate]);
-
-  const programs = [
-    "EA",
-    "YLSC",
-    "InVest NOW!",
-    "Futures Plus",
-    "SCD",
-    "Power Boxing & Fitness",
-    "Metro Men's Movement",
-  ];
 
   const onSubmit = async (values: typeof form.values) => {
     try {

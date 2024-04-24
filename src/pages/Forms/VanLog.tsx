@@ -22,10 +22,7 @@ import { getAllStaff } from "../../utils/staffInterface.ts";
 import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
 import { programs } from "./FormUtils/ProgramUtils.tsx";
-import {
-  allowedFileMessage,
-  isImageFile,
-} from "./FormUtils/ImageUtils.tsx";
+import { allowedFileMessage, isImageFile } from "./FormUtils/ImageUtils.tsx";
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -101,24 +98,25 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
   });
 
   const submit = async (values: any) => {
-		const formData = new FormData();
-		formData.append("responseID", crypto.randomUUID());
-		formData.append("creatorID", currentUser?.uid || "");
-		formData.append("timestamp", new Date().toISOString());
-		for (const value of Object.values(values)) {
-			if(value instanceof File){
-				formData.append("images", value);
-				formData.append("responses", "image");
-			} else {
-				formData.append("responses", value as string);
-			}
-		}
-
+    const formData = new FormData();
+    formData.append("responseID", crypto.randomUUID());
+    formData.append("creatorID", currentUser?.uid || "");
+    formData.append("timestamp", new Date().toISOString());
+    for (const value of Object.values(values)) {
+      if (value instanceof File) {
+        formData.append("images", value);
+        formData.append("responses", "image");
+      } else {
+        formData.append("responses", value as string);
+      }
+    }
+    
     try {
       const token = await currentUser?.getIdToken();
       if (!token) {
         navigate("/login");
       } else {
+        console.log(formData)
         await createAndAddResponseFormData(formID, formData as any, token);
         navigate("/forms");
       }
@@ -138,7 +136,7 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
       }
     };
     getStaff();
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100%"} pl={"5%"} pr={"5%"}>

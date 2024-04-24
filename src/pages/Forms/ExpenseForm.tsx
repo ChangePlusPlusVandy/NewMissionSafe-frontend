@@ -26,8 +26,6 @@ interface Expense {
 
 const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
   const { currentUser } = useAuth();
-  const [employeeName, setEmployeeName] = useState("");
-  const [dateOfAdvance, setDateOfAdvance] = useState("");
   const [confirmChecked, setConfirmChecked] = useState(false);
   const [expenses, setExpenses] = useState([
     {
@@ -76,6 +74,16 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
     ]);
   };
 
+  const handleRemoveExpense = () => {
+    setExpenses((prevExpenses) => {
+      if (prevExpenses.length > 1) {
+        return prevExpenses.slice(0, -1);
+      }
+
+      return prevExpenses;
+    });
+  };
+
   const handleSubmit = async () => {
     for (let i = 0; i < expenses.length; i++) {
       const expense = expenses[i];
@@ -122,19 +130,6 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
         Expense Form
       </Title>
       <Flex direction="column" gap={5}>
-        <TextInput
-          placeholder="Employee Name"
-          value={employeeName}
-          onChange={(event) => setEmployeeName(event.currentTarget.value)}
-          style={{ marginBottom: 10 }}
-        />
-        <TextInput
-          type="date"
-          placeholder="Date of Advance"
-          value={dateOfAdvance}
-          onChange={(event) => setDateOfAdvance(event.currentTarget.value)}
-          style={{ marginBottom: 20 }}
-        />
         {expenses.map((expense, index) => (
           <div key={index} style={{ marginBottom: 20 }}>
             <Text size="sm" fw={700} style={{ marginBottom: 5 }} c="#758993">
@@ -142,12 +137,14 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
             </Text>
             <Group>
               <TextInput
+                type="date"
                 placeholder="Date"
                 value={expense.date}
                 onChange={(event) =>
                   handleExpenseChange(index, "date", event.currentTarget.value)
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Vendor"
@@ -160,6 +157,7 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Budget Category"
@@ -172,6 +170,7 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Explanation of Business Purpose"
@@ -184,6 +183,7 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Program"
@@ -196,6 +196,7 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Cash Reimbursement or Card"
@@ -208,6 +209,7 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
               />
               <TextInput
                 placeholder="Amount"
@@ -220,12 +222,17 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                   )
                 }
                 style={{ width: "100%" }}
+                required={true}
+                
               />
             </Group>
           </div>
         ))}
         <Button onClick={handleAddExpense} style={{ marginBottom: 20 }}>
           Add Expense
+        </Button>
+        <Button onClick={handleRemoveExpense} style={{ marginBottom: 20 }}>
+          Remove Expense
         </Button>
         <Flex direction="column" align="center" justify="space-between">
           <Flex direction="row" gap={10}>

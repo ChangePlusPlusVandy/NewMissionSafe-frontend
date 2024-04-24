@@ -37,6 +37,7 @@ const schema = Yup.object().shape({
 
 const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
   const { currentUser } = useAuth();
+  const name = currentUser?.displayName;
   const navigate = useNavigate();
   const [disbursalMethodOther, setDisbursalMethodOther] = useState("");
 
@@ -45,11 +46,12 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
     if (values.disbursalMethod == "Other") {
       values.disbursalMethod = disbursalMethodOther;
     }
+
     const responseFields: responseType = {
       responseID: crypto.randomUUID(),
       creatorID: currentUser?.uid || "",
       timestamp: new Date(),
-      responses: Object.values(values),
+      responses: (Object.values(values) as string[]).slice(0, -1),
     };
 
     try {
@@ -97,14 +99,14 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
             />
             <TextInput
               type="number"
-              label="Check Amount"
+              label="Check Amount ($)"
               styles={{ label: { color: "white" } }}
               {...form.getInputProps("checkAmount")}
               required
             />
             <TextInput
               type="date"
-              label="Date Check Is Needed"
+              label="Date Check Is Needed By"
               styles={{ label: { color: "white" } }}
               {...form.getInputProps("dateNeeded")}
               required
@@ -186,7 +188,11 @@ const CheckRequestForm: React.FC<{ formID: string }> = ({ formID }) => {
               required
               mt={"5%"}
             />
-            <Button type="submit" mt={"5%"}>
+            <Button
+              type="submit"
+              mt={"5%"}
+              disabled={form.values.signature !== name}
+            >
               Submit
             </Button>
           </form>

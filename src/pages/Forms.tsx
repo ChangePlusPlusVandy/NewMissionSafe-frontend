@@ -61,7 +61,7 @@ const Forms: React.FC = () => {
       }
     }
     fetchForms();
-  }, [currentUser]);
+  }, [currentUser, navigate]);
 
   return (
     <Paper bg={"missionSafeBlue.9"} w={"100%"} h={"100%"} radius={0}>

@@ -15,7 +15,7 @@ export interface youthType {
   guardianEmail: string;
   ssn: string;
   program: string;
-  attached_forms: string[];
+  attached_forms: object[];
   attended_events: string[];
   active: boolean;
   uuid: string;

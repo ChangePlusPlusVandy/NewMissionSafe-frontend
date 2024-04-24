@@ -94,6 +94,7 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
         <form onSubmit={form.onSubmit(submit, console.log)}>
           <TextInput
             label="Email"
+            type="email"
             styles={{ label: { color: "white" } }}
             placeholder="Your email"
             {...form.getInputProps("email")}
@@ -143,6 +144,7 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
 
           <TextInput
             label="Contact Number"
+            maxLength={10}
             styles={{ label: { color: "white" } }}
             placeholder="Enter contact number"
             {...form.getInputProps("contactNumber")}
@@ -151,6 +153,7 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
 
           <TextInput
             label="Contact Email"
+            type="email"
             styles={{ label: { color: "white" } }}
             placeholder="Enter contact email"
             {...form.getInputProps("contactEmail")}
