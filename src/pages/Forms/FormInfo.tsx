@@ -45,7 +45,7 @@ const FormInfo: React.FC = () => {
                   tmp.push(<Image w={"20%"} src={url} />);
 
                   if (url) {
-                    URL.revokeObjectURL(url);
+                    // URL.revokeObjectURL(url);
                   }
                 } else {
                   tmp.push(

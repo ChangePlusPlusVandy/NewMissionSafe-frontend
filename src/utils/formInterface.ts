@@ -94,36 +94,9 @@ export const getImage = async (key: string, token: string) => {
 export const fetchImage = async (key: string, token: string) => {
   try {
     if (token) {
-      const res = await getImage(key, token);
-      if (res) {
-        const reader = res.getReader();
-        const chunks: Uint8Array[] = [];
-        let chunk;
-
-        // Read the stream and collect chunks
-        while (!(chunk = await reader.read()).done) {
-          chunks.push(chunk.value);
-        }
-
-        // Concatenate all chunks into a single Uint8Array
-        const imageData = new Uint8Array(
-          chunks.reduce((acc, chunk) => acc + chunk.byteLength, 0)
-        );
-        let offset = 0;
-        for (const chunk of chunks) {
-          imageData.set(chunk, offset);
-          offset += chunk.byteLength;
-        }
-
-        // Convert Uint8Array to Base64 string
-        const base64String = btoa(String.fromCharCode(...imageData));
-
-        // Create data URL
-        const url = `data:image/png;base64,${base64String}`;
-
-        // Set the URL to state
-        return url;
-      }
+      const imageBlob = await getImage(key, token);
+      const imageUrl = URL.createObjectURL(imageBlob);
+      return imageUrl;
     }
   } catch (err: unknown) {
     if (err instanceof Error) {
