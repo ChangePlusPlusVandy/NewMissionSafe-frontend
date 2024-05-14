@@ -8,7 +8,7 @@ import { DateInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { showNotification } from "@mantine/notifications";
 import { getAllStaff } from "../../utils/staffInterface";
-import { programs } from "../Forms/FormUtils/ProgramUtils";
+import { programs } from "../../utils/formUtils/ProgramUtils";
 import {
   TextInput,
   Textarea,
@@ -91,7 +91,6 @@ const CreateEvent: React.FC = () => {
 
   const onSubmit = async (values: typeof form.values) => {
     try {
-      console.log("got to here");
       setError("");
       // Generate a unique event code
       const token = await currentUser?.getIdToken();

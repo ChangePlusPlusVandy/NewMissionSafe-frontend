@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Flex, Box, Button, Text, Title } from "@mantine/core";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-import { getFormByID } from "../../utils/formInterface";
+import { getFormByID } from "../../utils/formUtils/formInterface";
 import { formType } from "../../utils/models/formModel";
 import FormCard from "../../components/FormCard";
 

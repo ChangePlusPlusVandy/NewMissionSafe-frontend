@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../AuthContext";
 import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
-import { getActiveYouth } from "../utils/youthInterface";
-import { youthType } from "../utils/models/youthModel";
-import YouthCard from "../components/YouthCard";
+import { getActiveYouth } from "../../utils/youthInterface";
+import { youthType } from "../../utils/models/youthModel";
+import YouthCard from "../../components/YouthCard";
 
 const Youth: React.FC = () => {
   const { currentUser } = useAuth();

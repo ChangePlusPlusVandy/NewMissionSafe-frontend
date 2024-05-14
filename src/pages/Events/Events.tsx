@@ -35,20 +35,23 @@ const Events: React.FC = () => {
       if (currentUser) {
         const token = await currentUser.getIdToken();
 
-        const now = new Date();
+        const now = new Date(new Date().setHours(0, 0, 0));
+        const yesterday = new Date(
+          new Date(now.getTime() - 1000 * 60 * 60 * 24).setHours(23, 59, 59)
+        );
 
         // get all events up to 4 month in the past and 2 month in the future
         const past = await getEventsByDate(
           token,
           sub(now, { months: 12 }),
-          now
+          yesterday
         );
         past.reverse();
 
         const upcoming = await getEventsByDate(
           token,
-          now,
-          add(now, { months: 4 })
+          yesterday,
+          add(now, { days: 8 })
         );
 
         setPastEvents(past);
@@ -65,32 +68,6 @@ const Events: React.FC = () => {
   const handleCreateEvent = async () => {
     navigate("/create-event");
   };
-
-  // TODO: Implement search bar
-  // const bar = () => {
-  //   return (
-  //     <Center w={"100%"}>
-  //       <Group justify="space-between" gap="0" w={"90%"}>
-  //         <TextInput
-  //           variant="unstyled"
-  //           placeholder="Search"
-  //           w={"90%"}
-  //           leftSection={icon}
-  //           style={{
-  //             boxShadow: "0 0 4px 2px rgba(255,255,255,0.4)",
-  //             borderRadius: "5px",
-  //           }}
-  //           styles={{
-  //             input: {
-  //               color: "white",
-  //             },
-  //           }}
-  //         />
-  //         <IconAdjustmentsHorizontal width="10%" color="white" stroke={1.2} />
-  //       </Group>
-  //     </Center>
-  //   );
-  // };
 
   const renderEvents = (events: returnedEventType[]) => {
     return (

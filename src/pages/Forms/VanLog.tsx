@@ -14,15 +14,18 @@ import {
   RadioGroup,
   Radio,
 } from "@mantine/core";
-import { createAndAddResponseFormData } from "../../utils/formInterface.ts";
+import { createAndAddResponseFormData } from "../../utils/formUtils/formInterface.ts";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext.tsx";
 import { useNavigate } from "react-router";
 import { getAllStaff } from "../../utils/staffInterface.ts";
 import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
-import { programs } from "./FormUtils/ProgramUtils.tsx";
-import { allowedFileMessage, isImageFile } from "./FormUtils/ImageUtils.tsx";
+import { programs } from "../../utils/formUtils/ProgramUtils.ts";
+import {
+  allowedFileMessage,
+  isImageFile,
+} from "../../utils/formUtils/ImageUtils.ts";
 
 const schema = Yup.object().shape({
   email: Yup.string()
@@ -110,13 +113,13 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
         formData.append("responses", value as string);
       }
     }
-    
+
     try {
       const token = await currentUser?.getIdToken();
       if (!token) {
         navigate("/login");
       } else {
-        console.log(formData)
+        console.log(formData);
         await createAndAddResponseFormData(formID, formData as any, token);
         navigate("/forms");
       }

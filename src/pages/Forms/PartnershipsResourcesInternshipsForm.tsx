@@ -12,7 +12,7 @@ import {
   RadioGroup,
   Radio,
 } from "@mantine/core";
-import { createAndAddResponseJson } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formUtils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";

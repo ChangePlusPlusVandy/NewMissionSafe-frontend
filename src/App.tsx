@@ -14,10 +14,9 @@ import PrivateRoute from "./pages/Auth/PrivateRoute";
 import CreateEvent from "./pages/Events/CreateEvent";
 import EventInfo from "./pages/Events/EventInfo";
 import Home from "./pages/Home";
-import Profile from "./pages/Profile";
 import Events from "./pages/Events/Events";
-import Youth from "./pages/Youth";
-import Staff from "./pages/Staff";
+import Youth from "./pages/Youth/Youth";
+import Staff from "./pages/Staff/Staff";
 import RegisterYouth from "./pages/Auth/RegisterYouth";
 import RegisterStaff from "./pages/Auth/RegisterStaff";
 import ProgramSupplyRequest from "./pages/Forms/ProgramSupplyRequest";
@@ -30,8 +29,8 @@ import FormLanding from "./pages/Forms/FormLanding";
 import Forms from "./pages/Forms/Forms";
 import ExpenseForm from "./pages/Forms/ExpenseForm";
 import HorizonForm from "./pages/Forms/HorizonForm";
-import YouthInfo from "./pages/YouthInfo";
-import StaffInfo from "./pages/StaffInfo";
+import YouthInfo from "./pages/Youth/YouthInfo";
+import StaffInfo from "./pages/Staff/StaffInfo";
 import Unauthorized from "./pages/Auth/Unauthorized";
 import FormInfo from "./pages/Forms/FormInfo";
 import Attendance from "./pages/Attendance/Attendance";
@@ -42,7 +41,6 @@ const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<PrivateRoute element={<Home />} />} />
-      <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
       <Route
         path="/attendance"
         element={<PrivateRoute element={<Attendance />} />}

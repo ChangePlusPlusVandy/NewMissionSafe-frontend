@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../AuthContext";
 import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
-import { getActiveStaff } from "../utils/staffInterface";
-import StaffCard from "../components/StaffCard";
-import { staffType } from "../utils/models/staffModel";
+import { getActiveStaff } from "../../utils/staffInterface";
+import StaffCard from "../../components/StaffCard";
+import { staffType } from "../../utils/models/staffModel";
 
 const Staff: React.FC = () => {
   const { currentUser, getMongoUser } = useAuth();

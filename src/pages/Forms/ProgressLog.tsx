@@ -13,7 +13,7 @@ import {
   Space,
   Checkbox,
 } from "@mantine/core";
-import { createAndAddResponseJson } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formUtils/formInterface.ts";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
@@ -32,9 +32,9 @@ import {
   violencePreventionDevelopmentOptions,
   civicEngagementDevelopmentOptions,
   socialDevelopmentOptions,
-} from "./FormUtils/ProgressUtils.tsx";
+} from "../../utils/formUtils/ProgressUtils.ts";
 
-import { programs } from "./FormUtils/ProgramUtils.tsx";
+import { programs } from "../../utils/formUtils/ProgramUtils.ts";
 
 const schema = Yup.object().shape({
   email: Yup.string()

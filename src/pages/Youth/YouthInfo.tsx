@@ -4,11 +4,11 @@ import {
   getYouthByID,
   deactivateYouth,
   activateYouth,
-} from "../utils/youthInterface.tsx";
-import { getStaffByID } from "../utils/staffInterface.ts";
-import { youthType } from "../utils/models/youthModel.ts";
-import { staffType } from "../utils/models/staffModel.ts";
-import { useAuth } from "../AuthContext.tsx";
+} from "../../utils/youthInterface";
+import { getStaffByID } from "../../utils/staffInterface";
+import { youthType } from "../../utils/models/youthModel";
+import { staffType } from "../../utils/models/staffModel";
+import { useAuth } from "../../AuthContext";
 import { Box, Title, Paper, Text, Button } from "@mantine/core";
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
 

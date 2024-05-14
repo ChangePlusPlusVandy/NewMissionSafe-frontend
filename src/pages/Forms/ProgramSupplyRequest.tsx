@@ -11,15 +11,15 @@ import {
   Space,
   Select,
 } from "@mantine/core";
-import { createAndAddResponseJson } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formUtils/formInterface.ts";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel";
 import { getAllStaff } from "../../utils/staffInterface.ts";
-import { staffType } from '../../utils/models/staffModel.ts';
-import { Box } from '@mantine/core';
-import { programs } from './FormUtils/ProgramUtils.tsx';
+import { staffType } from "../../utils/models/staffModel.ts";
+import { Box } from "@mantine/core";
+import { programs } from "../../utils/formUtils/ProgramUtils.ts";
 
 const schema = Yup.object().shape({
   employeeRequesting: Yup.string().required("Employee Requesting is required"),

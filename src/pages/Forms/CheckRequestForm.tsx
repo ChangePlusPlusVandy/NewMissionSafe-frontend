@@ -13,13 +13,13 @@ import {
   Radio,
   Stack,
 } from "@mantine/core";
-import { createAndAddResponseJson } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formUtils/formInterface";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel";
 import { Box } from "@mantine/core";
-import { checkPolicy } from "./FormUtils/CheckUtils";
+import { checkPolicy } from "../../utils/formUtils/CheckUtils";
 
 const schema = Yup.object().shape({
   reasonForCheck: Yup.string().required("Reason for check is required"),

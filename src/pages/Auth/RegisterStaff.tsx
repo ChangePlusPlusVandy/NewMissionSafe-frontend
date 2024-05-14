@@ -10,6 +10,7 @@ interface FormValues {
   firstName: string;
   lastName: string;
   email: string;
+  phone: string;
   password: string;
   confirmPassword: string;
   program: string;
@@ -22,6 +23,12 @@ const schema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
     .required("Email is required"),
+  phone: Yup.string()
+    .matches(
+      /^\d{10}$/,
+      "Phone number must be exactly 10 digits and only contain numbers"
+    )
+    .required("Phone number is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
@@ -98,6 +105,18 @@ const RegisterStaff: React.FC = () => {
           <label htmlFor="email">Email</label>
           <input type="email" id="email" {...register("email")} />
           {errors.email && <FormError>{errors.email.message}</FormError>}
+        </div>
+        <div>
+          <label htmlFor="phone">Guardian Phone </label>
+          <input
+            type="text"
+            id="phone"
+            maxLength={10}
+            {...register("phone")}
+          />
+          {errors.phone && (
+            <FormError>{errors.phone.message}</FormError>
+          )}
         </div>
         <div>
           <label htmlFor="program">Program</label>

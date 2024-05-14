@@ -14,13 +14,14 @@ import {
   Select,
 } from "@mantine/core";
 import { useAuth } from "../../AuthContext";
-import {
-  createAndAddResponseFormData,
-} from "../../utils/formInterface";
+import { createAndAddResponseFormData } from "../../utils/formUtils/formInterface";
 import { useNavigate } from "react-router";
 import { yupResolver } from "mantine-form-yup-resolver";
-import { allowedFileMessage, isImageFile } from "./FormUtils/ImageUtils";
-import { programs } from "./FormUtils/ProgramUtils";
+import {
+  allowedFileMessage,
+  isImageFile,
+} from "../../utils/formUtils/ImageUtils";
+import { programs } from "../../utils/formUtils/ProgramUtils";
 import * as Yup from "yup";
 
 const schema = Yup.object().shape({

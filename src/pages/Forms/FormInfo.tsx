@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { responseType } from "../../utils/models/formModel.ts";
-import { getFormResponse } from "../../utils/formInterface.ts";
+import { responseType } from "../../utils/models/formModel";
+import { getFormResponse } from "../../utils/formUtils/formInterface";
 import { useAuth } from "../../AuthContext";
-import { questionSelector, formIDMapper } from "./FormUtils/Questions";
-import { fetchImage } from "../../utils/formInterface.ts";
+import {
+  questionSelector,
+  formIDMapper,
+} from "../../utils/formUtils/Questions";
+import { fetchImage } from "../../utils/formUtils/formInterface";
 import { Title, Box, Image, Text, Flex, Space } from "@mantine/core";
-import { getStaffByID } from "../../utils/staffInterface.ts";
-import { staffType } from "../../utils/models/staffModel.ts";
-import { getYouthByID } from "../../utils/youthInterface.tsx";
+import { getStaffByID } from "../../utils/staffInterface";
+import { staffType } from "../../utils/models/staffModel";
+import { getYouthByID } from "../../utils/youthInterface";
 
 const FormInfo: React.FC = () => {
   const { currentUser } = useAuth();

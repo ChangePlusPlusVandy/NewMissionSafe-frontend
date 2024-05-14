@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getStaffByID } from "../utils/staffInterface";
-import { useAuth } from "../AuthContext";
-import { staffType } from "../utils/models/staffModel";
+import { getStaffByID } from "../../utils/staffInterface";
+import { useAuth } from "../../AuthContext";
+import { staffType } from "../../utils/models/staffModel";
 import { Box, Paper, Text, Title } from "@mantine/core";
-import { rolesMap } from "../utils/staffInterface";
+import { rolesMap, formatPhoneNumber } from "../../utils/staffInterface";
 
 const StaffInfo: React.FC = () => {
   const [staffData, setStaffData] = useState<staffType | null>(null);
@@ -61,6 +61,9 @@ const StaffInfo: React.FC = () => {
             </Text>
             <Text size="1.5rem" mb={"5%"} style={{ color: "white" }}>
               <strong>Email:</strong> {staffData?.email}
+            </Text>
+            <Text size="1.5rem" mb={"5%"} style={{ color: "white" }}>
+              <strong>Phone:</strong> {staffData && formatPhoneNumber(staffData.phone)}
             </Text>
             <Text size="1.5rem" mb={"5%"} style={{ color: "white" }}>
               <strong>Program:</strong> {staffData?.program}

@@ -10,7 +10,7 @@ import {
   Title,
   Space,
 } from "@mantine/core";
-import { createAndAddResponseJson } from "../../utils/formInterface";
+import { createAndAddResponseJson } from "../../utils/formUtils/formInterface";
 import { useAuth } from "../../AuthContext";
 
 interface Expense {
@@ -223,7 +223,6 @@ const ExpenseForm: React.FC<{ formID: string }> = ({ formID }) => {
                 }
                 style={{ width: "100%" }}
                 required={true}
-                
               />
             </Group>
           </div>

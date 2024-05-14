@@ -57,15 +57,20 @@ const ForgotPassword: React.FC = () => {
       <h1>Forgot Password</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label htmlFor="email">Email</label>
-          <input type="email" id="email" {...register("email")} />
+          <label htmlFor="email">Enter Email </label>
+          <input
+            type="email"
+            id="email"
+            {...register("email")}
+            style={{ color: "black", background: "white" }}
+          />
           {errors.email != null && (
             <FormError>{errors.email.message}</FormError>
           )}
         </div>
         {error && <FormError>{error}</FormError>}
         <button disabled={isSubmitting} type="submit">
-          {isSubmitting ? "Submitting" : "Login"}
+          {isSubmitting ? "Submitting" : "Submit"}
         </button>
         {message && <p>{message}</p>}
       </form>

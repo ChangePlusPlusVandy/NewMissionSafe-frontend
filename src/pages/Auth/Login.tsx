@@ -5,8 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 import { useAuth } from "../../AuthContext";
 import FormError from "./FormError";
-import './Login.css';
-import RedCorner from "../../components/RedCorner";
+import "./Login.css";
+import RedCorner from "../../components/RedCorner/RedCorner";
 interface FormValues {
   email: string;
   password: string;
@@ -57,21 +57,31 @@ const Login: React.FC = () => {
 
   return (
     <div className="login-container">
-      <RedCorner/>
-      
+      <RedCorner />
+
       <h1>Login</h1>
       <p>Please sign in to continue</p>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label htmlFor="email">Email</label>
-          <input type="email" id="email" {...register("email")} />
+          <input
+            type="email"
+            id="email"
+            {...register("email")}
+            style={{ color: "black" }}
+          />
           {errors.email != null && (
             <FormError>{errors.email.message}</FormError>
           )}
         </div>
         <div>
           <label htmlFor="password">Password</label>
-          <input type="password" id="password" {...register("password")} />
+          <input
+            type="password"
+            id="password"
+            {...register("password")}
+            style={{ color: "black" }}
+          />
           {errors.password != null && (
             <FormError>{errors.password.message}</FormError>
           )}
@@ -82,9 +92,6 @@ const Login: React.FC = () => {
         </button>
       </form>
       <div className="bottom-text">
-        {/* <p>
-          Don&apos;t have an account? <Link to="/register">Register</Link>
-        </p> */}
         <p>
           Forgot your password? <Link to="/forgot-password">Reset</Link>
         </p>
@@ -94,4 +101,3 @@ const Login: React.FC = () => {
 };
 
 export default Login;
-

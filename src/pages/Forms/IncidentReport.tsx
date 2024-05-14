@@ -13,19 +13,22 @@ import {
   Textarea,
   MultiSelect,
 } from "@mantine/core";
-import { createAndAddResponseFormData } from "../../utils/formInterface";
+import { createAndAddResponseFormData } from "../../utils/formUtils/formInterface.ts";
 import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { getActiveStaff } from "../../utils/staffInterface.ts";
 import { Box } from "@mantine/core";
-import { allowedFileMessage, isImageFile } from "./FormUtils/ImageUtils.tsx";
-import { programs } from "./FormUtils/ProgramUtils.tsx";
+import {
+  allowedFileMessage,
+  isImageFile,
+} from "../../utils/formUtils/ImageUtils.ts";
+import { programs } from "../../utils/formUtils/ProgramUtils.ts";
 import {
   getActiveYouth,
   getYouthByID,
   updateYouth,
-} from "../../utils/youthInterface.tsx";
+} from "../../utils/youthInterface.ts";
 
 const schema = Yup.object().shape({
   email: Yup.string()

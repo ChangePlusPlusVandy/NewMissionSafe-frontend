@@ -132,3 +132,15 @@ export const rolesMap: Record<number, string> = {
   3: "Manager",
   4: "Admin",
 };
+
+export const formatPhoneNumber = (phoneNumber: string) => {
+  // Match 10 digits in the format xxx-xxx-xxxx
+  const matched = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+  if (matched) {
+    // Insert dashes between matched groups
+    return `${matched[1]}-${matched[2]}-${matched[3]}`;
+  } else {
+    // Return original string if not in expected format
+    return phoneNumber;
+  }
+};

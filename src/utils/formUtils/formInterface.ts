@@ -1,9 +1,9 @@
-import { formType, responseType } from "./models/formModel";
+import { formType, responseType } from "../models/formModel";
 import {
   handleImageResponse,
   handleJsonResponse,
   handleMiscResponse,
-} from "./responseHelpers";
+} from "../responseHelpers";
 
 const BACKEND_ROUTE = `${import.meta.env.VITE_BACKEND_ROUTE}/forms`;
 
