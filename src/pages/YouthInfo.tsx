@@ -12,7 +12,7 @@ import { useAuth } from "../AuthContext.tsx";
 import { Box, Title, Paper, Text, Button } from "@mantine/core";
 import { RiEyeOffLine, RiEyeLine } from "react-icons/ri";
 
-const YouthInfoPage: React.FC = () => {
+const YouthInfo: React.FC = () => {
   const { firebaseUID } = useParams<{ firebaseUID: string }>();
   const { currentUser } = useAuth();
   const [youthData, setYouthData] = useState<youthType[]>([]);
@@ -153,4 +153,4 @@ const YouthInfoPage: React.FC = () => {
   );
 };
 
-export default YouthInfoPage;
+export default YouthInfo;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../AuthContext";
+import { useAuth } from "../../AuthContext";
 import { Title, Center, Space, Flex, Paper, Text } from "@mantine/core";
-import ButtonComponent from "../components/ButtonComponent";
+import ButtonComponent from "../../components/ButtonComponent";
 
 const Forms: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);

@@ -6,7 +6,7 @@ import { staffType } from "../utils/models/staffModel";
 import { Box, Paper, Text, Title } from "@mantine/core";
 import { rolesMap } from "../utils/staffInterface";
 
-const StaffInfoPage: React.FC = () => {
+const StaffInfo: React.FC = () => {
   const [staffData, setStaffData] = useState<staffType | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
@@ -79,4 +79,4 @@ const StaffInfoPage: React.FC = () => {
   );
 };
 
-export default StaffInfoPage;
+export default StaffInfo;
