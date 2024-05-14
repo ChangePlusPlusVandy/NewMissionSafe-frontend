@@ -34,12 +34,27 @@ import YouthInfoPage from "./pages/YouthInfo";
 import StaffInfoPage from "./pages/StaffInfo";
 import Unauthorized from "./pages/Auth/Unauthorized";
 import FormInfo from "./pages/Forms/FormInfo";
+import Attendance from "./pages/Attendance/Attendance";
+import AttendanceReport from "./pages/Attendance/AttendanceReport";
+import DropIn from "./pages/Attendance/DropIn";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
       <Route path="/" element={<PrivateRoute element={<Home />} />} />
       <Route path="/profile" element={<PrivateRoute element={<Profile />} />} />
+      <Route
+        path="/attendance"
+        element={<PrivateRoute element={<Attendance />} />}
+      />
+      <Route
+        path="/attendance/report"
+        element={<PrivateRoute element={<AttendanceReport />} />}
+      />
+      <Route
+        path="/attendance/drop-in"
+        element={<PrivateRoute element={<DropIn />} />}
+      />
       <Route
         path="/create-event"
         element={<PrivateRoute element={<CreateEvent />} />}

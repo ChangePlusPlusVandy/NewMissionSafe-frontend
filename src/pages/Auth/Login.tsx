@@ -82,9 +82,9 @@ const Login: React.FC = () => {
         </button>
       </form>
       <div className="bottom-text">
-        <p>
+        {/* <p>
           Don&apos;t have an account? <Link to="/register">Register</Link>
-        </p>
+        </p> */}
         <p>
           Forgot your password? <Link to="/forgot-password">Reset</Link>
         </p>

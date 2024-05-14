@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import { createCode, createEvent } from "../../utils/eventInterface";
 import { eventType } from "../../utils/models/eventModel";
+import { DateInput } from "@mantine/dates";
 import "@mantine/dates/styles.css";
 import { showNotification } from "@mantine/notifications";
 import { getAllStaff } from "../../utils/staffInterface";
@@ -187,15 +188,17 @@ const CreateEvent: React.FC = () => {
                 placeholder="Event description"
                 {...form.getInputProps("description")}
                 styles={{ label: { color: "white" } }}
+                required
               />
               <Space h="sm" />
-
-              <TextInput
-                label="Pick date"
-                type="date"
+              <DateInput
+                c="white"
+                clearable
+                label="Select a date"
+                valueFormat="MM-DD-YYYY"
                 placeholder="MM-DD-YYYY"
-                styles={{ label: { color: "white" } }}
                 {...form.getInputProps("date")}
+                required
               />
               <Space h="sm" />
 
@@ -205,6 +208,7 @@ const CreateEvent: React.FC = () => {
                 placeholder="Start Time"
                 styles={{ label: { color: "white" } }}
                 {...form.getInputProps("startTime")}
+                required
               />
               <Space h="sm" />
 
@@ -214,6 +218,7 @@ const CreateEvent: React.FC = () => {
                 placeholder="End Time"
                 styles={{ label: { color: "white" } }}
                 {...form.getInputProps("endTime")}
+                required
               />
               <Space h="sm" />
 
@@ -222,6 +227,7 @@ const CreateEvent: React.FC = () => {
                 placeholder="Enter location"
                 {...form.getInputProps("location")}
                 styles={{ label: { color: "white" } }}
+                required
               />
               <Space h="sm" />
 

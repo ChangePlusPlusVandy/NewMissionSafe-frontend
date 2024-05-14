@@ -116,10 +116,10 @@ const RegisterStaff: React.FC = () => {
           <label htmlFor="role">Role</label>
           <select id="role" {...register("role")}>
             <option value="">Select One</option>
-            <option value={1}>Admin</option>
-            <option value={2}>Manager</option>
-            <option value={3}>Counselor</option>
-            <option value={4}>Staff</option>
+            <option value={4}>Admin</option>
+            <option value={3}>Manager</option>
+            <option value={2}>Counselor</option>
+            <option value={1}>Staff</option>
           </select>
           {errors.program && <FormError>{errors.program.message}</FormError>}
         </div>

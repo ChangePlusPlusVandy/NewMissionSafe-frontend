@@ -59,5 +59,5 @@ export async function handleImageResponse(response: Response) {
       throw new Error(response.statusText);
     }
   }
-  return response.blob();
+  return await response.blob();
 }
