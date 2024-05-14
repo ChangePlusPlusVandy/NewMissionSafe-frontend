@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { getEventsByDate } from "../utils/eventInterface";
 import { returnedEventType } from "../utils/models/eventModel";
 import Event from "../components/EventCard";
-import { Title, Center, Space, Flex, Skeleton, Paper } from "@mantine/core";
+import { Title, Center, Space, Flex, Skeleton, Paper, Button } from "@mantine/core";
 
 const Home: React.FC = () => {
   const { currentUser } = useAuth();
+  const navigate = useNavigate()
   const [userDetails, setUserDetails] = useState<{
     token: string;
     userId: string;
@@ -28,14 +30,24 @@ const Home: React.FC = () => {
     });
   }, [currentUser]);
 
+  const handleClick = () => {
+    navigate("/attendance")
+  }
+
   return (
     <Paper
       bg={"missionSafeBlue.9"}
       w={"100%"}
       h={"100%"}
-      mih={"100vh"}
+      mih={"100dvh"}
       radius={0}
     >
+      <Center>
+        <Button mt="5%" mb={"5%"} bg="#861F25" c="white" w="50%" size="lg" onClick={handleClick}>
+          Attendance
+        </Button>
+      </Center>
+
       <TodayEvents token={userDetails.token}></TodayEvents>
       <UpcomingEvents token={userDetails.token}></UpcomingEvents>
     </Paper>

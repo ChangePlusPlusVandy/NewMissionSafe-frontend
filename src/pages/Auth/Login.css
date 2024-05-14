@@ -95,8 +95,8 @@ body {
     justify-content: center; /* Center horizontally */
     align-items: center; /* Center vertically */
     border-radius: 10px;
-    border: 1px solid #A02B2B;
-    background: #CF2329;
+    border: 1px solid #2581be;
+    background: #022B41;
     color: #FFF; /* Adjust text color as needed */
     font-family: Arial; /* Adjust font settings as needed */
     text-align: center; /* Center text horizontally */
@@ -124,7 +124,7 @@ body {
 }
 /* Link style */
 .bottom-text a {
-    color: #CF2329; /* Red color for links */
+    color: #022B41; /* Red color for links */
     font-family: Arial;
     font-size: 14px;
     font-style: normal;
