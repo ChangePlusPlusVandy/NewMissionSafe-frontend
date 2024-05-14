@@ -41,16 +41,11 @@ const FormInfo: React.FC = () => {
                   typeof responseValue === "string" &&
                   responseValue !== "undefined"
                 ) {
-                  const blob = await fetchImage(responseValue, token);
+                  const url = await fetchImage(responseValue, token);
+                  tmp.push(<Image w={"20%"} src={url} />);
 
-                  console.log(blob)
-                  
-                  
-                  if (blob) {
-                    const url = URL.createObjectURL(blob)
-  
-                    tmp.push(<Image w={"20%"} src={url} />);
-                    URL.revokeObjectURL(url);
+                  if (url) {
+                    // URL.revokeObjectURL(url);
                   }
                 } else {
                   tmp.push(
@@ -185,4 +180,3 @@ const FormInfo: React.FC = () => {
 };
 
 export default FormInfo;
-
