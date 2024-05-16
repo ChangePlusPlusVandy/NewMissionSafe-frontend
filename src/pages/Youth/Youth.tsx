@@ -1,34 +1,79 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-import { Title, Center, Space, Button, Text, Flex, Paper } from "@mantine/core";
-import { getActiveYouth } from "../../utils/youthInterface";
+import {
+  Title,
+  Center,
+  Space,
+  Button,
+  Text,
+  Flex,
+  Paper,
+  Select,
+} from "@mantine/core";
+import { getActiveYouth, getYouthByProgram } from "../../utils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
 import YouthCard from "../../components/YouthCard";
+import { programs } from "../../utils/formUtils/ProgramUtils";
 
 const Youth: React.FC = () => {
-  const { currentUser } = useAuth();
+  const { currentUser, mongoUser } = useAuth();
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [youth, setYouth] = useState<[youthType]>();
+  const [error, setError] = useState<string>("");
+  const options = ["All", ...programs];
 
   useEffect(() => {
     async function fetchYouth() {
-      const token = await currentUser?.getIdToken();
+      try {
+        const token = await currentUser?.getIdToken();
 
-      if (token) {
-        setYouth(await getActiveYouth(token));
-        setIsLoading(false);
-      } else {
-        navigate("/");
+        if (token) {
+          if (!mongoUser?.program) {
+            setYouth(await getActiveYouth(token));
+          } else {
+            setYouth(await getYouthByProgram(mongoUser.program, token));
+          }
+          setIsLoading(false);
+        } else {
+          navigate("/");
+        }
+      } catch (err: unknown) {
+        if (err instanceof Error) {
+          setError(err.message);
+        } else {
+          setError("An unknown error occurred");
+        }
       }
     }
 
     fetchYouth();
-  }, [currentUser]);
+  }, [currentUser, mongoUser, navigate]);
 
   const handleRegisterYouth = async () => {
     navigate("/register-youth");
+  };
+
+  const handleChange = async (e: string | null) => {
+    try {
+      const token = await currentUser?.getIdToken();
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      if (!e || e === "All") {
+        setYouth(await getActiveYouth(token));
+      } else {
+        setYouth(await getYouthByProgram(e, token));
+      }
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    }
   };
 
   const renderYouth = () => {
@@ -55,7 +100,7 @@ const Youth: React.FC = () => {
     } else {
       return (
         <div>
-          <Text c={"black"}>There are currently no youth</Text>
+          <Text c={"white"}>There are currently no youth in the selected program</Text>
         </div>
       );
     }
@@ -90,9 +135,14 @@ const Youth: React.FC = () => {
               </Button>
             </Center>
             <br />
-            <Title order={3} style={{ color: "white" }}>
-              Directory
-            </Title>
+            <Select
+              placeholder="Select Program"
+              c="white"
+              onChange={(e) => handleChange(e)}
+              data={options}
+              defaultValue={mongoUser?.program || "All"}
+            />
+            {error && <Text c="white">{error}</Text>}
             <br />
             {renderYouth()}
           </Flex>
