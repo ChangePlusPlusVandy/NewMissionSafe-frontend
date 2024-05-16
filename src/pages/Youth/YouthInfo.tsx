@@ -87,7 +87,7 @@ const YouthInfo: React.FC = () => {
       }
     };
     fetchYouthData();
-  }, [firebaseUID, currentUser, youthData]);
+  }, [firebaseUID, currentUser]);
 
   const handleToggleStatus = async () => {
     if (!firebaseUID || !currentUser || youthData.length === 0) {
