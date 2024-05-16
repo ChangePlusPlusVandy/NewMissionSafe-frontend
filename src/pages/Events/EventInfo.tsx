@@ -21,7 +21,7 @@ import {
   getYouthByID,
   getYouthByProgram,
   updateYouth,
-} from "../../utils/youthInterface";
+} from "../../utils/youthUtils/youthInterface";
 
 const EventInfo: React.FC = () => {
   // just has youth name (label) and id (value)
@@ -164,7 +164,7 @@ const EventInfo: React.FC = () => {
         for (let i = 0; i < selectedYouthIDs?.length; ++i) {
           await attendEvent(eventCode, selectedYouthIDs[i], token);
           const y = (await getYouthByID(selectedYouthIDs[i], token))[0];
-          console.log(y)
+          
           if (!y.attended_events.includes(eventCode)) {
             const updatedEvents = {
               ...y,

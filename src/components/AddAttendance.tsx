@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useAuth } from "../AuthContext";
 import { Box, Button, Select, Text } from "@mantine/core";
 import { addAttendanceEntry, updateStatus } from "../utils/attendanceInterface";
-import { getYouthByID } from "../utils/youthInterface";
+import { getYouthByID } from "../utils/youthUtils/youthInterface";
 import { attendanceType } from "../utils/models/attendanceModel";
 
 interface AddAttendanceProps {
@@ -11,7 +11,11 @@ interface AddAttendanceProps {
   type: string;
 }
 
-const AddAttendance: React.FC<AddAttendanceProps> = ({ date, youthId, type }) => {
+const AddAttendance: React.FC<AddAttendanceProps> = ({
+  date,
+  youthId,
+  type,
+}) => {
   const [status, setStatus] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
@@ -50,9 +54,8 @@ const AddAttendance: React.FC<AddAttendanceProps> = ({ date, youthId, type }) =>
           await addAttendanceEntry(obj as attendanceType, token);
         } else if (type === "update") {
           console.log(date.toString());
-          await updateStatus(date.toString(), youthId, token, status)
+          await updateStatus(date.toString(), youthId, token, status);
         }
-        
       }
       setIsSubmitting(false);
       window.location.reload();

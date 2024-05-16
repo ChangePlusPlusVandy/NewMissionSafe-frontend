@@ -28,7 +28,7 @@ import {
   getActiveYouth,
   getYouthByID,
   updateYouth,
-} from "../../utils/youthInterface.ts";
+} from "../../utils/youthUtils/youthInterface.ts";
 
 const schema = Yup.object().shape({
   email: Yup.string()

@@ -11,7 +11,10 @@ import {
   Paper,
   Select,
 } from "@mantine/core";
-import { getActiveYouth, getYouthByProgram } from "../../utils/youthInterface";
+import {
+  getActiveYouth,
+  getYouthByProgram,
+} from "../../utils/youthUtils/youthInterface";
 import { youthType } from "../../utils/models/youthModel";
 import YouthCard from "../../components/YouthCard";
 import { programs } from "../../utils/formUtils/ProgramUtils";
@@ -100,7 +103,9 @@ const Youth: React.FC = () => {
     } else {
       return (
         <div>
-          <Text c={"white"}>There are currently no youth in the selected program</Text>
+          <Text c={"white"}>
+            There are currently no youth in the selected program
+          </Text>
         </div>
       );
     }
