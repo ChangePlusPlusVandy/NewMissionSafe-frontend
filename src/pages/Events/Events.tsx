@@ -46,13 +46,24 @@ const Events: React.FC = () => {
           sub(now, { months: 12 }),
           yesterday
         );
-        past.reverse();
+        past.sort((a, b) => {
+          const d1 = new Date(a.date);
+          const d2 = new Date(b.date);
+
+          return d2.getTime() - d1.getTime();
+        });
 
         const upcoming = await getEventsByDate(
           token,
           yesterday,
           add(now, { days: 8 })
         );
+        upcoming.sort((a, b) => {
+          const d1 = new Date(a.date);
+          const d2 = new Date(b.date);
+
+          return d1.getTime() - d2.getTime();
+        });
 
         setPastEvents(past);
         setUpcomingEvents(upcoming);

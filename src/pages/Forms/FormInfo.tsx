@@ -11,7 +11,7 @@ import { fetchImage } from "../../utils/formUtils/formInterface";
 import { Title, Box, Image, Text, Flex, Space } from "@mantine/core";
 import { getStaffByID } from "../../utils/staffInterface";
 import { staffType } from "../../utils/models/staffModel";
-import { getYouthByID } from "../../utils/youthInterface";
+import { getYouthByID } from "../../utils/youthUtils/youthInterface";
 
 const FormInfo: React.FC = () => {
   const { currentUser } = useAuth();
