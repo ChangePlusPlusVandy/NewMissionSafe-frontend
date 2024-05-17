@@ -156,6 +156,7 @@ const VanLog: React.FC<{ formID: string }> = ({ formID }) => {
                 placeholder="Your email"
                 {...form.getInputProps("email")}
                 required
+                disabled={true}
               />
               <Select
                 data={staff.map((staff: staffType) => {

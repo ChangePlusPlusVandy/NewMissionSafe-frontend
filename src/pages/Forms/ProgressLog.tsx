@@ -18,8 +18,6 @@ import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel";
-import { getAllStaff } from "../../utils/staffInterface.ts";
-import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
 import { CheckboxGroup } from "@mantine/core";
 
@@ -35,17 +33,17 @@ import {
 } from "../../utils/formUtils/ProgressUtils.ts";
 
 import { programs } from "../../utils/formUtils/ProgramUtils.ts";
+import {
+  getActiveYouth,
+  getYouthByID,
+  updateYouth,
+} from "../../utils/youthUtils/youthInterface.ts";
 
 const schema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email format")
     .required("Email is required"),
-  participantFirstName: Yup.string().required(
-    "Participant First Name is required"
-  ),
-  participantLastName: Yup.string().required(
-    "Participant Last Name is required"
-  ),
+  participantName: Yup.string().required("Participant Name is required"),
   associatedStaff: Yup.string().required("Associated Staff is required"),
   programName: Yup.string().required("Program Name is required"),
   engagementDate: Yup.string().required("Date of Engagement is required"),
@@ -77,15 +75,14 @@ const followUpTypes = [
 ];
 
 const ProgressLog: React.FC<{ formID: string }> = ({ formID }) => {
-  const [staff, setStaff] = useState([]);
+  const [youth, setYouth] = useState<{ value: string; label: string }[]>([]);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
       email: currentUser?.email || "",
-      participantFirstName: "",
-      participantLastName: "",
-      associatedStaff: "",
+      participantName: "",
+      associatedStaff: currentUser?.displayName || "",
       programName: "",
       engagementDate: "",
       personalDevelopment: [],
@@ -116,7 +113,35 @@ const ProgressLog: React.FC<{ formID: string }> = ({ formID }) => {
       if (!token) {
         navigate("/login");
       } else {
-        await createAndAddResponseJson(formID, responseFields, token);
+        const y = (await getYouthByID(form.values.participantName, token))[0];
+
+        const name = `${y.firstName} ${y.middleInitial} ${y.lastName}`;
+        const finalResponses = [...responseFields.responses];
+        finalResponses[1] = name;
+
+        const finalValues = {
+          ...responseFields,
+          responses: finalResponses,
+        };
+
+        await createAndAddResponseJson(formID, finalValues, token);
+
+        if (
+          !y.attached_forms.includes({
+            formID: formID,
+            responseID: responseFields.responseID,
+          })
+        ) {
+          const updatedForms = {
+            ...y,
+            attached_forms: [
+              ...y.attached_forms,
+              { formID: formID, responseID: responseFields.responseID },
+            ],
+          };
+          await updateYouth(updatedForms, y.uuid, token);
+        }
+
         navigate("/forms");
       }
     } catch (error) {
@@ -125,15 +150,28 @@ const ProgressLog: React.FC<{ formID: string }> = ({ formID }) => {
   };
 
   useEffect(() => {
-    const getStaff = async () => {
+    const getStaffAndYouth = async () => {
       const token = await currentUser?.getIdToken();
       if (token) {
-        setStaff(await getAllStaff(token));
+        const y = await getActiveYouth(token);
+        const mappedArrayYouth = y.map(
+          (item: {
+            uuid: string;
+            firstName: string;
+            middleInitial: string;
+            lastName: string;
+          }) => ({
+            value: item.uuid,
+            label: `${item.firstName} ${item.middleInitial} ${item.lastName}`,
+          })
+        );
+
+        setYouth(mappedArrayYouth);
       } else {
         navigate("/login");
       }
     };
-    getStaff();
+    getStaffAndYouth();
   }, [currentUser]);
 
   return (
@@ -146,35 +184,25 @@ const ProgressLog: React.FC<{ formID: string }> = ({ formID }) => {
         <Flex direction="column" gap={5}>
           <form onSubmit={form.onSubmit(submit, console.log)}>
             <TextInput
+              {...form.getInputProps("associatedStaff")}
+              label="Staffer Engaging with Participant"
+              styles={{ label: { color: "white" } }}
+              disabled={true}
+              required
+            />
+            <TextInput
               label="Email"
               styles={{ label: { color: "white" } }}
               placeholder="Your email"
               {...form.getInputProps("email")}
               required
-            />
-            <TextInput
-              label="Participant First Name"
-              styles={{ label: { color: "white" } }}
-              {...form.getInputProps("participantFirstName")}
-              required
-            />
-            <TextInput
-              label="Participant Last Name"
-              styles={{ label: { color: "white" } }}
-              {...form.getInputProps("participantLastName")}
-              required
+              disabled={true}
             />
             <Select
-              data={staff.map((staff: staffType) => {
-                return staff.firstName + " " + staff.lastName;
-              })}
-              value={staff.map((staff: staffType) => {
-                return staff.firebaseUID;
-              })}
-              {...form.getInputProps("associatedStaff")}
-              label="Staffer Engaging with Participant"
+              label="Participant Name"
               styles={{ label: { color: "white" } }}
-              searchable
+              {...form.getInputProps("participantName")}
+              data={youth}
               required
             />
             <Select

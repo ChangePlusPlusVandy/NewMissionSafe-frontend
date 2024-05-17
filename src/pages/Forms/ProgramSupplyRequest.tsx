@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { yupResolver } from "mantine-form-yup-resolver";
 import * as Yup from "yup";
 import {
@@ -16,8 +16,6 @@ import { useForm } from "@mantine/form";
 import { useAuth } from "../../AuthContext";
 import { useNavigate } from "react-router";
 import { responseType } from "../../utils/models/formModel";
-import { getAllStaff } from "../../utils/staffInterface.ts";
-import { staffType } from "../../utils/models/staffModel.ts";
 import { Box } from "@mantine/core";
 import { programs } from "../../utils/formUtils/ProgramUtils.ts";
 
@@ -49,13 +47,12 @@ const schema = Yup.object().shape({
 });
 
 const ProgramSupplyRequest: React.FC<{ formID: string }> = ({ formID }) => {
-  const [staff, setStaff] = useState([]);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
   const form = useForm({
     initialValues: {
-      employeeRequesting: currentUser?.displayName,
+      employeeRequesting: currentUser?.displayName || "",
       programRequesting: "",
       dateNeededBy: "",
       itemDescription1: "",
@@ -106,18 +103,6 @@ const ProgramSupplyRequest: React.FC<{ formID: string }> = ({ formID }) => {
     }
   };
 
-  useEffect(() => {
-    const getStaff = async () => {
-      const token = await currentUser?.getIdToken();
-      if (token) {
-        setStaff(await getAllStaff(token));
-      } else {
-        navigate("/login");
-      }
-    };
-    getStaff();
-  }, [currentUser]);
-
   return (
     <Box bg={"missionSafeBlue.9"} w={"100%"} mih={"100vh"} pl={40} pr={40}>
       <Space h="xl" />
@@ -127,17 +112,11 @@ const ProgramSupplyRequest: React.FC<{ formID: string }> = ({ formID }) => {
       <Paper w={"95%"} bg={"missionSafeBlue.9"}>
         <Flex direction="column" gap={5}>
           <form onSubmit={form.onSubmit(submit, console.log)}>
-            <Select
-              data={staff.map((staff: staffType) => {
-                return staff.firstName + " " + staff.lastName;
-              })}
-              value={staff.map((staff: staffType) => {
-                return staff.firebaseUID;
-              })}
+            <TextInput
               {...form.getInputProps("employeeRequesting")}
               label="Employee Requesting"
               styles={{ label: { color: "white" } }}
-              searchable
+              disabled={true}
               required
             />
             <Select

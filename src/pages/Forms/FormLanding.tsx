@@ -46,6 +46,13 @@ const FormLanding: React.FC = () => {
 
   const renderResponses = () => {
     if (form && form.responses && form.responses.length > 0) {
+      form.responses.sort((a, b) => {
+        const d1 = new Date(a.timestamp);
+        const d2 = new Date(b.timestamp);
+
+        return d2.getTime() - d1.getTime();
+      });
+
       return (
         <Flex
           dir={"row"}

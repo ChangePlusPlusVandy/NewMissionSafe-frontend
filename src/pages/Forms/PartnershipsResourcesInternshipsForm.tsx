@@ -99,6 +99,7 @@ const PartnershipsResourcesInternshipsForm: React.FC<formProps> = ({
             placeholder="Your email"
             {...form.getInputProps("email")}
             required
+            disabled={true}
           />
 
           <TextInput
