@@ -53,8 +53,7 @@ const programSupplyRequestQuestions: Record<string, string>[] = [
 
 const progressLogQuestions: Record<string, string>[] = [
   { question: "Email", typeOfResponse: "string" },
-  { question: "Participant First Name", typeOfResponse: "string" },
-  { question: "Participant Last Name", typeOfResponse: "string" },
+  { question: "Participant Name", typeOfResponse: "string" },
   { question: "Staffer Engaging with Participant", typeOfResponse: "string" },
   { question: "Name of Program Requesting", typeOfResponse: "string" },
   { question: "Date of Engagement", typeOfResponse: "string" },

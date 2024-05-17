@@ -59,7 +59,7 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
   const form = useForm({
     initialValues: {
       email: currentUser?.email || "",
-      staffReporting: "",
+      staffReporting: currentUser?.displayName || "",
       program: "",
       reportDate: "",
       incidentDate: "",
@@ -97,7 +97,6 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
       } else {
         await createAndAddResponseFormData(formID, formData as any, token);
         for (let i = 0; i < form.values.youthInvolved?.length; ++i) {
-          console.log(form.values.youthInvolved);
           const y = (
             await getYouthByID(form.values.youthInvolved[i], token)
           )[0];
@@ -179,18 +178,19 @@ const IncidentReport: React.FC<{ formID: string }> = ({ formID }) => {
             <Flex direction="column" gap={5}>
               <form onSubmit={form.onSubmit(submit, console.log)}>
                 <TextInput
+                  label="Staff Person Reporting"
+                  {...form.getInputProps("staffReporting")}
+                  styles={{ label: { color: "white" } }}
+                  required
+                  mb={"2%"}
+                  disabled={true}
+                />
+                <TextInput
                   label="Email"
                   styles={{ label: { color: "white" } }}
                   {...form.getInputProps("email")}
                   required
-                />
-                <Select
-                  data={staff}
-                  {...form.getInputProps("staffReporting")}
-                  label="Staff Writing Report"
-                  styles={{ label: { color: "white" } }}
-                  required
-                  searchable
+                  disabled={true}
                 />
                 <Select
                   data={programs.map((program: string) => {
